@@ -1,0 +1,1 @@
+http://www.drupalonwindows.com/en/blog/build-git-windows-sources
