@@ -11,10 +11,17 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET		=	HiGit
 TEMPLATE	=	app
 
+Release:DESTDIR	=	../release
+
+Debug:DESTDIR	=	../debug
+
 
 SOURCES		+=	main.cpp\
-				ui\mainwindow.cpp
+				ui\mainwindow.cpp \
+    ui/clonewindow.cpp
 
-HEADERS		+=	ui\mainwindow.h
+HEADERS		+=	ui\mainwindow.h \
+    ui/clonewindow.h
 
-FORMS    	+= 	ui\mainwindow.ui
+FORMS    	+= 	ui\mainwindow.ui \
+    ui/clonewindow.ui

@@ -27,9 +27,15 @@
     <ClCompile Include="..\ui\mainwindow.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\ui\clonewindow.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\clonewindow.h">
       <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
