@@ -4,6 +4,9 @@
 #include <cassert>
 #include <iostream>
 
+#include <QMessageBox>
+#include <QDebug>
+
 using namespace std;
 
 /*******************************************************************
@@ -15,9 +18,23 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+#if 0
+	QProcess *pProces = new QProcess(this);
+	QStringList  list;
+	QStringList args;
+	args << "--version";
+	pProces->setProcessChannelMode(QProcess::MergedChannels);
+	pProces->start("git" , args /* QStringList() << "--version" */); 
+	if( pProces->waitForFinished() )
+		qDebug() << "Make failed:" << pProces->readAll();
+#endif
+
 	init();
 	set_connect();
 }
+
+
+
 
 
 

@@ -8,6 +8,9 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+CONFIG += console
+CONFIG -= app_bundle
+
 TARGET		=	HiGit
 TEMPLATE	=	app
 
@@ -17,11 +20,13 @@ Debug:DESTDIR	=	../debug
 
 
 SOURCES		+=	main.cpp\
-				ui\mainwindow.cpp \
-    ui/clonewindow.cpp
+				ui\mainwindow.cpp\
+				ui\clonewindow.cpp\
+				src\git_control.cpp
 
-HEADERS		+=	ui\mainwindow.h \
-    ui/clonewindow.h
+HEADERS		+=	ui\mainwindow.h\
+				ui\clonewindow.h\
+				src\git_control.h
 
-FORMS    	+= 	ui\mainwindow.ui \
-    ui/clonewindow.ui
+FORMS    	+= 	ui\mainwindow.ui\
+				ui/clonewindow.ui
