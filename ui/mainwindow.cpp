@@ -6,6 +6,9 @@
 
 #include <QMessageBox>
 #include <QDebug>
+#include <QFileDialog>
+
+#include "../src/git_control.h"
 
 using namespace std;
 
@@ -18,19 +21,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-#if 0
-	QProcess *pProces = new QProcess(this);
-	QStringList  list;
-	QStringList args;
-	args << "--version";
-	pProces->setProcessChannelMode(QProcess::MergedChannels);
-	pProces->start("git" , args /* QStringList() << "--version" */); 
-	if( pProces->waitForFinished() )
-		qDebug() << "Make failed:" << pProces->readAll();
-#endif
-
 	init();
 	set_connect();
+
+	if( git_ctrl->check_git_exist() == false )
+	{
+		// choose git exe file.
+	}
 }
 
 
@@ -43,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent) :
 ********************************************************************/
 MainWindow::~MainWindow()
 {
+	delete git_ctrl;	git_ctrl	=	NULL;
+
     delete ui;
 }
 
@@ -52,7 +51,9 @@ MainWindow::~MainWindow()
 	init
 ********************************************************************/
 void	MainWindow::init()
-{}
+{
+	git_ctrl	=	new GitControl;
+}
 
 
 /*******************************************************************
@@ -61,6 +62,17 @@ void	MainWindow::init()
 void	MainWindow::set_connect()
 {
 	connect(	ui->cloneButton,	SIGNAL(clicked()),	this,	SLOT(clone_slot())	);
+	connect(	ui->initButton,		SIGNAL(clicked()),	this,	SLOT(init_slot())	);
+}
+
+
+/*******************************************************************
+	init_slot
+********************************************************************/
+void	MainWindow::init_slot()
+{
+	QString		path	=	QFileDialog::getExistingDirectory();
+
 }
 
 

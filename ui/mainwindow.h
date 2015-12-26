@@ -10,6 +10,7 @@ namespace Ui {
 	class MainWindow;
 }
 
+class GitControl;
 
 
 /*******************************************************************
@@ -27,8 +28,11 @@ public slots:
 
 protected slots:
 	void	clone_slot();
+	void	init_slot();
 
 private:
+	GitControl	*git_ctrl;
+
 	void	init();
 	void	set_connect();
 

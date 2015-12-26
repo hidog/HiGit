@@ -1,6 +1,12 @@
 #include "git_control.h"
+
 #include <iostream>
 #include <cassert>
+#include <sstream>
+#include <string>
+
+#include <QDebug>
+
 
 using  namespace std;
 
@@ -10,12 +16,7 @@ using  namespace std;
 	GitControl
 ********************************************************************/
 GitControl::GitControl()
-	:	proc(NULL)
 {
-	proc	=	new QProcess();
-	if( proc == NULL )
-		assert(0);
-
 	set_connect();
 }
 
@@ -39,17 +40,51 @@ void	GitControl::set_connect()
 
 
 
-/*******************************************************************
-	GitControl
-********************************************************************/
-QString		GitControl::get_version()
-{
-	QStringList		args;
-	args << "--version";
 
+/*******************************************************************
+	check_git_exist
+********************************************************************/
+bool	GitControl::check_git_exist()
+{
+	QProcess		*proc	=	new QProcess(this);
+	QStringList		args;
+
+	bool	result;
+
+	args << "--version";
 	proc->start( "git", args );
 
-	return	QString("");
+	if( proc->waitForFinished() )
+		result	=	true;
+	else
+		result	=	false;
+
+	delete	proc;
+	return	result;
+}
+
+
+/*******************************************************************
+	get_version
+********************************************************************/
+string		GitControl::get_version()
+{
+	QProcess		*proc	=	new QProcess(this);
+	QStringList		args;
+	string			version;
+	stringstream	ss;
+
+	args << "--version";
+	proc->start( "git", args );
+
+	if( proc->waitForFinished() )
+		ss << proc->readAll().data();
+	else
+		ss << "git not exists.";
+
+
+
+	return	version;
 }
 
 
