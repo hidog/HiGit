@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QFileDialog>
 
+#include "../ui/clonewindow.h"
 #include "../src/git_control.h"
 
 using namespace std;
@@ -72,7 +73,6 @@ void	MainWindow::set_connect()
 void	MainWindow::init_slot()
 {
 	QString		path	=	QFileDialog::getExistingDirectory();
-
 	git_ctrl->init( path );
 }
 
@@ -83,5 +83,7 @@ void	MainWindow::init_slot()
 ********************************************************************/
 void	MainWindow::clone_slot()
 {
-	cout << "test";
+	CloneWindow		*clone_window	=	new CloneWindow( this, git_ctrl );
+	connect(	clone_window,	SIGNAL(close()),	clone_window,	SLOT(deleteLater())		);
+	clone_window->show();
 }

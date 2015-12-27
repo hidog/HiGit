@@ -22,11 +22,11 @@ Debug:DESTDIR	=	../debug
 SOURCES		+=	main.cpp\
 				ui\mainwindow.cpp\
 				ui\clonewindow.cpp\
-				src\git_control.cpp
+				src\git_control.cpp \
 
 HEADERS		+=	ui\mainwindow.h\
 				ui\clonewindow.h\
-				src\git_control.h
+				src\git_control.h \
 
 FORMS    	+= 	ui\mainwindow.ui\
 				ui/clonewindow.ui

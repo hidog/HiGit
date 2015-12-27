@@ -79,9 +79,6 @@ void	GitControl::init( QString path )
 	args << "init";
 	args << path;
 
-	//cout << args.at(0).toStdString().c_str();
-	//connect( proc, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error_slot(QProcess::ProcessError)) );
-
 	proc->start( "git", args );
 
 	if( proc->waitForFinished() )
@@ -91,6 +88,31 @@ void	GitControl::init( QString path )
 
 	delete	proc;
 }
+
+
+
+/*******************************************************************
+	clone
+********************************************************************/
+void	GitControl::clone( QString src, QString dest )
+{
+	QProcess		*proc	=	new QProcess(this);
+	QStringList		args;
+
+	args << "clone";
+	args << src;
+	args << dest;
+
+	proc->start( "git", args );
+
+	if( proc->waitForFinished() )
+		QMessageBox::about( NULL, "clone", "init success." );
+	else
+		QMessageBox::critical( NULL, "clone", "init fail." );		
+
+	delete	proc;
+}
+
 
 
 
@@ -111,8 +133,6 @@ string		GitControl::get_version()
 		ss << proc->readAll().data();
 	else
 		ss << "git not exists.";
-
-
 
 	return	version;
 }

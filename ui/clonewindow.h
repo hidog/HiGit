@@ -3,20 +3,45 @@
 
 #include <QMainWindow>
 
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~
 namespace Ui {
-class CloneWIndow;
+class CloneWindow;
 }
 
-class CloneWIndow : public QMainWindow
+class	GitControl;
+
+
+
+/*******************************************************************
+	CloneWIndow
+********************************************************************/
+class CloneWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit CloneWIndow(QWidget *parent = 0);
-    ~CloneWIndow();
+    explicit CloneWindow( QWidget *parent = 0, GitControl* _git_ctrl = 0 );
+    ~CloneWindow();
+
+protected:
+	void	closeEvent( QCloseEvent *event );
+
+
+
+protected slots:
+	void	src_slot();
+	void	dest_slot();
+	void	ok_slot();
+	void	cancel_slot();
+
 
 private:
-    Ui::CloneWIndow *ui;
+    Ui::CloneWindow *ui;
+	GitControl	*git_ctrl;
+
+	void	set_connect();
+
 };
 
 #endif // CLONEWINDOW_H

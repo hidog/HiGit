@@ -19,7 +19,9 @@ public:
 	
 	bool		check_git_exist();
 	string		get_version();
+
 	void		init( QString path );
+	void		clone( QString src, QString dest );
 
 protected slots:
 	void	error_slot( QProcess::ProcessError err );
