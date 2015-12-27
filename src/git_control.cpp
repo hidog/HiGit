@@ -6,6 +6,7 @@
 #include <string>
 
 #include <QDebug>
+#include <QMessageBox>
 
 
 using  namespace std;
@@ -16,6 +17,7 @@ using  namespace std;
 	GitControl
 ********************************************************************/
 GitControl::GitControl()
+	:	QObject()
 {
 	set_connect();
 }
@@ -64,6 +66,34 @@ bool	GitControl::check_git_exist()
 }
 
 
+
+
+/*******************************************************************
+	init
+********************************************************************/
+void	GitControl::init( QString path )
+{
+	QProcess		*proc	=	new QProcess(this);
+	QStringList		args;
+
+	args << "init";
+	args << path;
+
+	//cout << args.at(0).toStdString().c_str();
+	//connect( proc, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error_slot(QProcess::ProcessError)) );
+
+	proc->start( "git", args );
+
+	if( proc->waitForFinished() )
+		QMessageBox::about( NULL, "init", "init success." );
+	else
+		QMessageBox::critical( NULL, "init", "init fail." );		
+
+	delete	proc;
+}
+
+
+
 /*******************************************************************
 	get_version
 ********************************************************************/
@@ -91,19 +121,15 @@ string		GitControl::get_version()
 /*******************************************************************
 	error_slots
 ********************************************************************/
-void	GitControl::error_slots( QProcess::ProcessError err )
+void	GitControl::error_slot( QProcess::ProcessError err )
 {
 	cout << "QProcess get err = " << err << endl;
 }
 
-#if 0
-void	MainWindow::on_error(QProcess::ProcessError err)
-{
-	printf("%d\n", err );
-}
+#if 1
 
 
-
+/*
  void MainWindow::on_read()
 {
 
@@ -113,5 +139,5 @@ QString result = pProces->readAll();
 
 QMessageBox::warning(NULL, "", result.toLatin1() );
 
-} 
+} */
 #endif

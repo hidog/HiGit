@@ -1,5 +1,6 @@
 #include <QObject>
 #include <QProcess>
+#include <QString>
 
 #include <string>
 
@@ -10,16 +11,18 @@ using namespace std;
 ********************************************************************/
 class	GitControl : QObject
 {
+	Q_OBJECT
+
 public:
 	GitControl();
 	~GitControl();
 	
 	bool		check_git_exist();
 	string		get_version();
+	void		init( QString path );
 
 protected slots:
-	void	get_version_slots();
-	void	error_slots( QProcess::ProcessError err );
+	void	error_slot( QProcess::ProcessError err );
 
 private:
 	//QProcess	*proc;

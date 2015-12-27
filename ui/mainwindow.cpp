@@ -73,6 +73,7 @@ void	MainWindow::init_slot()
 {
 	QString		path	=	QFileDialog::getExistingDirectory();
 
+	git_ctrl->init( path );
 }
 
 
