@@ -16,15 +16,16 @@ TEMPLATE	=	app
 
 Release:DESTDIR	=	../release
 
+# uinx:!macx{}
+
 Debug:DESTDIR	=	../debug
 
 INCLUDEPATH 	+=	.
 
-macx{
-INCLUDEPATH	+=	~/code/QT5/qtbase/include\
-				~/code/QT5/qtbase/include/QtCore\
-				~/code/QT5/qtbase/include/QtGui
-}
+OBJECTS_DIR 	=	./obj
+MOC_DIR 		=	./moc
+RCC_DIR 		=	./rcc
+UI_DIR 			=	./ui
 
 
 SOURCES		+=	main.cpp\
