@@ -91,26 +91,30 @@ void	GitControl::init( QString path )
 
 
 
+
+
 /*******************************************************************
 	clone
 ********************************************************************/
 void	GitControl::clone( QString src, QString dest )
 {
-	QProcess		*proc	=	new QProcess(this);
+    gproc	=	new QProcess(this);
 	QStringList		args;
 
+	connect(	gproc,	SIGNAL(readyRead()),	this,	SLOT(on_read())		);
+    
 	args << "clone";
 	args << src;
 	args << dest;
+    
+	gproc->start( "git", args );
 
-	proc->start( "git", args );
-
-	if( proc->waitForFinished() )
+	if( gproc->waitForFinished() )
 		QMessageBox::about( NULL, "clone", "init success." );
 	else
 		QMessageBox::critical( NULL, "clone", "init fail." );		
 
-	delete	proc;
+	delete	gproc;
 }
 
 
@@ -146,18 +150,13 @@ void	GitControl::error_slot( QProcess::ProcessError err )
 	cout << "QProcess get err = " << err << endl;
 }
 
-#if 1
 
 
-/*
- void MainWindow::on_read()
+
+/*******************************************************************
+	on_read
+********************************************************************/
+void    GitControl::on_read()
 {
-
-QProcess *pProces = (QProcess *)sender();
-
-QString result = pProces->readAll();
-
-QMessageBox::warning(NULL, "", result.toLatin1() );
-
-} */
-#endif
+    cout << qPrintable(gproc->readAll());
+}

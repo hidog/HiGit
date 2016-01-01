@@ -25,9 +25,10 @@ public:
 
 protected slots:
 	void	error_slot( QProcess::ProcessError err );
+    void    on_read();
 
 private:
-	//QProcess	*proc;
+	QProcess	*gproc;
 
 	void	set_connect();
 
