@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-message("test...")
+message("HiGit...")
 
 QT       += core gui
 
@@ -18,14 +18,14 @@ TEMPLATE	=	app
 
 INCLUDEPATH 	+=	.
 
-win32 
-{
+win32 {
+	message("win32 aaaaaa")
 	Release:DESTDIR	=	../release
 	Debug:DESTDIR	=	../debug
 }
 
-macx 
-{
+macx {
+	message("macx test")
 	OBJECTS_DIR 	=	./obj
 	MOC_DIR 		=	./obj
 	RCC_DIR 		=	./obj

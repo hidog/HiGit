@@ -36,10 +36,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <NMakeBuildCommandLine>qmake ../HiGit.pro&amp;&amp;nmake debug</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>qmake ../HiGit.pro -r -spec win32-msvc2012&amp;&amp;nmake debug </NMakeBuildCommandLine>
     <NMakeOutput>HiGit.exe</NMakeOutput>
     <NMakeCleanCommandLine>nmake debug-clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>nmake debug-clean&amp;&amp;qmake ../HiGit.pro&amp;&amp;nmake debug</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake debug-clean&amp;&amp;qmake ../HiGit.pro -r -spec win32-msvc2012&amp;&amp;nmake debug</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <IncludePath>D:\code\HiGit\vs2012;D:\code\QT5\qtbase\include\QtGui;D:\code\QT5\qtbase\include\QtCore;D:\code\QT5\qtbase\include\QtWidgets;D:\code\QT5\qtbase\include;$(IncludePath)</IncludePath>
   </PropertyGroup>

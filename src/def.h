@@ -2,7 +2,7 @@
 #define		DEF_H
 
 
-#define		PRINT_ENUM(e)	printf("%s",#e)
+#define		PRINT_ENUM(e)	printf("%s\n",#e)
 
 
 

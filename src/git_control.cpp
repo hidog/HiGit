@@ -98,25 +98,39 @@ void	GitControl::init( QString path )
 ********************************************************************/
 void	GitControl::clone( QString src, QString dest )
 {
-    QProcess		*proc	=	new QProcess(this);
+	QProcess		*proc	=	new QProcess(this);
 	QStringList		args;
-    
+	
 	args << "clone";
 	args << src;
 	args << dest;
-
+	
 	connect(	proc,	SIGNAL(readyReadStandardError()),				this,	SLOT(clone_output_slot())							);
 	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,	SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
 	connect(	proc,	SIGNAL(started()),								this,	SLOT(clone_start_slot())							);
 	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,	SLOT(clone_error_slot(QProcess::ProcessError))		);
-
+	
 	/*
 		note: git clone will create thread, so need set process channel for get output in other thread.
 	*/
 	proc->setProcessChannelMode( QProcess::ForwardedChannels  );
 	proc->start( "git", args );
 
-
+	switch(proc->state())
+	{
+		case QProcess::NotRunning:
+			PRINT_ENUM(QProcess::NotRunning);
+			delete	proc;
+			break;
+		case QProcess::Starting:
+			PRINT_ENUM(QProcess::Starting);
+			break;
+		case QProcess::Running:
+			PRINT_ENUM(QProcess::Running);
+			break;
+		default:
+			assert(0);
+	}
 }
 
 
@@ -127,9 +141,6 @@ void	GitControl::clone( QString src, QString dest )
 ********************************************************************/
 void	GitControl::clone_error_slot( QProcess::ProcessError err )
 {
-	QProcess	*proc	=	(QProcess*)sender();
-	delete	proc;
-
 	switch(err)
 	{
 		case QProcess::FailedToStart:
