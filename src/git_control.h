@@ -23,6 +23,9 @@ public:
 	void		init( QString path );
 	void		clone( QString src, QString dest );
 
+signals:
+	void	output_signal(QByteArray);
+
 protected slots:
 	void	error_slot( QProcess::ProcessError err );
 

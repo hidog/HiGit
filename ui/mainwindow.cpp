@@ -83,7 +83,7 @@ void	MainWindow::init_slot()
 ********************************************************************/
 void	MainWindow::clone_slot()
 {
-	CloneWindow		*clone_window	=	new CloneWindow( this, git_ctrl );
+	CloneWindow		*clone_window	=	new CloneWindow( this );
 	connect(	clone_window,	SIGNAL(close()),	clone_window,	SLOT(deleteLater())		);
 	clone_window->show();
 }

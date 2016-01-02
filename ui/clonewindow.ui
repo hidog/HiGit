@@ -112,7 +112,7 @@
      <string>Cancel</string>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="textBrowser">
+   <widget class="QTextBrowser" name="outputTBrowser">
     <property name="geometry">
      <rect>
       <x>140</x>

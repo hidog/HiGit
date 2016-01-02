@@ -21,7 +21,7 @@ class CloneWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit CloneWindow( QWidget *parent = 0, GitControl* _git_ctrl = 0 );
+    explicit CloneWindow( QWidget *parent = 0 );
     ~CloneWindow();
 
 protected:
@@ -35,6 +35,7 @@ protected slots:
 	void	ok_slot();
 	void	cancel_slot();
 
+	void	output_slot(QByteArray);
 
 private:
     Ui::CloneWindow *ui;

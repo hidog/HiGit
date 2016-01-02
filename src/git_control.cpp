@@ -104,8 +104,11 @@ void	GitControl::clone( QString src, QString dest )
 	args << "clone";
 	args << src;
 	args << dest;
+	//args << "www.google.com";
 	
 	connect(	proc,	SIGNAL(readyReadStandardError()),				this,	SLOT(clone_output_slot())							);
+	connect(	proc,	SIGNAL(readyReadStandardOutput()),				this,	SLOT(clone_output_slot())							);
+	connect(	proc,	SIGNAL(readyRead()),							this,	SLOT(clone_output_slot())							);
 	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,	SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
 	connect(	proc,	SIGNAL(started()),								this,	SLOT(clone_start_slot())							);
 	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,	SLOT(clone_error_slot(QProcess::ProcessError))		);
@@ -113,8 +116,12 @@ void	GitControl::clone( QString src, QString dest )
 	/*
 		note: git clone will create thread, so need set process channel for get output in other thread.
 	*/
-	proc->setProcessChannelMode( QProcess::ForwardedChannels  );
+	proc->setProcessChannelMode( QProcess::MergedChannels  );
+	//proc->setReadChannel( QProcess::StandardError );
+	//proc->setProcessChannelMode( QProcess::MergedChannels );
 	proc->start( "git", args );
+	//proc->start( "ping", args );
+
 
 	switch(proc->state())
 	{
@@ -175,6 +182,10 @@ void	GitControl::clone_finish_slot( int exit_code, QProcess::ExitStatus exit_sta
 {
 	// delete proc
 	QProcess	*proc	=	(QProcess*)sender();
+
+	QByteArray	output	=	proc->readAll();
+	qDebug() << output;
+
 	delete	proc;
 
 	qDebug() << "exist_code: " << exit_code;
@@ -182,10 +193,10 @@ void	GitControl::clone_finish_slot( int exit_code, QProcess::ExitStatus exit_sta
 	switch(exit_status)
 	{
 		case QProcess::NormalExit:
-			qDebug() << "norma exit.";
+			PRINT_ENUM(QProcess::NormalExit);
 			break;
 		case QProcess::CrashExit:
-			qDebug() << "crash exit.";
+			PRINT_ENUM(QProcess::CrashExit);
 			break;
 		default:
 			assert(0);
@@ -200,6 +211,13 @@ void	GitControl::clone_finish_slot( int exit_code, QProcess::ExitStatus exit_sta
 void	GitControl::clone_start_slot()
 {
 	qDebug() << "git clone start...";
+
+	QProcess	*proc	=	(QProcess*)sender();
+	//proc->write(".");
+
+	QByteArray	output	=	proc->readAll();
+	qDebug() << output ;
+
 }
 
 
@@ -209,7 +227,16 @@ void	GitControl::clone_start_slot()
 void	GitControl::clone_output_slot()
 {
 	QProcess	*proc	=	(QProcess*)sender();
-	qDebug() << proc->readAllStandardError();
+	//proc->setReadChannel(QProcess::StandardError);
+
+	//QByteArray	output	=	proc->readLine(10);
+	QByteArray	output	=	proc->readAll();
+	//proc->write(".");
+
+	qDebug() << "qDebug .... " << output;
+
+
+	//emit( output_signal(output) );
 }
 
 
