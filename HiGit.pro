@@ -4,29 +4,33 @@
 #
 #-------------------------------------------------
 
+message("test...")
+
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
- CONFIG += console
- CONFIG -= app_bundle
+CONFIG += console
+CONFIG -= app_bundle
 
 TARGET		=	HiGit
 TEMPLATE	=	app
 
-Release:DESTDIR	=	../release
-
-# uinx:!macx{}
-
-Debug:DESTDIR	=	../debug
-
 INCLUDEPATH 	+=	.
 
-OBJECTS_DIR 	=	./obj
-MOC_DIR 		=	./moc
-RCC_DIR 		=	./rcc
-UI_DIR 			=	./ui
+win32 
+{
+	Release:DESTDIR	=	../release
+	Debug:DESTDIR	=	../debug
+}
 
+macx 
+{
+	OBJECTS_DIR 	=	./obj
+	MOC_DIR 		=	./obj
+	RCC_DIR 		=	./obj
+	UI_DIR 			=	./obj
+}
 
 SOURCES		+=	main.cpp\
 				ui/mainwindow.cpp\

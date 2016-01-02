@@ -101,7 +101,7 @@ void	GitControl::clone( QString src, QString dest )
     gproc	=	new QProcess(this);
 	QStringList		args;
 
-	connect(	gproc,	SIGNAL(readyRead()),	this,	SLOT(on_read())		);
+	//connect(	gproc,	SIGNAL(readyRead()),	this,	SLOT(on_read())		);
     
 	args << "clone";
 	args << src;
@@ -109,10 +109,27 @@ void	GitControl::clone( QString src, QString dest )
     
 	gproc->start( "git", args );
 
-	if( gproc->waitForFinished() )
+	if( gproc->waitForStarted() )
+    {
 		QMessageBox::about( NULL, "clone", "init success." );
+        cout << "test" << endl;
+    }
 	else
-		QMessageBox::critical( NULL, "clone", "init fail." );		
+		QMessageBox::critical( NULL, "clone", "init fail." );
+    
+    gproc->setProcessChannelMode(QProcess::MergedChannels);
+    
+    QByteArray data;
+    
+    while( gproc->waitForReadyRead() )
+    {
+        data.append( gproc->readAll());
+        
+    }
+    
+    
+    qDebug(data.data());
+    
 
 	delete	gproc;
 }
