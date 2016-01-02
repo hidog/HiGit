@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include "def.h"
 
 using  namespace std;
 
@@ -92,48 +93,113 @@ void	GitControl::init( QString path )
 
 
 
-
 /*******************************************************************
 	clone
 ********************************************************************/
 void	GitControl::clone( QString src, QString dest )
 {
-    gproc	=	new QProcess(this);
+    QProcess		*proc	=	new QProcess(this);
 	QStringList		args;
-
-	//connect(	gproc,	SIGNAL(readyRead()),	this,	SLOT(on_read())		);
     
 	args << "clone";
 	args << src;
 	args << dest;
-    
-	gproc->start( "git", args );
 
-	if( gproc->waitForStarted() )
-    {
-		QMessageBox::about( NULL, "clone", "init success." );
-        cout << "test" << endl;
-    }
-	else
-		QMessageBox::critical( NULL, "clone", "init fail." );
-    
-    gproc->setProcessChannelMode(QProcess::MergedChannels);
-    
-    QByteArray data;
-    
-    while( gproc->waitForReadyRead() )
-    {
-        data.append( gproc->readAll());
-        
-    }
-    
-    
-    qDebug(data.data());
-    
+	connect(	proc,	SIGNAL(readyReadStandardError()),				this,	SLOT(clone_output_slot())							);
+	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,	SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
+	connect(	proc,	SIGNAL(started()),								this,	SLOT(clone_start_slot())							);
+	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,	SLOT(clone_error_slot(QProcess::ProcessError))		);
 
-	delete	gproc;
+	/*
+		note: git clone will create thread, so need set process channel for get output in other thread.
+	*/
+	proc->setProcessChannelMode( QProcess::ForwardedChannels  );
+	proc->start( "git", args );
+
+
 }
 
+
+
+
+/*******************************************************************
+	clone_error_slot
+********************************************************************/
+void	GitControl::clone_error_slot( QProcess::ProcessError err )
+{
+	QProcess	*proc	=	(QProcess*)sender();
+	delete	proc;
+
+	switch(err)
+	{
+		case QProcess::FailedToStart:
+			PRINT_ENUM(QProcess::FailedToStart);
+			break;
+		case QProcess::Crashed:
+			PRINT_ENUM(QProcess::Crashed);
+			break;
+		case QProcess::Timedout:
+			PRINT_ENUM(QProcess::Timedout);
+			break;
+		case QProcess::WriteError:
+			PRINT_ENUM(QProcess::WriteError);
+			break;
+		case QProcess::ReadError:
+			PRINT_ENUM(QProcess::ReadError);
+			break;
+		case QProcess::UnknownError:
+			PRINT_ENUM(QProcess::UnknownError);
+			break;
+		default:
+			assert(0);
+	}
+}
+
+
+
+/*******************************************************************
+	clone_finish_slot
+********************************************************************/
+void	GitControl::clone_finish_slot( int exit_code, QProcess::ExitStatus exit_status )
+{
+	// delete proc
+	QProcess	*proc	=	(QProcess*)sender();
+	delete	proc;
+
+	qDebug() << "exist_code: " << exit_code;
+	
+	switch(exit_status)
+	{
+		case QProcess::NormalExit:
+			qDebug() << "norma exit.";
+			break;
+		case QProcess::CrashExit:
+			qDebug() << "crash exit.";
+			break;
+		default:
+			assert(0);
+	}
+}
+
+
+
+/*******************************************************************
+	clone_start_slot
+********************************************************************/
+void	GitControl::clone_start_slot()
+{
+	qDebug() << "git clone start...";
+}
+
+
+/*******************************************************************
+	clone_output_slot
+********************************************************************/
+void	GitControl::clone_output_slot()
+{
+	QProcess	*proc	=	(QProcess*)sender();
+	qDebug() << proc->readAllStandardError();
+}
 
 
 
@@ -170,10 +236,3 @@ void	GitControl::error_slot( QProcess::ProcessError err )
 
 
 
-/*******************************************************************
-	on_read
-********************************************************************/
-void    GitControl::on_read()
-{
-    cout << qPrintable(gproc->readAll());
-}

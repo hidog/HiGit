@@ -25,11 +25,13 @@ public:
 
 protected slots:
 	void	error_slot( QProcess::ProcessError err );
-    void    on_read();
+
+	void	clone_output_slot();
+	void	clone_finish_slot(int,QProcess::ExitStatus);
+	void	clone_start_slot();
+	void	clone_error_slot(QProcess::ProcessError);
 
 private:
-	QProcess	*gproc;
-
 	void	set_connect();
 
 };

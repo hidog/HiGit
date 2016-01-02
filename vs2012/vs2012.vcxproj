@@ -62,6 +62,7 @@
     <ClCompile Include="..\ui\mainwindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\def.h" />
     <ClInclude Include="..\src\git_control.h" />
     <ClInclude Include="..\ui\clonewindow.h" />
     <ClInclude Include="..\ui\mainwindow.h" />
