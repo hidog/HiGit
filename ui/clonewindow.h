@@ -36,6 +36,7 @@ protected slots:
 	void	cancel_slot();
 
 	void	output_slot(QByteArray);
+	void	output_slot(QList<QByteArray>);
 
 private:
     Ui::CloneWindow *ui;

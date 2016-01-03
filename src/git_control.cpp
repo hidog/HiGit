@@ -18,8 +18,9 @@ using  namespace std;
 	GitControl
 ********************************************************************/
 GitControl::GitControl()
-	:	QObject()
+	:	QObject(), last_index(0)
 {
+	memset( msg_buf, 0, GIT_BUF_SIZE );	
 	set_connect();
 }
 
@@ -107,10 +108,15 @@ void	GitControl::clone( QString src, QString dest )
 	args << src;
 	args << dest;
 	//args << "www.google.com";
+
+	// init data.
+	last_index	=	0;
+	output_list.clear();
+	memset( msg_buf, 0, GIT_BUF_SIZE );
 	
-	connect(	proc,	SIGNAL(readyReadStandardError()),				this,	SLOT(clone_output_slot())							);
-	//connect(	proc,	SIGNAL(readyReadStandardOutput()),				this,	SLOT(clone_output_slot())							);
-	//connect(	proc,	SIGNAL(readyRead()),							this,	SLOT(clone_output_slot())							);
+	connect(	proc,	SIGNAL(readyReadStandardError()),				this,	SLOT(clone_output_err_slot())						);
+	connect(	proc,	SIGNAL(readyReadStandardOutput()),				this,	SLOT(clone_output_std_slot())						);
+	connect(	proc,	SIGNAL(readyRead()),							this,	SLOT(clone_output_slot())							);
 	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,	SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
 	connect(	proc,	SIGNAL(started()),								this,	SLOT(clone_start_slot())							);
 	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,	SLOT(clone_error_slot(QProcess::ProcessError))		);
@@ -226,17 +232,154 @@ void	GitControl::clone_start_slot()
 void	GitControl::clone_output_slot()
 {
 	QProcess	*proc	=	(QProcess*)sender();
-	//proc->setReadChannel(QProcess::StandardError);
+	QByteArray	output	=	proc->readAll();	
 
-	//QByteArray	output	=	proc->readLine(10);
+	cout << qPrintable( output );
+	//qDebug() << output << "end...";
+	//emit( output_signal(output) );
+}
+
+
+
+
+/*******************************************************************
+	clone_parse_end
+	處理字串結尾,更新畫面的部分.
+********************************************************************/
+void		GitControl::clone_parse_end( QByteArray& data, QByteArray& msg )
+{
+	qDebug() << data << "\n";
+	if( msg.size() == 0 )
+		msg		=	data;	// 字串裡面沒有百分比的case.
+	
+	if( output_list.size() == 0 )
+	{
+		output_list.push_back(data);
+		last_msg	=	msg;
+	}
+	else
+	{
+		// 跟最後一個做比較,相同的話加入.
+		qDebug() << last_msg << " " << msg << "\n";
+		if( last_msg != msg )
+		{
+			output_list.push_back(data);
+			last_msg	=	msg;
+		}
+		else
+			output_list[output_list.size()-1]	=	data;	// 更新最後一筆資料.
+	}
+
+	//emit( output_signal(data) );		
+	emit output_signal(output_list);
+	data.clear();
+}
+
+
+
+/*******************************************************************
+	clone_parse_num
+	讀取字串百分比的部分.
+********************************************************************/
+void	GitControl::clone_parse_num( int index, QByteArray& output, QByteArray& data, QByteArray& msg )
+{
+	QByteArray	num;		// 儲存百分比用 
+	QByteArray	tmp;
+
+	int		start;
+	int		i,	j;
+	int		size;	
+	int		percent;
+
+	bool	ok;
+
+	// parse number.
+	data	+=	output[index];
+	msg.clear();
+	for( i = index-1; i >= 0; i-- )
+	{
+		if( output[i] >= '0' && output[i] <= '9' )
+			num		+=	output[i];
+		else if( output[i] == '.' )
+			assert(0);		// 不確定百分比有沒有幅點數.
+		else
+			break;
+	}
+	// 取出 msg 部分
+	start	=	0;
+	for( j = i; j >= 0; j-- )
+	{
+		if( output[j] == '\n' || output[j] == '\r' )
+		{
+			start	=	j + 1;
+			break;
+		}
+	}
+	for( j = start; j <= i ; j++ )
+		msg	+=	output[j];
+	// 移除空白　
+	while(true)
+	{
+		if( msg[msg.size()-1] != ' ' )
+			break;
+		else
+			msg.remove( msg.size()-1, 1 );
+	}
+	qDebug() << msg;
+	
+	// 字串反轉
+	size	=	num.size();
+	for( i = 0; i < size; i++ )
+		tmp	+=	num[size-i-1];
+	// 取得數字
+	percent		=	tmp.toInt( &ok, 10 );
+	if( ok == true )
+		emit( progress_signal(percent) );
+}
+
+
+
+
+/*******************************************************************
+	clone_output_slot
+********************************************************************/
+void	GitControl::clone_output_err_slot()
+{
+	QProcess	*proc	=	(QProcess*)sender();
 	QByteArray	output	=	proc->readAllStandardError();
-	//proc->write(".");
+	QByteArray	data;		// 切割文字用 跟msg不同,這邊會包含後面百分比的部分.
+	QByteArray	msg;		// 假設字串是  Receive 5% (12/60)   msg存放的是Receive
 
-	//qDebug() << "qDebug .... " << output << "\n";
-	cout << "output... " << qPrintable( output ) << " ... end output\n";
+	int		i;
+
+	// 處理字串.
+	for( i = 0; i < output.size(); i++ )
+	{
+		if( output[i] == '\n' || output[i] == '\r' )
+			clone_parse_end( data, msg );
+		else if( output[i] == '%' )
+			clone_parse_num( i, output, data, msg );
+		else
+			data	+=	output[i];
+	}
+
+	// 結尾不是 '\n', '\r', 代表沒有更新到畫面.
+	if( output[output.size()-1] != '\n' && output[output.size()-1] != '\r' )
+		clone_parse_end( data, msg );
+}
 
 
-	emit( output_signal(output) );
+/*******************************************************************
+	clone_output_slot
+********************************************************************/
+void	GitControl::clone_output_std_slot()
+{
+	QProcess	*proc	=	(QProcess*)sender();
+	QByteArray	output	=	proc->readAllStandardOutput();
+
+	cout << "std... " << qPrintable( output ) << " ... end output\n";
+
+	//emit( output_signal(output) );
 }
 
 

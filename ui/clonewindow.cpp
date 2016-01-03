@@ -43,12 +43,14 @@ CloneWindow::~CloneWindow()
 ********************************************************************/
 void	CloneWindow::set_connect()
 {
-	connect(	ui->srcButton,				SIGNAL(clicked()),						this,	SLOT(src_slot())					);
-	connect(	ui->destButton,				SIGNAL(clicked()),						this,	SLOT(dest_slot())					);
-	connect(	ui->okButton,				SIGNAL(clicked()),						this,	SLOT(ok_slot())						);
-	connect(	ui->cancelButton,			SIGNAL(clicked()),						this,	SLOT(cancel_slot())					);
+	connect(	ui->srcButton,			SIGNAL(clicked()),							this,				SLOT(src_slot())						);
+	connect(	ui->destButton,			SIGNAL(clicked()),							this,				SLOT(dest_slot())						);
+	connect(	ui->okButton,			SIGNAL(clicked()),							this,				SLOT(ok_slot())							);
+	connect(	ui->cancelButton,		SIGNAL(clicked()),							this,				SLOT(cancel_slot())						);
 
-	connect(	(QObject*)git_ctrl,			SIGNAL(output_signal(QByteArray)),		this,	SLOT(output_slot(QByteArray))		);
+	connect(	git_ctrl,				SIGNAL(output_signal(QByteArray)),			this,				SLOT(output_slot(QByteArray))			);
+	connect(	git_ctrl,				SIGNAL(output_signal(QList<QByteArray>)),	this,				SLOT(output_slot(QList<QByteArray>))	);
+	connect(	git_ctrl,				SIGNAL(progress_signal(int)),				ui->gitProgress,	SLOT(setValue(int))						);
 }
 
 
@@ -58,9 +60,21 @@ void	CloneWindow::set_connect()
 ********************************************************************/
 void	CloneWindow::output_slot( QByteArray output )
 {
-	//qDebug() << output << "\n";
-	//ui->outputTBrowser->setText(output);
 	ui->outputTBrowser->append(output);
+}
+
+
+
+/*******************************************************************
+	output_slot
+********************************************************************/
+void	CloneWindow::output_slot( QList<QByteArray> list )
+{
+	ui->outputTBrowser->clear();
+
+	QList<QByteArray>::iterator		itr;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+		ui->outputTBrowser->append(*itr);
 }
 
 
