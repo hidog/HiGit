@@ -102,13 +102,15 @@ void	GitControl::clone( QString src, QString dest )
 	QStringList		args;
 	
 	args << "clone";
+	args << "-v";
+	args << "--progress";
 	args << src;
 	args << dest;
 	//args << "www.google.com";
 	
 	connect(	proc,	SIGNAL(readyReadStandardError()),				this,	SLOT(clone_output_slot())							);
-	connect(	proc,	SIGNAL(readyReadStandardOutput()),				this,	SLOT(clone_output_slot())							);
-	connect(	proc,	SIGNAL(readyRead()),							this,	SLOT(clone_output_slot())							);
+	//connect(	proc,	SIGNAL(readyReadStandardOutput()),				this,	SLOT(clone_output_slot())							);
+	//connect(	proc,	SIGNAL(readyRead()),							this,	SLOT(clone_output_slot())							);
 	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,	SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
 	connect(	proc,	SIGNAL(started()),								this,	SLOT(clone_start_slot())							);
 	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,	SLOT(clone_error_slot(QProcess::ProcessError))		);
@@ -116,11 +118,8 @@ void	GitControl::clone( QString src, QString dest )
 	/*
 		note: git clone will create thread, so need set process channel for get output in other thread.
 	*/
-	proc->setProcessChannelMode( QProcess::MergedChannels  );
-	//proc->setReadChannel( QProcess::StandardError );
-	//proc->setProcessChannelMode( QProcess::MergedChannels );
-	proc->start( "git", args );
-	//proc->start( "ping", args );
+	proc->setProcessChannelMode( QProcess::SeparateChannels );
+	proc->start( "git", args, QProcess::ReadWrite );
 
 
 	switch(proc->state())
@@ -230,13 +229,14 @@ void	GitControl::clone_output_slot()
 	//proc->setReadChannel(QProcess::StandardError);
 
 	//QByteArray	output	=	proc->readLine(10);
-	QByteArray	output	=	proc->readAll();
+	QByteArray	output	=	proc->readAllStandardError();
 	//proc->write(".");
 
-	qDebug() << "qDebug .... " << output;
+	//qDebug() << "qDebug .... " << output << "\n";
+	cout << "output... " << qPrintable( output ) << " ... end output\n";
 
 
-	//emit( output_signal(output) );
+	emit( output_signal(output) );
 }
 
 

@@ -58,8 +58,9 @@ void	CloneWindow::set_connect()
 ********************************************************************/
 void	CloneWindow::output_slot( QByteArray output )
 {
-	qDebug() << output;
-	ui->outputTBrowser->setText(output);
+	//qDebug() << output << "\n";
+	//ui->outputTBrowser->setText(output);
+	ui->outputTBrowser->append(output);
 }
 
 
