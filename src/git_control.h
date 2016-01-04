@@ -21,7 +21,7 @@ class	GitControl : public QObject
 	Q_OBJECT
 
 public:
-	GitControl();
+	GitControl( QWidget *parent = 0 );
 	~GitControl();
 	
 	bool		check_git_exist();
@@ -49,6 +49,8 @@ protected slots:
 
 
 private:
+	QWidget		*ppp;
+
 	void		set_connect();
 
 	void		clone_parse_end( QByteArray& data, QByteArray& msg );

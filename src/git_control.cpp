@@ -10,6 +10,9 @@
 
 #include "def.h"
 
+#include "../ui/clonewindow.h"		// 明天把這邊改成boost bind
+	
+
 using  namespace std;
 
 
@@ -17,8 +20,8 @@ using  namespace std;
 /*******************************************************************
 	GitControl
 ********************************************************************/
-GitControl::GitControl()
-	:	QObject(), last_index(0)
+GitControl::GitControl( QWidget *parent )
+	:	QObject(parent), last_index(0), ppp(parent)
 {
 	memset( msg_buf, 0, GIT_BUF_SIZE );	
 	set_connect();
@@ -93,7 +96,6 @@ void	GitControl::init( QString path )
 
 
 
-
 /*******************************************************************
 	clone
 ********************************************************************/
@@ -105,6 +107,11 @@ void	GitControl::clone( QString src, QString dest )
 	args << "clone";
 	args << "-v";
 	args << "--progress";
+
+	CloneWindow*	parent	=	(CloneWindow*)ppp;
+	if( parent->get_recursive_state() == true )
+		args << "--recursive";
+
 	args << src;
 	args << dest;
 	//args << "www.google.com";
@@ -120,7 +127,7 @@ void	GitControl::clone( QString src, QString dest )
 	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,	SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
 	connect(	proc,	SIGNAL(started()),								this,	SLOT(clone_start_slot())							);
 	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,	SLOT(clone_error_slot(QProcess::ProcessError))		);
-	
+
 	/*
 		note: git clone will create thread, so need set process channel for get output in other thread.
 	*/

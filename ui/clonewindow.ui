@@ -65,32 +65,19 @@
      <rect>
       <x>470</x>
       <y>140</y>
-      <width>81</width>
+      <width>101</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Browse...</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="srcButton">
-    <property name="geometry">
-     <rect>
-      <x>470</x>
-      <y>90</y>
-      <width>81</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Browse...</string>
+     <string>Dir</string>
     </property>
    </widget>
    <widget class="QPushButton" name="okButton">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>480</y>
+      <x>210</x>
+      <y>500</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -103,7 +90,7 @@
     <property name="geometry">
      <rect>
       <x>360</x>
-      <y>480</y>
+      <y>500</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -133,6 +120,47 @@
     </property>
     <property name="value">
      <number>0</number>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="srcButton">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>90</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dir</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="popupMode">
+     <enum>QToolButton::MenuButtonPopup</enum>
+    </property>
+    <property name="toolButtonStyle">
+     <enum>Qt::ToolButtonTextOnly</enum>
+    </property>
+    <property name="autoRaise">
+     <bool>false</bool>
+    </property>
+    <property name="arrowType">
+     <enum>Qt::NoArrow</enum>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="recsCBox">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>30</y>
+      <width>85</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>recursive</string>
     </property>
    </widget>
   </widget>

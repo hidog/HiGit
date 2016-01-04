@@ -24,6 +24,8 @@ public:
     explicit CloneWindow( QWidget *parent = 0 );
     ~CloneWindow();
 
+	bool	get_recursive_state();
+
 protected:
 	void	closeEvent( QCloseEvent *event );
 

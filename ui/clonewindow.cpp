@@ -3,6 +3,8 @@
 
 #include <QFileDialog>
 #include <QDebug>
+#include <QMenu>
+#include <QMessageBox>
 
 
 #include "../src/git_control.h"
@@ -20,7 +22,11 @@ CloneWindow::CloneWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-	git_ctrl	=	new GitControl();
+	git_ctrl	=	new GitControl(this);
+
+	ui->srcButton->setDefaultAction(  new QAction(QString("Dir"),this) );
+	//ui->srcButton->addAction( new QAction(QString("Dir"),this) );
+	ui->srcButton->addAction( new QAction(QString("URL"),this) );
 
 	set_connect();
 }
@@ -47,11 +53,32 @@ void	CloneWindow::set_connect()
 	connect(	ui->destButton,			SIGNAL(clicked()),							this,				SLOT(dest_slot())						);
 	connect(	ui->okButton,			SIGNAL(clicked()),							this,				SLOT(ok_slot())							);
 	connect(	ui->cancelButton,		SIGNAL(clicked()),							this,				SLOT(cancel_slot())						);
+	connect(	ui->srcButton,			SIGNAL(triggered(QAction*)),				ui->srcButton,		SLOT(setDefaultAction(QAction*))		);
 
 	connect(	git_ctrl,				SIGNAL(output_signal(QByteArray)),			this,				SLOT(output_slot(QByteArray))			);
 	connect(	git_ctrl,				SIGNAL(output_signal(QList<QByteArray>)),	this,				SLOT(output_slot(QList<QByteArray>))	);
 	connect(	git_ctrl,				SIGNAL(progress_signal(int)),				ui->gitProgress,	SLOT(setValue(int))						);
+
+	
 }
+
+
+
+
+/*******************************************************************
+	get_recursive_state
+********************************************************************/
+bool	CloneWindow::get_recursive_state()
+{
+	if( ui->recsCBox->checkState() == Qt::Unchecked )
+		return	false;
+	else if( ui->recsCBox->checkState() == Qt::Checked )
+		return	true;
+	else
+		return	false;		// Qt::PartiallyChecked
+
+}
+
 
 
 
@@ -118,8 +145,18 @@ void	CloneWindow::cancel_slot()
 ********************************************************************/
 void	CloneWindow::src_slot()
 {
-	QString		path	=	QFileDialog::getExistingDirectory();
-	ui->srcLEdit->setText(path);
+	if( ui->srcButton->defaultAction()->text() == QString("Dir") )
+	{
+		QString		src		=	ui->srcLEdit->text();
+		QString		path	=	QFileDialog::getExistingDirectory( NULL, "Open Directory", src );
+
+		if( path.length() != 0 )
+			ui->srcLEdit->setText(path);
+	}
+	else if( ui->srcButton->defaultAction()->text() == QString("URL") )
+	{
+		QMessageBox::critical(this,"warning", "nee maintain." );
+	}
 }
 
 
