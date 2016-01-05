@@ -10,8 +10,7 @@
 
 #include "def.h"
 
-#include "../ui/clonewindow.h"		// 明天把這邊改成boost bind
-	
+
 
 using  namespace std;
 
@@ -108,8 +107,7 @@ void	GitControl::clone( QString src, QString dest )
 	args << "-v";
 	args << "--progress";
 
-	CloneWindow*	parent	=	(CloneWindow*)ppp;
-	if( parent->get_recursive_state() == true )
+	if( get_recursive_state_func() == true )
 		args << "--recursive";
 
 	args << src;
@@ -139,7 +137,6 @@ void	GitControl::clone( QString src, QString dest )
 	{
 		case QProcess::NotRunning:
 			PRINT_ENUM(QProcess::NotRunning);
-			delete	proc;
 			break;
 		case QProcess::Starting:
 			PRINT_ENUM(QProcess::Starting);
@@ -160,6 +157,8 @@ void	GitControl::clone( QString src, QString dest )
 ********************************************************************/
 void	GitControl::clone_error_slot( QProcess::ProcessError err )
 {
+	QByteArray	result;
+
 	switch(err)
 	{
 		case QProcess::FailedToStart:
@@ -194,14 +193,10 @@ void	GitControl::clone_finish_slot( int exit_code, QProcess::ExitStatus exit_sta
 {
 	// delete proc
 	QProcess	*proc	=	(QProcess*)sender();
-
-	QByteArray	output	=	proc->readAll();
-	qDebug() << output;
-
 	delete	proc;
 
-	qDebug() << "exist_code: " << exit_code;
-	
+	QByteArray	output;
+
 	switch(exit_status)
 	{
 		case QProcess::NormalExit:
@@ -248,6 +243,27 @@ void	GitControl::clone_output_slot()
 
 
 
+/*******************************************************************
+	set_color
+********************************************************************/
+void	GitControl::set_color( QByteArray& data, GIT_FONT_COLOR color )
+{
+	switch( color )
+	{
+		case GIT_FONT_RED:
+			data.push_front("<font color=\"red\">");	
+			data.push_back("</font>");
+			break;
+		case GIT_FONT_BLUE:
+			data.push_front("<font color=\"blue\">");	
+			data.push_back("</font>");
+			break;
+		default:
+			assert(0);
+	}
+}
+
+
 
 /*******************************************************************
 	clone_parse_end
@@ -255,12 +271,11 @@ void	GitControl::clone_output_slot()
 ********************************************************************/
 void		GitControl::clone_parse_end( QByteArray& data, QByteArray& msg )
 {
-	qDebug() << data << "\n";
+	//qDebug() << data << "\n";
 	if( data.indexOf(QString("fatal")) >= 0 )
-	{
-		cout << "test";
-		return;
-	}
+		set_color( data, GIT_FONT_RED );
+	else if( data.indexOf(QString("done")) >= 0 )
+		set_color( data, GIT_FONT_BLUE );
 
 	if( msg.size() == 0 )
 		msg		=	data;	// 字串裡面沒有百分比的case.
@@ -273,7 +288,7 @@ void		GitControl::clone_parse_end( QByteArray& data, QByteArray& msg )
 	else
 	{
 		// 跟最後一個做比較,相同的話加入.
-		qDebug() << last_msg << " " << msg << "\n";
+		//qDebug() << last_msg << " " << msg << "\n";
 		if( last_msg != msg )
 		{
 			output_list.push_back(data);
@@ -338,7 +353,7 @@ void	GitControl::clone_parse_num( int index, QByteArray& output, QByteArray& dat
 		else
 			msg.remove( msg.size()-1, 1 );
 	}
-	qDebug() << msg;
+	//qDebug() << msg;
 	
 	// 字串反轉
 	size	=	num.size();

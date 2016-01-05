@@ -6,6 +6,10 @@
 #include <QMenu>
 #include <QMessageBox>
 
+#ifndef Q_MOC_RUN
+#	include <boost/function.hpp>
+#	include<boost/bind.hpp>
+#endif
 
 #include "../src/git_control.h"
 
@@ -23,6 +27,8 @@ CloneWindow::CloneWindow(QWidget *parent) :
     ui->setupUi(this);
 
 	git_ctrl	=	new GitControl(this);
+	// set bind function.
+	git_ctrl->get_recursive_state_func	=	boost::bind( &CloneWindow::get_recursive_state, this );
 
 	ui->srcButton->setDefaultAction(  new QAction(QString("Dir"),this) );
 	//ui->srcButton->addAction( new QAction(QString("Dir"),this) );

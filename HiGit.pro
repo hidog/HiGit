@@ -22,6 +22,8 @@ win32 {
 	message("win32 aaaaaa")
 	Release:DESTDIR	=	../release
 	Debug:DESTDIR	=	../debug
+	INCLUDEPATH		+=	C:\Boost\include\boost-1_60
+	LIBPATH			+=	C:\Boost\lib
 }
 
 macx {

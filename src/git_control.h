@@ -4,12 +4,22 @@
 
 #include <string>
 
+#ifndef Q_MOC_RUN
+#	include <boost/function.hpp>
+#endif
 
 #define	GIT_BUF_SIZE	1000
 
 
 using namespace std;
 
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ enum ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+enum	GIT_FONT_COLOR
+{
+	GIT_FONT_RED,
+	GIT_FONT_BLUE,
+};
 
 
 
@@ -29,6 +39,9 @@ public:
 
 	void		init( QString path );
 	void		clone( QString src, QString dest );
+
+	boost::function<bool()>		get_recursive_state_func;
+
 
 signals:
 	void		output_signal(QByteArray);
@@ -53,6 +66,7 @@ private:
 
 	void		set_connect();
 
+	void		set_color( QByteArray& data, GIT_FONT_COLOR color );
 	void		clone_parse_end( QByteArray& data, QByteArray& msg );
 	void		clone_parse_num( int index, QByteArray& output, QByteArray& data, QByteArray& msg );
 

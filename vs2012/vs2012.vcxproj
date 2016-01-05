@@ -41,7 +41,7 @@
     <NMakeCleanCommandLine>nmake debug-clean</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>nmake debug-clean&amp;&amp;qmake ../HiGit.pro -r -spec win32-msvc2012&amp;&amp;nmake debug</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <IncludePath>D:\code\HiGit\vs2012;D:\code\QT5\qtbase\include\QtGui;D:\code\QT5\qtbase\include\QtCore;D:\code\QT5\qtbase\include\QtWidgets;D:\code\QT5\qtbase\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Boost\include\boost-1_60;D:\code\HiGit\vs2012;D:\code\QT5\qtbase\include\QtGui;D:\code\QT5\qtbase\include\QtCore;D:\code\QT5\qtbase\include\QtWidgets;D:\code\QT5\qtbase\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeBuildCommandLine>qmake ../HiGit&amp;&amp;nmake release</NMakeBuildCommandLine>
