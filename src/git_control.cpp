@@ -256,6 +256,12 @@ void	GitControl::clone_output_slot()
 void		GitControl::clone_parse_end( QByteArray& data, QByteArray& msg )
 {
 	qDebug() << data << "\n";
+	if( data.indexOf(QString("fatal")) >= 0 )
+	{
+		cout << "test";
+		return;
+	}
+
 	if( msg.size() == 0 )
 		msg		=	data;	// 字串裡面沒有百分比的case.
 	
