@@ -28,6 +28,8 @@ win32 {
 
 macx {
 	message("macx test")
+	INCLUDEPATH 	+=	/usr/local/include
+	LIBPATH 		+=	/usr/local/lib
 	OBJECTS_DIR 	=	./obj
 	MOC_DIR 		=	./obj
 	RCC_DIR 		=	./obj

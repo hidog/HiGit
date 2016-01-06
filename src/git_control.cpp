@@ -379,6 +379,8 @@ void	GitControl::clone_output_err_slot()
 	QByteArray	msg;		// 假設字串是  Receive 5% (12/60)   msg存放的是Receive
 
 	int		i;
+    
+    qDebug(output);
 
 	// 處理字串.
 	for( i = 0; i < output.size(); i++ )
