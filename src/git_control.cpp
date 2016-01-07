@@ -49,6 +49,7 @@ void	GitControl::set_connect()
 
 /*******************************************************************
 	check_git_exist
+	用版本來檢查
 ********************************************************************/
 bool	GitControl::check_git_exist()
 {
@@ -110,7 +111,11 @@ void	GitControl::clone( QString src, QString dest )
 	if( get_recursive_state_func() == true )
 		args << "--recursive";
 
-	args << src;
+	//args << src;
+	// 測試https用. 需要更正這邊的code
+	// http://blog.coolsea.net/archives/240
+	// linux底下似乎能用ssh來偵測遠端是否需要帳號密碼  尋找windows版的工具.
+	args << "https://hidog:yas12129@bitbucket.org/hidog/lpd";
 	args << dest;
 	//args << "www.google.com";
 
@@ -345,15 +350,30 @@ void	GitControl::clone_parse_num( int index, QByteArray& output, QByteArray& dat
 	}
 	for( j = start; j <= i ; j++ )
 		msg	+=	output[j];
+
+	/*
+		這邊有一個已知的bug
+		字串有可能剛好被切開
+		讀取到 "%   ....  remote:  99%" 這樣的字串
+		造成parse錯誤.
+		還是得根據\n來切字串,並且保存前一次的字串.
+	*/
+	qDebug() << output << " -----  ";
+
 	// 移除空白　
 	while(true)
 	{
+		if( msg.size() == 0 )
+			break;
 		if( msg[msg.size()-1] != ' ' )
 			break;
 		else
 			msg.remove( msg.size()-1, 1 );
 	}
 	//qDebug() << msg;
+
+	if( msg.size() == 0 )
+		return;		// 表示剛好讀到空字串之類的
 	
 	// 字串反轉
 	size	=	num.size();
