@@ -111,11 +111,10 @@ void	GitControl::clone( QString src, QString dest )
 	if( get_recursive_state_func() == true )
 		args << "--recursive";
 
-	//args << src;
 	// 測試https用. 需要更正這邊的code
 	// http://blog.coolsea.net/archives/240
 	// linux底下似乎能用ssh來偵測遠端是否需要帳號密碼  尋找windows版的工具.
-	args << "https://hidog:yas12129@bitbucket.org/hidog/lpd";
+	args << src;
 	args << dest;
 	//args << "www.google.com";
 
