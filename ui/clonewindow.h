@@ -10,6 +10,7 @@ class CloneWindow;
 }
 
 class	GitControl;
+class	UserPwDialog;
 
 
 
@@ -37,12 +38,16 @@ protected slots:
 	void	ok_slot();
 	void	cancel_slot();
 
+	void	need_user_pw_slot();
+	void	userpw_slot( QString, QString );
+
 	void	output_slot(QByteArray);
 	void	output_slot(QList<QByteArray>);
 
 private:
-    Ui::CloneWindow *ui;
-	GitControl	*git_ctrl;
+    Ui::CloneWindow		*ui;
+	UserPwDialog		*user_pw_dialog;
+	GitControl			*git_ctrl;
 
 	void	set_connect();
 

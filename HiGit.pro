@@ -39,12 +39,22 @@ macx {
 SOURCES		+=	main.cpp\
 				ui/mainwindow.cpp\
 				ui/clonewindow.cpp\
+				ui/userpwdialog.cpp\
+				ui/userpwdialog.cpp\
 				src/git_control.cpp
+
+
 
 HEADERS		+=	ui/mainwindow.h\
 				ui/clonewindow.h\
+				ui/userpwdialog.h\
+				ui/userpwdialog.h\
 				src/git_control.h\
 				src/def.h
+    
+
 
 FORMS    	+= 	ui/mainwindow.ui\
-				ui/clonewindow.ui
+				ui/clonewindow.ui\
+				ui/userpwdialog.ui\
+				ui/userpwdialog.ui

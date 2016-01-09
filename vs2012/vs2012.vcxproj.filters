@@ -28,6 +28,9 @@
     <ClCompile Include="..\src\git_control.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\ui\userpwdialog.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
@@ -41,6 +44,9 @@
     </ClInclude>
     <ClInclude Include="..\src\def.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\userpwdialog.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

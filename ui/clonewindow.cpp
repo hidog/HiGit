@@ -1,6 +1,8 @@
 #include "clonewindow.h"
 #include "ui_clonewindow.h"
 
+#include "userpwdialog.h"
+
 #include <QFileDialog>
 #include <QDebug>
 #include <QMenu>
@@ -26,12 +28,12 @@ CloneWindow::CloneWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-	git_ctrl	=	new GitControl(this);
-	// set bind function.
-	git_ctrl->get_recursive_state_func	=	boost::bind( &CloneWindow::get_recursive_state, this );
+	git_ctrl	=	new GitControl(this);	
+	git_ctrl->get_recursive_state_func	=	boost::bind( &CloneWindow::get_recursive_state, this );// set bind function.
+
+	user_pw_dialog	=	new	UserPwDialog(this);
 
 	ui->srcButton->setDefaultAction(  new QAction(QString("Dir"),this) );
-	//ui->srcButton->addAction( new QAction(QString("Dir"),this) );
 	ui->srcButton->addAction( new QAction(QString("URL"),this) );
 
 	set_connect();
@@ -64,8 +66,33 @@ void	CloneWindow::set_connect()
 	connect(	git_ctrl,				SIGNAL(output_signal(QByteArray)),			this,				SLOT(output_slot(QByteArray))			);
 	connect(	git_ctrl,				SIGNAL(output_signal(QList<QByteArray>)),	this,				SLOT(output_slot(QList<QByteArray>))	);
 	connect(	git_ctrl,				SIGNAL(progress_signal(int)),				ui->gitProgress,	SLOT(setValue(int))						);
+	connect(	git_ctrl,				SIGNAL(need_user_pw_signal()),				this,				SLOT(need_user_pw_slot())				);
 
-	
+	connect(	user_pw_dialog,			SIGNAL(userpw_signal(QString,QString)),		this,				SLOT(userpw_slot(QString,QString))		);
+}
+
+
+
+/*******************************************************************
+	need_user_pw_slot
+********************************************************************/
+void	CloneWindow::need_user_pw_slot()
+{
+	//printf("test");
+	user_pw_dialog->show();
+}
+
+
+
+/*******************************************************************
+	need_user_pw_slot
+********************************************************************/
+void	CloneWindow::userpw_slot( QString username, QString password )
+{
+	QString		src		=	ui->srcLEdit->text();
+	QString		dest	=	ui->destLEdit->text();
+
+	git_ctrl->clone( src, dest, username, password );
 }
 
 

@@ -96,6 +96,64 @@ void	GitControl::init( QString path )
 
 
 
+
+/*******************************************************************
+	clone
+********************************************************************/
+void		GitControl::clone( QString src, QString dest, QString username, QString password )
+{
+	QProcess		*proc	=	new QProcess(this);
+	QStringList		args;
+	int				index;
+	
+	args << "clone";
+	args << "-v";
+	args << "--progress";
+
+	if( get_recursive_state_func() == true )
+		args << "--recursive";
+
+	index	=	src.indexOf("://");
+	src.insert( index+3, QString("%1:%2@").arg(username).arg(password) );
+	qDebug() << src;
+	args << src;
+	args << dest;
+
+	// init data.
+	last_index	=	0;
+	output_list.clear();
+	memset( msg_buf, 0, GIT_BUF_SIZE );
+	
+	connect(	proc,	SIGNAL(readyReadStandardError()),				this,	SLOT(clone_output_err_slot())						);
+	connect(	proc,	SIGNAL(readyReadStandardOutput()),				this,	SLOT(clone_output_std_slot())						);
+	connect(	proc,	SIGNAL(readyRead()),							this,	SLOT(clone_output_slot())							);
+	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,	SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
+	connect(	proc,	SIGNAL(started()),								this,	SLOT(clone_start_slot())							);
+	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,	SLOT(clone_error_slot(QProcess::ProcessError))		);
+
+	/*
+		note: git clone will create thread, so need set process channel for get output in other thread.
+	*/
+	proc->setProcessChannelMode( QProcess::SeparateChannels );
+	proc->start( "git", args, QProcess::ReadWrite );
+
+	switch(proc->state())
+	{
+		case QProcess::NotRunning:
+			PRINT_ENUM(QProcess::NotRunning);
+			break;
+		case QProcess::Starting:
+			PRINT_ENUM(QProcess::Starting);
+			break;
+		case QProcess::Running:
+			PRINT_ENUM(QProcess::Running);
+			break;
+		default:
+			assert(0);
+	}
+}
+
+
 /*******************************************************************
 	clone
 ********************************************************************/
@@ -116,7 +174,6 @@ void	GitControl::clone( QString src, QString dest )
 	// linux底下似乎能用ssh來偵測遠端是否需要帳號密碼  尋找windows版的工具.
 	args << src;
 	args << dest;
-	//args << "www.google.com";
 
 	// init data.
 	last_index	=	0;
@@ -135,7 +192,6 @@ void	GitControl::clone( QString src, QString dest )
 	*/
 	proc->setProcessChannelMode( QProcess::SeparateChannels );
 	proc->start( "git", args, QProcess::ReadWrite );
-
 
 	switch(proc->state())
 	{
@@ -394,7 +450,7 @@ void	GitControl::clone_output_err_slot()
 {
 	QProcess	*proc	=	(QProcess*)sender();
 	QByteArray	output	=	proc->readAllStandardError();
-	QByteArray	data;		// 切割文字用 跟msg不同,這邊會包含後面百分比的部分.
+	QByteArray	data;		// 原始資料,包含百分比
 	QByteArray	msg;		// 假設字串是  Receive 5% (12/60)   msg存放的是Receive
 
 	int		i;
@@ -405,7 +461,14 @@ void	GitControl::clone_output_err_slot()
 	for( i = 0; i < output.size(); i++ )
 	{
 		if( output[i] == '\n' || output[i] == '\r' )
+		{
+			if( data.indexOf(QString("bash: /dev/tty: No such device or address")) >= 0 )
+			{
+				proc->kill();
+				emit( need_user_pw_signal() );
+			}
 			clone_parse_end( data, msg );
+		}
 		else if( output[i] == '%' )
 			clone_parse_num( i, output, data, msg );
 		else

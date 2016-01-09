@@ -39,6 +39,7 @@ public:
 
 	void		init( QString path );
 	void		clone( QString src, QString dest );
+	void		clone( QString src, QString dest, QString username, QString password );
 
 	boost::function<bool()>		get_recursive_state_func;
 
@@ -47,6 +48,7 @@ signals:
 	void		output_signal(QByteArray);
 	void		output_signal(QList<QByteArray>);
 	void		progress_signal(int);
+	void		need_user_pw_signal();
 
 protected slots:
 	void		error_slot( QProcess::ProcessError err );

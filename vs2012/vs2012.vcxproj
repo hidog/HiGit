@@ -60,12 +60,14 @@
     <ClCompile Include="..\src\git_control.cpp" />
     <ClCompile Include="..\ui\clonewindow.cpp" />
     <ClCompile Include="..\ui\mainwindow.cpp" />
+    <ClCompile Include="..\ui\userpwdialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\def.h" />
     <ClInclude Include="..\src\git_control.h" />
     <ClInclude Include="..\ui\clonewindow.h" />
     <ClInclude Include="..\ui\mainwindow.h" />
+    <ClInclude Include="..\ui\userpwdialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
