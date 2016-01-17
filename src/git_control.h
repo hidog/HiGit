@@ -74,6 +74,7 @@ private:
 
 	QList<QByteArray>	output_list;	// 為了讓畫面能呈現百分比更新的樣子,用list來parse字串.
 	QByteArray			last_msg;		// parse字串時使用,紀錄上一次的訊息. 主要是希望view端能夠有只有數字在更新的效果.
+	QByteArray			remain_msg;		// 被切斷 未parse的訊息
 
 	char	msg_buf[GIT_BUF_SIZE];		// git output message buffer.
 	int		last_index;					// last read index.

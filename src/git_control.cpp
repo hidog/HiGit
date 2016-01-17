@@ -24,6 +24,7 @@ GitControl::GitControl( QWidget *parent )
 {
 	memset( msg_buf, 0, GIT_BUF_SIZE );	
 	set_connect();
+	remain_msg.clear();
 }
 
 
@@ -106,6 +107,9 @@ void		GitControl::clone( QString src, QString dest, QString username, QString pa
 	QStringList		args;
 	int				index;
 	
+	// 初始化資料 
+	remain_msg.clear();
+
 	args << "clone";
 	args << "-v";
 	args << "--progress";
@@ -115,7 +119,7 @@ void		GitControl::clone( QString src, QString dest, QString username, QString pa
 
 	index	=	src.indexOf("://");
 	src.insert( index+3, QString("%1:%2@").arg(username).arg(password) );
-	qDebug() << src;
+	//qDebug() << src;
 	args << src;
 	args << dest;
 
@@ -331,7 +335,7 @@ void	GitControl::set_color( QByteArray& data, GIT_FONT_COLOR color )
 ********************************************************************/
 void		GitControl::clone_parse_end( QByteArray& data, QByteArray& msg )
 {
-	//qDebug() << data << "\n";
+	qDebug() << data << "\n";
 	if( data.indexOf(QString("fatal")) >= 0 )
 		set_color( data, GIT_FONT_RED );
 	else if( data.indexOf(QString("done")) >= 0 )
@@ -347,8 +351,9 @@ void		GitControl::clone_parse_end( QByteArray& data, QByteArray& msg )
 	}
 	else
 	{
+
 		// 跟最後一個做比較,相同的話加入.
-		//qDebug() << last_msg << " " << msg << "\n";
+		qDebug() << last_msg << " " << msg << "\n";
 		if( last_msg != msg )
 		{
 			output_list.push_back(data);
@@ -406,15 +411,6 @@ void	GitControl::clone_parse_num( int index, QByteArray& output, QByteArray& dat
 	for( j = start; j <= i ; j++ )
 		msg	+=	output[j];
 
-	/*
-		這邊有一個已知的bug
-		字串有可能剛好被切開
-		讀取到 "%   ....  remote:  99%" 這樣的字串
-		造成parse錯誤.
-		還是得根據\n來切字串,並且保存前一次的字串.
-	*/
-	qDebug() << output << " -----  ";
-
 	// 移除空白　
 	while(true)
 	{
@@ -425,7 +421,6 @@ void	GitControl::clone_parse_num( int index, QByteArray& output, QByteArray& dat
 		else
 			msg.remove( msg.size()-1, 1 );
 	}
-	//qDebug() << msg;
 
 	if( msg.size() == 0 )
 		return;		// 表示剛好讀到空字串之類的
@@ -449,20 +444,19 @@ void	GitControl::clone_parse_num( int index, QByteArray& output, QByteArray& dat
 void	GitControl::clone_output_err_slot()
 {
 	QProcess	*proc	=	(QProcess*)sender();
-	QByteArray	output	=	proc->readAllStandardError();
+	QByteArray	output	=	remain_msg + proc->readAllStandardError();
 	QByteArray	data;		// 原始資料,包含百分比
 	QByteArray	msg;		// 假設字串是  Receive 5% (12/60)   msg存放的是Receive
 
 	int		i;
     
-    qDebug(output);
 
 	// 處理字串.
 	for( i = 0; i < output.size(); i++ )
 	{
 		if( output[i] == '\n' || output[i] == '\r' )
 		{
-			if( data.indexOf(QString("bash: /dev/tty: No such device or address")) >= 0 )
+			if( data.indexOf(QString("bash: /dev/tty: No such device or address")) >= 0 )	// 需要帳密
 			{
 				proc->kill();
 				emit( need_user_pw_signal() );
@@ -477,7 +471,13 @@ void	GitControl::clone_output_err_slot()
 
 	// 結尾不是 '\n', '\r', 代表沒有更新到畫面.
 	if( output[output.size()-1] != '\n' && output[output.size()-1] != '\r' )
-		clone_parse_end( data, msg );
+	{
+		//clone_parse_end( data, msg );
+		remain_msg	=	data;
+		qDebug(remain_msg);
+	}
+	else
+		remain_msg.clear();
 }
 
 
