@@ -17,6 +17,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6D40E9311C53BF08009D76D8 /* def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = def.h; path = ../src/def.h; sourceTree = "<group>"; };
+		6D40E9321C53BF4E009D76D8 /* git_command.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = git_command.cpp; path = ../src/git_command.cpp; sourceTree = "<group>"; };
+		6D40E9331C53BF4E009D76D8 /* git_command.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = git_command.h; path = ../src/git_command.h; sourceTree = "<group>"; };
+		6D40E9361C53C101009D76D8 /* git_clone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_clone.cpp; path = ../src/git_clone.cpp; sourceTree = "<group>"; };
+		6D40E9371C53C101009D76D8 /* git_clone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_clone.h; path = ../src/git_clone.h; sourceTree = "<group>"; };
 		6DE4A5FF1C36B800003F4F94 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../main.cpp; sourceTree = "<group>"; };
 		6DE4A6001C36B810003F4F94 /* git_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_control.cpp; path = ../src/git_control.cpp; sourceTree = "<group>"; };
 		6DE4A6011C36B810003F4F94 /* git_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_control.h; path = ../src/git_control.h; sourceTree = "<group>"; };
@@ -39,8 +44,13 @@
 		6DE4A5FE1C36B7E4003F4F94 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				6D40E9361C53C101009D76D8 /* git_clone.cpp */,
+				6D40E9371C53C101009D76D8 /* git_clone.h */,
+				6D40E9311C53BF08009D76D8 /* def.h */,
 				6DE4A6001C36B810003F4F94 /* git_control.cpp */,
 				6DE4A6011C36B810003F4F94 /* git_control.h */,
+				6D40E9321C53BF4E009D76D8 /* git_command.cpp */,
+				6D40E9331C53BF4E009D76D8 /* git_command.h */,
 			);
 			name = src;
 			sourceTree = "<group>";

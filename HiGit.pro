@@ -41,18 +41,18 @@ SOURCES		+=	main.cpp\
 				ui/clonewindow.cpp\
 				ui/userpwdialog.cpp\
 				ui/userpwdialog.cpp\
-				src/git_control.cpp
-
-
+				src/git_control.cpp\
+				src/git_command.cpp\
+				src/git_clone.cpp
 
 HEADERS		+=	ui/mainwindow.h\
 				ui/clonewindow.h\
 				ui/userpwdialog.h\
 				ui/userpwdialog.h\
 				src/git_control.h\
+				src/git_command.h\
+				src/git_clone.h\
 				src/def.h
-    
-
 
 FORMS    	+= 	ui/mainwindow.ui\
 				ui/clonewindow.ui\

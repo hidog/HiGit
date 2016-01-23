@@ -1,3 +1,6 @@
+#ifndef GIT_CONTROL_H
+#define GIT_CONTROL_H
+
 #include <QObject>
 #include <QProcess>
 #include <QString>
@@ -80,3 +83,5 @@ private:
 	int		last_index;					// last read index.
 
 };
+
+#endif
