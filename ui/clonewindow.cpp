@@ -1,8 +1,6 @@
 #include "clonewindow.h"
 #include "ui_clonewindow.h"
 
-#include "userpwdialog.h"
-
 #include <QFileDialog>
 #include <QDebug>
 #include <QMenu>
@@ -15,7 +13,7 @@
 
 #include "../src/git_control.h"
 
-
+#include "userpwdialog.h"
 
 
 /*******************************************************************
@@ -33,7 +31,7 @@ CloneWindow::CloneWindow(QWidget *parent) :
 	ui->closeButton->setCheckable(false);
 
 	git_ctrl	=	new GitControl(this);	
-	git_ctrl->get_recursive_state_func	=	boost::bind( &CloneWindow::get_recursive_state, this );// set bind function.
+	git_ctrl->get_recursive_state_func	=	boost::bind( &CloneWindow::get_recursive_state, this );     // set bind function.
 
 	user_pw_dialog	=	new	UserPwDialog(this);
 

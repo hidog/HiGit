@@ -10,8 +10,10 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+win32 {
 CONFIG += console
 CONFIG -= app_bundle
+}
 
 TARGET		=	HiGit
 TEMPLATE	=	app
@@ -19,7 +21,7 @@ TEMPLATE	=	app
 INCLUDEPATH 	+=	.
 
 win32 {
-	message("win32 aaaaaa")
+	message("win32")
 	Release:DESTDIR	=	../release
 	Debug:DESTDIR	=	../debug
 	INCLUDEPATH		+=	C:\Boost\include\boost-1_60
@@ -27,7 +29,7 @@ win32 {
 }
 
 macx {
-	message("macx test")
+	message("macx")
 	INCLUDEPATH 	+=	/usr/local/include
 	LIBPATH 		+=	/usr/local/lib
 	OBJECTS_DIR 	=	./obj
@@ -40,14 +42,12 @@ SOURCES		+=	main.cpp\
 				ui/mainwindow.cpp\
 				ui/clonewindow.cpp\
 				ui/userpwdialog.cpp\
-				ui/userpwdialog.cpp\
 				src/git_control.cpp\
 				src/git_cmd/git_command.cpp\
 				src/git_cmd/git_clone.cpp
 
 HEADERS		+=	ui/mainwindow.h\
 				ui/clonewindow.h\
-				ui/userpwdialog.h\
 				ui/userpwdialog.h\
 				src/git_control.h\
 				src/git_cmd/git_command.h\
@@ -56,5 +56,4 @@ HEADERS		+=	ui/mainwindow.h\
 
 FORMS    	+= 	ui/mainwindow.ui\
 				ui/clonewindow.ui\
-				ui/userpwdialog.ui\
 				ui/userpwdialog.ui
