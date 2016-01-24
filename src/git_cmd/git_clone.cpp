@@ -1,5 +1,5 @@
 #include "git_clone.h"
-#include "def.h"
+#include "../def.h"
 
 #include <QProcess>
 #include <QDebug>

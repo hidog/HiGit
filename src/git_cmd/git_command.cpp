@@ -1,5 +1,5 @@
 #include "git_command.h"
-#include "def.h"
+#include "../def.h"
 
 #include <QDebug>
 

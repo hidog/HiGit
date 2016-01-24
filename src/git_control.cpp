@@ -10,8 +10,8 @@
 
 #include "def.h"
 
-#include "git_command.h"
-#include "git_clone.h"
+#include "git_cmd/git_command.h"
+#include "git_cmd/git_clone.h"
 
 #ifndef Q_MOC_RUN
 #	include<boost/bind.hpp>

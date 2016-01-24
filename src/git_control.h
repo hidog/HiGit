@@ -11,7 +11,7 @@
 #	include <boost/function.hpp>
 #endif
 
-#include "git_command.h"
+#include "git_cmd/git_command.h"
 
 
 
