@@ -52,7 +52,6 @@ void	GitCommand::splite_remain( QByteArray &output )
 ********************************************************************/
 bool	GitCommand::need_password( QByteArray data )
 {
-	qDebug() << data;
 	if( data.contains("/dev/tty") )
 		return	true;
 	else
