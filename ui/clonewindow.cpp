@@ -92,7 +92,7 @@ void	CloneWindow::userpw_slot( QString username, QString password )
 	QString		src		=	ui->srcLEdit->text();
 	QString		dest	=	ui->destLEdit->text();
 
-	git_ctrl->clone( src, dest, username, password );
+	//git_ctrl->clone( src, dest, username, password );
 }
 
 

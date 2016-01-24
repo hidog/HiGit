@@ -31,6 +31,12 @@
     <ClCompile Include="..\ui\userpwdialog.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\git_command.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\git_clone.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
@@ -47,6 +53,12 @@
     </ClInclude>
     <ClInclude Include="..\ui\userpwdialog.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\git_clone.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\git_command.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
