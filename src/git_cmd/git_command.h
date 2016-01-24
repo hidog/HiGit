@@ -46,7 +46,7 @@ public:
 
 	boost::function<void(int)>					set_progress_func;
 	boost::function<void(QList<QByteArray>)>	set_ui_dynamic_output_func;
-
+	boost::function<void()>						input_user_passwd_func;
 
 signals:
 
@@ -68,6 +68,7 @@ protected:
 
 protected slots:
 
+	virtual void	abort_slot();
 
 private:
 

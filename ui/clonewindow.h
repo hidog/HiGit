@@ -30,19 +30,22 @@ public:
 protected:
 	void	closeEvent( QCloseEvent *event );
 
-
-
 protected slots:
 	void	src_slot();
 	void	dest_slot();
+
 	void	ok_slot();
 	void	cancel_slot();
+	void	close_slot();
+	void	abort_slot();
 
 	void	need_user_pw_slot();
 	void	userpw_slot( QString, QString );
 
 	void	output_slot(QByteArray);
 	void	output_slot(QList<QByteArray>);
+
+	void	git_clone_finished_slot();
 
 private:
     Ui::CloneWindow		*ui;

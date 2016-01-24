@@ -7,6 +7,8 @@
 #define	GIT_CLONE_SOURCE		QString("source")
 #define GIT_CLONE_DESTINATION	QString("destination")
 #define GIT_CLONE_RECURSIVE		QString("recursive")
+#define GIT_CLONE_USERNAME		QString("username")
+#define GIT_CLONE_PASSWORD		QString("password")
 
 
 /*******************************************************************
@@ -22,6 +24,9 @@ public:
     
 	void	exec( GitParameter param );
 
+signals:
+	void		abort_signal();
+
 
 public slots:
 	void		clone_output_err_slot();
@@ -31,6 +36,8 @@ public slots:
 	void		clone_finish_slot(int,QProcess::ExitStatus);
 	void		clone_start_slot();
 	void		clone_error_slot(QProcess::ProcessError);
+
+	void		abort_slot();
     
 private:
     

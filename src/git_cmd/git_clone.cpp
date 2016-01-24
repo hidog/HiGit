@@ -31,6 +31,7 @@ void	GitClone::exec( GitParameter param )
 	QStringList		args;
 	QString			src		=	param[GIT_CLONE_SOURCE];
 	QString			dest	=	param[GIT_CLONE_DESTINATION];
+	QString			fixed_src;
 	
 	args << "clone";
 	args << "-v";
@@ -42,8 +43,18 @@ void	GitClone::exec( GitParameter param )
 	// get username, password, project name.
 	parse_host( src, type, host, username, password, port, content );
 
-	args << src;
-	args << dest;
+	if( param.find(GIT_CLONE_PASSWORD) != param.end() )
+	{
+		username	=	param[GIT_CLONE_USERNAME];
+		password	=	param[GIT_CLONE_PASSWORD];
+		// replace username, password.
+		fixed_src	=	QString("%1://%2:%3@%4").arg(type).arg(username).arg(password).arg(host);
+	}
+	else
+		fixed_src	=	src;
+
+	args << fixed_src;
+	args << dest;	
 
 	// init data.
 	output_list.clear();
@@ -56,6 +67,7 @@ void	GitClone::exec( GitParameter param )
 	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,	SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
 	connect(	proc,	SIGNAL(started()),								this,	SLOT(clone_start_slot())							);
 	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,	SLOT(clone_error_slot(QProcess::ProcessError))		);
+	connect(	this,	SIGNAL(abort_signal()),							proc,	SLOT(kill())										);
 
 	/*
 		note: need use -v, otherwise no message.
@@ -143,6 +155,18 @@ void	GitClone::clone_finish_slot( int exit_code, QProcess::ExitStatus exit_statu
 
 
 
+
+/*******************************************************************
+	abort_slot
+********************************************************************/
+void	GitClone::abort_slot()
+{
+	qDebug() << "GitClone::abort_slot()";
+	emit abort_signal();
+}
+
+
+
 /*******************************************************************
 	clone_start_slot
 ********************************************************************/
@@ -202,7 +226,8 @@ void	GitClone::clone_output_err_slot()
 		{
 			if( need_password( data ) == true )
 			{
-				qDebug() << "need password.";
+				proc->kill();
+				input_user_passwd_func();
 			}
 			else
 			{

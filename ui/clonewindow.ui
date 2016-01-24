@@ -17,9 +17,9 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>36</x>
-      <y>90</y>
-      <width>71</width>
+      <x>70</x>
+      <y>40</y>
+      <width>70</width>
       <height>20</height>
      </rect>
     </property>
@@ -30,9 +30,9 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>36</x>
-      <y>140</y>
-      <width>71</width>
+      <x>70</x>
+      <y>80</y>
+      <width>70</width>
       <height>20</height>
      </rect>
     </property>
@@ -43,8 +43,8 @@
    <widget class="QLineEdit" name="srcLEdit">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>90</y>
+      <x>180</x>
+      <y>40</y>
       <width>271</width>
       <height>20</height>
      </rect>
@@ -53,8 +53,8 @@
    <widget class="QLineEdit" name="destLEdit">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>140</y>
+      <x>180</x>
+      <y>80</y>
       <width>271</width>
       <height>20</height>
      </rect>
@@ -63,9 +63,9 @@
    <widget class="QPushButton" name="destButton">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>140</y>
-      <width>101</width>
+      <x>500</x>
+      <y>80</y>
+      <width>100</width>
       <height>23</height>
      </rect>
     </property>
@@ -76,7 +76,7 @@
    <widget class="QPushButton" name="okButton">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>330</x>
       <y>500</y>
       <width>75</width>
       <height>23</height>
@@ -89,7 +89,7 @@
    <widget class="QPushButton" name="cancelButton">
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>460</x>
       <y>500</y>
       <width>75</width>
       <height>23</height>
@@ -125,14 +125,14 @@
    <widget class="QToolButton" name="srcButton">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>90</y>
-      <width>111</width>
+      <x>500</x>
+      <y>40</y>
+      <width>110</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Dir</string>
+     <string>URL</string>
     </property>
     <property name="checkable">
      <bool>false</bool>
@@ -153,14 +153,40 @@
    <widget class="QCheckBox" name="recsCBox">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>30</y>
+      <x>70</x>
+      <y>140</y>
       <width>85</width>
-      <height>19</height>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>recursive</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="abortButton">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>540</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>abort</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="closeButton">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>540</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Close</string>
     </property>
    </widget>
   </widget>

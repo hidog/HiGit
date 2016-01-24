@@ -79,17 +79,36 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 		assert(0);
 	else
 	{
-		connect(	git_cmd,	SIGNAL(finished_signal()),	this,	SLOT(cmd_finished_slot())	);
+		connect(	git_cmd,	SIGNAL(finished_signal()),	this,		SLOT(cmd_finished_slot())	);
+		connect(	this,		SIGNAL(abort_signal()),		git_cmd,	SLOT(abort_slot())			);
 
 		git_cmd->set_progress_func			=	boost::bind( &GitControl::set_progress, this, _1 );
 		git_cmd->set_ui_dynamic_output_func	=	boost::bind( &GitControl::set_ui_dynamic_output, this, _1 );
+		git_cmd->input_user_passwd_func		=	boost::bind( &GitControl::input_user_passwd, this );
 
 		git_cmd->exec( param );
 	}
+}
 
-	// need delete
-	//delete	git_cmd;
-	//git_cmd		=	NULL;
+
+
+/*******************************************************************
+	input_user_passwd
+********************************************************************/
+void	GitControl::input_user_passwd()
+{
+	emit need_user_pw_signal();
+}
+
+
+
+
+/*******************************************************************
+	abort_cmd
+********************************************************************/
+void	GitControl::abort_cmd()
+{
+	emit abort_signal();
 }
 
 
@@ -100,8 +119,9 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 void		GitControl::cmd_finished_slot()
 {
 	GitCommand	*git_cmd	=	(GitCommand*)sender();
-
 	delete	git_cmd;
+
+	emit cmd_finished_signal();
 }
 
 
@@ -184,6 +204,25 @@ void	GitControl::clone( QString src, QString dest )
 	exec_command( GIT_CMD_CLONE, param );
 }
 
+
+/*******************************************************************
+	clone
+********************************************************************/
+void	GitControl::clone( QString src, QString dest, QString username, QString password )
+{
+	GitParameter	param;
+
+	param.insert( make_pair( GIT_CLONE_SOURCE,		src ) );
+	param.insert( make_pair( GIT_CLONE_DESTINATION, dest ) );
+	param.insert( make_pair( GIT_CLONE_USERNAME,	username ) );
+	param.insert( make_pair( GIT_CLONE_PASSWORD,	password ) );
+
+
+	if( get_recursive_state_func() == true )
+		param.insert( make_pair( GIT_CLONE_RECURSIVE, QString("true") ) );
+
+	exec_command( GIT_CMD_CLONE, param );
+}
 
 
 
