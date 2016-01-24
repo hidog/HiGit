@@ -2,6 +2,7 @@
 #include "def.h"
 
 #include <QProcess>
+#include <QDebug>
 
 
 /*******************************************************************
@@ -45,9 +46,9 @@ void	GitClone::exec( GitParameter param )
 	args << dest;
 
 	// init data.
-	last_index	=	0;
 	output_list.clear();
-	memset( msg_buf, 0, GIT_BUF_SIZE );
+	last_msg.clear();
+	remain_msg.clear();
 	
 	connect(	proc,	SIGNAL(readyReadStandardError()),				this,	SLOT(clone_output_err_slot())						);
 	connect(	proc,	SIGNAL(readyReadStandardOutput()),				this,	SLOT(clone_output_std_slot())						);
@@ -136,6 +137,8 @@ void	GitClone::clone_finish_slot( int exit_code, QProcess::ExitStatus exit_statu
 		default:
 			assert(0);
 	}
+
+	emit finished_signal();
 }
 
 
@@ -172,113 +175,6 @@ void	GitClone::clone_output_slot()
 
 
 
-/*******************************************************************
-	clone_parse_end
-	處理字串結尾,更新畫面的部分.
-********************************************************************/
-void	GitClone::clone_parse_end( QByteArray& data, QByteArray& msg )
-{
-	qDebug() << data << "\n";
-	if( data.indexOf(QString("fatal")) >= 0 )
-		set_color( data, GIT_FONT_RED );
-	else if( data.indexOf(QString("done")) >= 0 )
-		set_color( data, GIT_FONT_BLUE );
-
-	if( msg.size() == 0 )
-		msg		=	data;	// 字串裡面沒有百分比的case.
-	
-	if( output_list.size() == 0 )
-	{
-		output_list.push_back(data);
-		last_msg	=	msg;
-	}
-	else
-	{
-
-		// 跟最後一個做比較,相同的話加入.
-		qDebug() << last_msg << " " << msg << "\n";
-		if( last_msg != msg )
-		{
-			output_list.push_back(data);
-			last_msg	=	msg;
-		}
-		else
-			output_list[output_list.size()-1]	=	data;	// 更新最後一筆資料.
-	}
-
-	//emit( output_signal(data) );		
-	emit output_signal(output_list);
-	data.clear();
-}
-
-
-
-/*******************************************************************
-	clone_parse_num
-	讀取字串百分比的部分.
-********************************************************************/
-void	GitClone::clone_parse_num( int index, QByteArray& output, QByteArray& data, QByteArray& msg )
-{
-	QByteArray	num;		// 儲存百分比用 
-	QByteArray	tmp;
-
-	int		start;
-	int		i,	j;
-	int		size;	
-	int		percent;
-
-	bool	ok;
-
-	// parse number.
-	data	+=	output[index];
-	msg.clear();
-	for( i = index-1; i >= 0; i-- )
-	{
-		if( output[i] >= '0' && output[i] <= '9' )
-			num		+=	output[i];
-		else if( output[i] == '.' )
-			assert(0);		// 不確定百分比有沒有幅點數.
-		else
-			break;
-	}
-	// 取出 msg 部分
-	start	=	0;
-	for( j = i; j >= 0; j-- )
-	{
-		if( output[j] == '\n' || output[j] == '\r' )
-		{
-			start	=	j + 1;
-			break;
-		}
-	}
-	for( j = start; j <= i ; j++ )
-		msg	+=	output[j];
-
-	// 移除空白　
-	while(true)
-	{
-		if( msg.size() == 0 )
-			break;
-		if( msg[msg.size()-1] != ' ' )
-			break;
-		else
-			msg.remove( msg.size()-1, 1 );
-	}
-
-	if( msg.size() == 0 )
-		return;		// 表示剛好讀到空字串之類的
-	
-	// 字串反轉
-	size	=	num.size();
-	for( i = 0; i < size; i++ )
-		tmp	+=	num[size-i-1];
-	// 取得數字
-	percent		=	tmp.toInt( &ok, 10 );
-	if( ok == true )
-		emit( progress_signal(percent) );
-}
-
-
 
 
 /*******************************************************************
@@ -287,44 +183,37 @@ void	GitClone::clone_parse_num( int index, QByteArray& output, QByteArray& data,
 void	GitClone::clone_output_err_slot()
 {
 	QProcess	*proc	=	(QProcess*)sender();
-	//QByteArray	output	=	remain_msg + proc->readAllStandardError();
 	QByteArray	output	=	proc->readAllStandardError();
 
-	QByteArray	data;		// 原始資料,包含百分比
-	QByteArray	msg;		// 假設字串是  Receive 5% (12/60)   msg存放的是Receive
+	QByteArray	data;		// raw data, contain %. like "Receive 10%"
+	QByteArray	msg;		// splite %, like Receive
 
 	int		i;
+	int		num;
 
 	// get string this term. keep some string in remain_str if needed.
 	splite_remain( output );
 
-	// 處理字串.
-	for( i = 0; i < output.size(); i++ )
+	while( output.length() > 0 )
 	{
-		if( output[i] == '\n' || output[i] == '\r' )
-		{
-			if( data.indexOf(QString("bash: /dev/tty: No such device or address")) >= 0 )	// 需要帳密
-			{
-				proc->kill();
-				emit( need_user_pw_signal() );
-			}
-			clone_parse_end( data, msg );
-		}
-		else if( output[i] == '%' )
-			clone_parse_num( i, output, data, msg );
-		else
-			data	+=	output[i];
-	}
+		data	=	splite_git_output( output );
 
-	// 結尾不是 '\n', '\r', 代表沒有更新到畫面.
-	if( output[output.size()-1] != '\n' && output[output.size()-1] != '\r' )
-	{
-		//clone_parse_end( data, msg );
-		remain_msg	=	data;
-		qDebug(remain_msg);
+		if( data.length() > 0 )
+		{
+			if( need_password( data ) == true )
+			{
+				qDebug() << "need password.";
+			}
+			else
+			{
+				splite_progress( data, msg, num );;
+				set_progess( num );
+				refresh_dynamic_output( data, msg );
+			}
+		}
+		else		
+			break;	// means not get enough string yet.
 	}
-	else
-		remain_msg.clear();
 }
 
 
@@ -336,8 +225,9 @@ void	GitClone::clone_output_std_slot()
 	QProcess	*proc	=	(QProcess*)sender();
 	QByteArray	output	=	proc->readAllStandardOutput();
 
-	cout << "std... " << qPrintable( output ) << " ... end output\n";
-
+	//cout << "std... " << qPrintable( output ) << " ... end output\n";
 	//emit( output_signal(output) );
+
+	qDebug() << output;
 }
 

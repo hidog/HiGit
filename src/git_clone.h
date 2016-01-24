@@ -38,9 +38,6 @@ private:
 	QString		username, password;
 	int			port;
 
-	void		clone_parse_end( QByteArray& data, QByteArray& msg );
-	void		clone_parse_num( int index, QByteArray& output, QByteArray& data, QByteArray& msg );
-
 };
 
 

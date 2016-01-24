@@ -13,6 +13,10 @@
 #include "git_command.h"
 #include "git_clone.h"
 
+#ifndef Q_MOC_RUN
+#	include<boost/bind.hpp>
+#endif
+
 using  namespace std;
 
 
@@ -21,11 +25,9 @@ using  namespace std;
 	GitControl
 ********************************************************************/
 GitControl::GitControl( QWidget *parent )
-	:	QObject(parent), last_index(0)
+	:	QObject(parent)
 {
-	memset( msg_buf, 0, GIT_BUF_SIZE );	
 	set_connect();
-	remain_msg.clear();
 }
 
 
@@ -36,6 +38,25 @@ GitControl::~GitControl()
 {
 }
 
+
+
+/*******************************************************************
+	GitControl
+********************************************************************/
+void	GitControl::set_progress( int num )
+{
+	emit progress_signal(num);
+}
+
+
+	
+/*******************************************************************
+	set_ui_dynamic_output_func
+********************************************************************/
+void	GitControl::set_ui_dynamic_output( QList<QByteArray> output_list )
+{
+	emit output_signal(output_list);
+}
 
 
 /*******************************************************************
@@ -57,13 +78,31 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 	if( git_cmd == NULL )
 		assert(0);
 	else
+	{
+		connect(	git_cmd,	SIGNAL(finished_signal()),	this,	SLOT(cmd_finished_slot())	);
+
+		git_cmd->set_progress_func			=	boost::bind( &GitControl::set_progress, this, _1 );
+		git_cmd->set_ui_dynamic_output_func	=	boost::bind( &GitControl::set_ui_dynamic_output, this, _1 );
+
 		git_cmd->exec( param );
+	}
 
 	// need delete
-	delete	git_cmd;
-	git_cmd		=	NULL;
+	//delete	git_cmd;
+	//git_cmd		=	NULL;
 }
 
+
+
+/*******************************************************************
+	cmd_finished_slot
+********************************************************************/
+void		GitControl::cmd_finished_slot()
+{
+	GitCommand	*git_cmd	=	(GitCommand*)sender();
+
+	delete	git_cmd;
+}
 
 
 /*******************************************************************
@@ -128,69 +167,6 @@ void	GitControl::init( QString path )
 
 
 
-/*******************************************************************
-	clone
-********************************************************************/
-#if 0
-
-void		GitControl::clone( QString src, QString dest, QString username, QString password )
-{
-	#if 0
-	QProcess		*proc	=	new QProcess(this);
-	QStringList		args;
-	int				index;
-	
-	// 初始化資料 
-	remain_msg.clear();
-
-	args << "clone";
-	args << "-v";
-	args << "--progress";
-
-	if( get_recursive_state_func() == true )
-		args << "--recursive";
-
-	index	=	src.indexOf("://");
-	src.insert( index+3, QString("%1:%2@").arg(username).arg(password) );
-	//qDebug() << src;
-	args << src;
-	args << dest;
-
-	// init data.
-	last_index	=	0;
-	output_list.clear();
-	memset( msg_buf, 0, GIT_BUF_SIZE );
-	
-	connect(	proc,	SIGNAL(readyReadStandardError()),				this,	SLOT(clone_output_err_slot())						);
-	connect(	proc,	SIGNAL(readyReadStandardOutput()),				this,	SLOT(clone_output_std_slot())						);
-	connect(	proc,	SIGNAL(readyRead()),							this,	SLOT(clone_output_slot())							);
-	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,	SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
-	connect(	proc,	SIGNAL(started()),								this,	SLOT(clone_start_slot())							);
-	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,	SLOT(clone_error_slot(QProcess::ProcessError))		);
-
-	/*
-		note: git clone will create thread, so need set process channel for get output in other thread.
-	*/
-	proc->setProcessChannelMode( QProcess::SeparateChannels );
-	proc->start( "git", args, QProcess::ReadWrite );
-
-	switch(proc->state())
-	{
-		case QProcess::NotRunning:
-			PRINT_ENUM(QProcess::NotRunning);
-			break;
-		case QProcess::Starting:
-			PRINT_ENUM(QProcess::Starting);
-			break;
-		case QProcess::Running:
-			PRINT_ENUM(QProcess::Running);
-			break;
-		default:
-			assert(0);
-	}
-#endif
-}
-#endif
 
 /*******************************************************************
 	clone
@@ -211,25 +187,6 @@ void	GitControl::clone( QString src, QString dest )
 
 
 
-/*******************************************************************
-	set_color
-********************************************************************/
-void	GitControl::set_color( QByteArray& data, GIT_FONT_COLOR color )
-{
-	switch( color )
-	{
-		case GIT_FONT_RED:
-			data.push_front("<font color=\"red\">");	
-			data.push_back("</font>");
-			break;
-		case GIT_FONT_BLUE:
-			data.push_front("<font color=\"blue\">");	
-			data.push_back("</font>");
-			break;
-		default:
-			assert(0);
-	}
-}
 
 
 

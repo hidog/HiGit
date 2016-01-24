@@ -27,7 +27,164 @@ GitCommand::~GitCommand()
 ********************************************************************/
 void	GitCommand::splite_remain( QByteArray &output )
 {
+	QByteArray	tmp		=	remain_msg + output;
+	int		i, index;
 
+	// search lst '\r', '\n'
+	index	=	tmp.length();
+	for( i = tmp.length()-1; i >= 0; i-- )
+	{
+		if( tmp[i] == '\r' || tmp[i] == '\n' )
+		{
+			index	=	i;
+			break;
+		}
+	}
+
+	output		=	tmp.mid( 0, index );
+	remain_msg	=	tmp.mid( index+1 );
+}
+
+
+
+/*******************************************************************
+	need_password
+********************************************************************/
+bool	GitCommand::need_password( QByteArray data )
+{
+	qDebug() << data;
+	if( data.contains("/dev/tty") )
+		return	true;
+	else
+		return	false;
+}
+
+
+
+
+/*******************************************************************
+	splite_progress
+********************************************************************/
+void	GitCommand::splite_progress( QByteArray data, QByteArray &msg, int &num )
+{
+	QRegExp		rexp("(\\d+%)");
+	int			index;
+
+	// remove multi space
+	while( data.contains("  ") )
+		data.replace( "  ", " " );
+
+	// get num
+	num		=	-1;
+	msg		=	data;
+	index	=	rexp.indexIn( data );
+	if( index != -1 )
+	{
+		msg		=	data.mid( 0, index );
+		num		=	rexp.cap( 1 ).remove('%').toInt();
+	}
+
+	// remove end space of msg
+	
+}
+
+
+
+
+
+/*******************************************************************
+	set_color
+********************************************************************/
+void	GitCommand::set_color( QByteArray& data, GIT_FONT_COLOR color )
+{
+	switch( color )
+	{
+		case GIT_FONT_RED:
+			data.push_front("<font color=\"red\">");	
+			data.push_back("</font>");
+			break;
+		case GIT_FONT_BLUE:
+			data.push_front("<font color=\"blue\">");	
+			data.push_back("</font>");
+			break;
+		default:
+			assert(0);
+	}
+}
+
+/*******************************************************************
+	set_progess
+********************************************************************/
+void	GitCommand::set_progess( int num )
+{
+	set_progress_func(num);
+}
+
+	
+/*******************************************************************
+	refresh_dynamic_output
+********************************************************************/
+void	GitCommand::refresh_dynamic_output( QByteArray data, QByteArray msg )
+{
+	// set color.
+	if( data.indexOf(QString("fatal")) >= 0 )
+		set_color( data, GIT_FONT_RED );
+	else if( data.indexOf(QString("done")) >= 0 )
+		set_color( data, GIT_FONT_BLUE );
+
+	//if( msg.size() == 0 )
+	//	msg		=	data;	// 字串裡面沒有百分比的case.
+	
+	if( output_list.size() == 0 )
+	{
+		output_list.push_back(data);
+		last_msg	=	msg;
+	}
+	else
+	{
+		// 跟最後一個做比較,相同的話加入.
+		if( last_msg != msg )
+		{
+			output_list.push_back(data);
+			last_msg	=	msg;
+		}
+		else
+			output_list.last()	=	data;
+			//output_list[output_list.size()-1]	=	data;	// 更新最後一筆資料.
+	}
+
+	set_ui_dynamic_output_func(output_list);
+}
+
+
+/*******************************************************************
+	splite_git_output
+********************************************************************/
+QByteArray		GitCommand::splite_git_output( QByteArray &output )
+{
+	QByteArray	data	=	"";
+	int		i, index;
+
+	//
+	for( i = 0; i < output.length(); i++ )
+	{
+		if( output[i] == '\r' || output[i] == '\n' )
+		{
+			index	=	i;
+			break;
+		}
+	}
+
+	// first is end charector
+	if( i == 0 )
+		output.remove( 0, 1 );
+	else
+	{
+		data	=	output.mid( 0, index );
+		output.remove( 0, index + 1 );
+	}	
+
+	return	data;
 }
 
 
@@ -53,7 +210,6 @@ void	GitCommand::parse_host( QString str, QString &type, QString &host, QString 
 	if( type_index == -1 )
 		ERRLOG("format error.")
 	type		=	str.mid( 0, type_index );
-	//qDebug() << type;
 
 	// pasrse username, password.
 	up_index	=	str.indexOf( "@", type_index );
@@ -68,15 +224,12 @@ void	GitCommand::parse_host( QString str, QString &type, QString &host, QString 
 		}
 		else
 			username	=	user_pass;		
-		//qDebug() << username;
-		//qDebug() << password;
 	}
 	else
 		up_index	=	type_index + 3;
 
 	// parse host. contain port, etc
 	host	=	str.mid( up_index );
-	//qDebug() << host;
 
 	// parse port and host
 	port_index	=	str.indexOf( ":", up_index );
@@ -84,7 +237,6 @@ void	GitCommand::parse_host( QString str, QString &type, QString &host, QString 
 	{
 		if( rexp.indexIn( str, port_index ) != -1 )
 			port	=	rexp.cap(1).toInt();
-		//qDebug() << port;
 	}
 	else
 		port_index	=	up_index;
@@ -96,6 +248,5 @@ void	GitCommand::parse_host( QString str, QString &type, QString &host, QString 
 		rexp.setPattern( "(\\w+)" );
 		if( rexp.indexIn( str, content_index ) != -1 )
 			content		=	rexp.cap(1);
-		//qDebug() << content;
 	}
 }

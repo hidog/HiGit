@@ -19,12 +19,6 @@ using namespace std;
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ enum ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-enum	GIT_FONT_COLOR
-{
-	GIT_FONT_RED,
-	GIT_FONT_BLUE,
-};
-
 enum	GIT_COMMAND_TYPE
 {
 	GIT_CMD_CLONE,
@@ -53,7 +47,14 @@ public:
 	void		clone( QString src, QString dest );
 	//void		clone( QString src, QString dest, QString username, QString password );
 
+	void		set_progress( int num );
+	void		set_ui_dynamic_output( QList<QByteArray> output_list );
+
 	boost::function<bool()>		get_recursive_state_func;
+
+protected slots:
+
+	void		cmd_finished_slot();
 
 
 signals:
@@ -71,7 +72,6 @@ protected slots:
 private:
 	void		set_connect();
 
-	void		set_color( QByteArray& data, GIT_FONT_COLOR color );
 
 
 
