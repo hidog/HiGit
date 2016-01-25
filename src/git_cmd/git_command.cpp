@@ -218,7 +218,10 @@ void	GitCommand::parse_host( QString str, QString &type, QString &host, QString 
 	// parse type.  https, http, git://
 	type_index	=	str.indexOf("://");
 	if( type_index == -1 )
+	{
 		ERRLOG("format error.")
+		return;
+	}
 	type		=	str.mid( 0, type_index );
 
 	// pasrse username, password.

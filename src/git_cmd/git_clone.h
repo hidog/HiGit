@@ -9,6 +9,7 @@
 #define GIT_CLONE_RECURSIVE		QString("recursive")
 #define GIT_CLONE_USERNAME		QString("username")
 #define GIT_CLONE_PASSWORD		QString("password")
+#define GIT_CLONE_DEPTH			QString("depth")
 
 
 /*******************************************************************

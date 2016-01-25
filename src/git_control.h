@@ -44,8 +44,8 @@ public:
 	string		get_version();
 
 	void		init( QString path );
-	void		clone( QString src, QString dest );
-	void		clone( QString src, QString dest, QString username, QString password );
+	void		clone( QString src, QString dest, QString username = "", QString password = "" );
+	//void		clone( QString src, QString dest, QString username, QString password );
 
 	void		set_progress( int num );
 	void		set_ui_dynamic_output( QList<QByteArray> output_list );
@@ -54,6 +54,8 @@ public:
 	void		abort_cmd();
 
 	boost::function<bool()>		get_recursive_state_func;
+	boost::function<bool()>		get_depth_state_func;
+	boost::function<int()>		get_depth_num_func;
 
 protected slots:
 

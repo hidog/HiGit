@@ -191,6 +191,7 @@ void	GitControl::init( QString path )
 /*******************************************************************
 	clone
 ********************************************************************/
+#if 0
 void	GitControl::clone( QString src, QString dest )
 {
 	GitParameter	param;
@@ -203,7 +204,7 @@ void	GitControl::clone( QString src, QString dest )
 
 	exec_command( GIT_CMD_CLONE, param );
 }
-
+#endif
 
 /*******************************************************************
 	clone
@@ -214,12 +215,17 @@ void	GitControl::clone( QString src, QString dest, QString username, QString pas
 
 	param.insert( make_pair( GIT_CLONE_SOURCE,		src ) );
 	param.insert( make_pair( GIT_CLONE_DESTINATION, dest ) );
-	param.insert( make_pair( GIT_CLONE_USERNAME,	username ) );
-	param.insert( make_pair( GIT_CLONE_PASSWORD,	password ) );
 
+	if( username.isEmpty() == false )
+		param.insert( make_pair( GIT_CLONE_USERNAME,	username ) );
+	if( password.isEmpty() == false )
+		param.insert( make_pair( GIT_CLONE_PASSWORD,	password ) );
 
 	if( get_recursive_state_func() == true )
 		param.insert( make_pair( GIT_CLONE_RECURSIVE, QString("true") ) );
+
+	if( get_depth_state_func() == true )
+		param.insert( make_pair( GIT_CLONE_DEPTH, QString("%1").arg(get_depth_num_func()) ) );
 
 	exec_command( GIT_CMD_CLONE, param );
 }

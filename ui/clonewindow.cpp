@@ -27,11 +27,17 @@ CloneWindow::CloneWindow(QWidget *parent) :
     ui->setupUi(this);
 
 	ui->abortButton->hide();
+	ui->abortButton->move(ui->cancelButton->x(), ui->cancelButton->y() );
+
 	ui->closeButton->hide();
-	ui->closeButton->setCheckable(false);
+	ui->closeButton->setEnabled(false);
+	ui->closeButton->move( ui->okButton->x(), ui->okButton->y() );
+
 
 	git_ctrl	=	new GitControl(this);	
 	git_ctrl->get_recursive_state_func	=	boost::bind( &CloneWindow::get_recursive_state, this );     // set bind function.
+	git_ctrl->get_depth_state_func		=	boost::bind( &CloneWindow::get_depth_state, this );
+	git_ctrl->get_depth_num_func		=	boost::bind( &CloneWindow::get_depth_num, this );
 
 	user_pw_dialog	=	new	UserPwDialog(this);
 
@@ -42,6 +48,28 @@ CloneWindow::CloneWindow(QWidget *parent) :
 }
 
 
+
+
+/*******************************************************************
+	get_depth_num
+********************************************************************/
+int		CloneWindow::get_depth_num()
+{
+	int		a	=	ui->depth_num_LEdit->text().toInt();
+	return	a;
+}
+
+
+/*******************************************************************
+	get_depth_state
+********************************************************************/
+bool	CloneWindow::get_depth_state()
+{
+	if( ui->depthCBox->checkState() == Qt::Unchecked )
+		return	false;
+	else if( ui->depthCBox->checkState() == Qt::Checked )
+		return	true;
+}
 
 
 /*******************************************************************
@@ -59,26 +87,67 @@ CloneWindow::~CloneWindow()
 ********************************************************************/
 void	CloneWindow::set_connect()
 {
-	connect(	ui->srcButton,			SIGNAL(clicked()),							this,				SLOT(src_slot())						);
-	connect(	ui->destButton,			SIGNAL(clicked()),							this,				SLOT(dest_slot())						);
+	connect(	ui->srcButton,			SIGNAL(clicked()),							this,				SLOT(src_slot())								);
+	connect(	ui->destButton,			SIGNAL(clicked()),							this,				SLOT(dest_slot())								);
 
-	connect(	ui->okButton,			SIGNAL(clicked()),							this,				SLOT(ok_slot())							);
-	connect(	ui->cancelButton,		SIGNAL(clicked()),							this,				SLOT(cancel_slot())						);
-	connect(	ui->closeButton,		SIGNAL(clicked()),							this,				SLOT(close_slot())						);
-	connect(	ui->abortButton,		SIGNAL(clicked()),							this,				SLOT(abort_slot())						);
+	connect(	ui->okButton,			SIGNAL(clicked()),							this,				SLOT(ok_slot())									);
+	connect(	ui->cancelButton,		SIGNAL(clicked()),							this,				SLOT(cancel_slot())								);
+	connect(	ui->closeButton,		SIGNAL(clicked()),							this,				SLOT(close_slot())								);
+	connect(	ui->abortButton,		SIGNAL(clicked()),							this,				SLOT(abort_slot())								);
+	connect(	ui->srcButton,			SIGNAL(triggered(QAction*)),				ui->srcButton,		SLOT(setDefaultAction(QAction*))				);
 
-	connect(	ui->srcButton,			SIGNAL(triggered(QAction*)),				ui->srcButton,		SLOT(setDefaultAction(QAction*))		);
+	connect(	ui->depthCBox,			SIGNAL(stateChanged(int)),					this,				SLOT(depth_slot(int))							);
+	connect(	ui->depth_num_LEdit,	SIGNAL(textChanged(const QString)),			this,				SLOT(depth_num_changed_slot(const QString))		);
 
-	//connect(	git_ctrl,				SIGNAL(output_signal(QByteArray)),			this,				SLOT(output_slot(QByteArray))			);
-	connect(	git_ctrl,				SIGNAL(output_signal(QList<QByteArray>)),	this,				SLOT(output_slot(QList<QByteArray>))	);
-	connect(	git_ctrl,				SIGNAL(progress_signal(int)),				ui->gitProgress,	SLOT(setValue(int))						);
-	connect(	git_ctrl,				SIGNAL(need_user_pw_signal()),				this,				SLOT(need_user_pw_slot())				);
-	connect(	git_ctrl,				SIGNAL(cmd_finished_signal()),				this,				SLOT(git_clone_finished_slot())			);
+	//connect(	git_ctrl,				SIGNAL(output_signal(QByteArray)),			this,				SLOT(output_slot(QByteArray))					);
+	connect(	git_ctrl,				SIGNAL(output_signal(QList<QByteArray>)),	this,				SLOT(output_slot(QList<QByteArray>))			);
+	connect(	git_ctrl,				SIGNAL(progress_signal(int)),				ui->gitProgress,	SLOT(setValue(int))								);
+	connect(	git_ctrl,				SIGNAL(need_user_pw_signal()),				this,				SLOT(need_user_pw_slot())						);
+	connect(	git_ctrl,				SIGNAL(cmd_finished_signal()),				this,				SLOT(git_clone_finished_slot())					);
 
-	connect(	user_pw_dialog,			SIGNAL(userpw_signal(QString,QString)),		this,				SLOT(userpw_slot(QString,QString))		);
+	connect(	user_pw_dialog,			SIGNAL(userpw_signal(QString,QString)),		this,				SLOT(userpw_slot(QString,QString))				);
 }
 
 
+
+/*******************************************************************
+	depth_num_changed_slot
+********************************************************************/
+void	CloneWindow::depth_num_changed_slot( const QString str )
+{
+	QString		tmp		=	str;
+
+	int		i;
+
+	// remove all non-num
+	for( i = 0; i < tmp.length(); i++ )
+	{
+		if( tmp[i] < '0' || tmp[i] > '9' )
+		{
+			tmp.remove( i, 1 );
+			i--;
+		}
+	}
+
+	if( tmp.isEmpty() )
+		tmp		=	"0";
+
+	ui->depth_num_LEdit->setText(tmp);
+}
+
+
+
+
+/*******************************************************************
+	depth_slot
+********************************************************************/
+void	CloneWindow::depth_slot( int state )
+{
+	if( state == Qt::Unchecked )
+		ui->depth_num_LEdit->setEnabled(false);
+	else if( state == Qt::Checked )
+		ui->depth_num_LEdit->setEnabled(true);
+}
 
 
 /*******************************************************************
@@ -86,8 +155,8 @@ void	CloneWindow::set_connect()
 ********************************************************************/
 void	CloneWindow::git_clone_finished_slot()
 {
-	ui->abortButton->setCheckable(false);
-	ui->closeButton->setCheckable(true);
+	ui->abortButton->setEnabled(false);
+	ui->closeButton->setEnabled(true);
 }
 
 
@@ -195,6 +264,10 @@ void	CloneWindow::ok_slot()
 {
 	QString		src		=	ui->srcLEdit->text();
 	QString		dest	=	ui->destLEdit->text();
+	QRegExp		rexp("(\\S)");
+
+	if( rexp.indexIn(src) == -1 || rexp.indexIn(dest) == -1 )
+		return;
 
 	git_ctrl->clone( src, dest );
 
@@ -257,6 +330,8 @@ void	CloneWindow::src_slot()
 ********************************************************************/
 void	CloneWindow::dest_slot()
 {
-	QString		path	=	QFileDialog::getExistingDirectory();
-	ui->destLEdit->setText(path);
+	QString		path	=	QFileDialog::getExistingDirectory( NULL, tr("Choose destination"), ui->destLEdit->text() );
+
+	if( path.isEmpty() == false )
+		ui->destLEdit->setText(path);
 }

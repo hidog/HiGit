@@ -40,6 +40,12 @@ void	GitClone::exec( GitParameter param )
 	if( param.find(GIT_CLONE_RECURSIVE) != param.end() )
 		args << "--recusive";
 
+	if( param.find(GIT_CLONE_DEPTH) != param.end() )
+		args << QString("--depth") << param[GIT_CLONE_DEPTH];
+
+	for( int i = 0; i < args.size(); i++ )
+		qDebug() << args[i];
+
 	// get username, password, project name.
 	parse_host( src, type, host, username, password, port, content );
 

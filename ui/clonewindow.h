@@ -26,6 +26,8 @@ public:
     ~CloneWindow();
 
 	bool	get_recursive_state();
+	bool	get_depth_state();
+	int		get_depth_num();
 
 protected:
 	void	closeEvent( QCloseEvent *event );
@@ -33,6 +35,9 @@ protected:
 protected slots:
 	void	src_slot();
 	void	dest_slot();
+
+	void	depth_slot(int);
+	void	depth_num_changed_slot(const QString);
 
 	void	ok_slot();
 	void	cancel_slot();
