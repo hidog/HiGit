@@ -31,6 +31,12 @@
 		6DE4A6041C36B822003F4F94 /* clonewindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = clonewindow.h; path = ../ui/clonewindow.h; sourceTree = "<group>"; };
 		6DE4A6051C36B822003F4F94 /* mainwindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mainwindow.cpp; path = ../ui/mainwindow.cpp; sourceTree = "<group>"; };
 		6DE4A6061C36B822003F4F94 /* mainwindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mainwindow.h; path = ../ui/mainwindow.h; sourceTree = "<group>"; };
+		6DF72C3A1C5E6705001AFC2E /* db_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = db_manager.cpp; path = ../src/db_manager.cpp; sourceTree = "<group>"; };
+		6DF72C3B1C5E6705001AFC2E /* db_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = db_manager.h; path = ../src/db_manager.h; sourceTree = "<group>"; };
+		6DF72C3C1C5E6705001AFC2E /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = ../src/sqlite3.c; sourceTree = "<group>"; };
+		6DF72C3D1C5E6705001AFC2E /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = ../src/sqlite3.h; sourceTree = "<group>"; };
+		6DF72C3E1C5E671A001AFC2E /* projectbutton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = projectbutton.cpp; path = ../ui/projectbutton.cpp; sourceTree = "<group>"; };
+		6DF72C3F1C5E671A001AFC2E /* projectbutton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = projectbutton.h; path = ../ui/projectbutton.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -57,6 +63,10 @@
 		6DE4A5FE1C36B7E4003F4F94 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				6DF72C3A1C5E6705001AFC2E /* db_manager.cpp */,
+				6DF72C3B1C5E6705001AFC2E /* db_manager.h */,
+				6DF72C3C1C5E6705001AFC2E /* sqlite3.c */,
+				6DF72C3D1C5E6705001AFC2E /* sqlite3.h */,
 				6DB99B261C5520E100998E69 /* git_cmd */,
 				6D40E9311C53BF08009D76D8 /* def.h */,
 				6DE4A6001C36B810003F4F94 /* git_control.cpp */,
@@ -68,6 +78,8 @@
 		6DE4A6021C36B816003F4F94 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				6DF72C3E1C5E671A001AFC2E /* projectbutton.cpp */,
+				6DF72C3F1C5E671A001AFC2E /* projectbutton.h */,
 				6D2F797A1C55241000312F1A /* userpwdialog.cpp */,
 				6D2F797B1C55241000312F1A /* userpwdialog.h */,
 				6DE4A6031C36B822003F4F94 /* clonewindow.cpp */,

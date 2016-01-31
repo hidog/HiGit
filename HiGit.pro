@@ -18,7 +18,7 @@ CONFIG -= app_bundle
 TARGET		=	HiGit
 TEMPLATE	=	app
 
-INCLUDEPATH 	+=	.
+INCLUDEPATH 	+=	. ui src
 
 win32 {
 	message("win32")
