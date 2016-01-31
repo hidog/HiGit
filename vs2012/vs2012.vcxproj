@@ -57,18 +57,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\src\db_manager.cpp" />
     <ClCompile Include="..\src\git_cmd\git_clone.cpp" />
     <ClCompile Include="..\src\git_cmd\git_command.cpp" />
     <ClCompile Include="..\src\git_control.cpp" />
+    <ClCompile Include="..\src\sqlite3.c" />
     <ClCompile Include="..\ui\clonewindow.cpp" />
     <ClCompile Include="..\ui\mainwindow.cpp" />
     <ClCompile Include="..\ui\userpwdialog.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\db_manager.h" />
     <ClInclude Include="..\src\def.h" />
     <ClInclude Include="..\src\git_cmd\git_clone.h" />
     <ClInclude Include="..\src\git_cmd\git_command.h" />
     <ClInclude Include="..\src\git_control.h" />
+    <ClInclude Include="..\src\sqlite3.h" />
     <ClInclude Include="..\ui\clonewindow.h" />
     <ClInclude Include="..\ui\mainwindow.h" />
     <ClInclude Include="..\ui\userpwdialog.h" />

@@ -37,7 +37,7 @@ class	GitCommand : public QObject
 	Q_OBJECT
 
 public:
-	GitCommand( QWidget *parent = 0 );
+	GitCommand( QObject *parent = 0 );
 	virtual ~GitCommand();
 	
 	virtual	void	exec( GitParameter param )	=	0;
@@ -60,6 +60,8 @@ protected:
 	void			splite_progress( QByteArray data, QByteArray &msg, int &num );
 	void			set_progess( int num );
 	void			refresh_dynamic_output( QByteArray data, QByteArray msg );
+	void			set_color( QByteArray& data, GIT_FONT_COLOR color );
+
 
 	QList<QByteArray>	output_list;	// use for update view message.s
 
@@ -72,7 +74,6 @@ protected slots:
 
 private:
 
-	void		set_color( QByteArray& data, GIT_FONT_COLOR color );
 
 
 

@@ -177,6 +177,7 @@ void	CloneWindow::close_slot()
 void	CloneWindow::abort_slot()
 {
 	git_ctrl->abort_cmd();
+	ui->abortButton->setEnabled(false);
 }
 
 
@@ -201,6 +202,9 @@ void	CloneWindow::userpw_slot( QString username, QString password )
 	QString		dest	=	ui->destLEdit->text();
 
 	git_ctrl->clone( src, dest, username, password );
+
+	ui->abortButton->setEnabled(true);
+	ui->closeButton->setEnabled(false);
 }
 
 

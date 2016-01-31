@@ -20,7 +20,7 @@ class   GitClone : public GitCommand
     Q_OBJECT
     
 public:
-    GitClone( QWidget *parent = 0 );
+    GitClone( QObject *parent = 0 );
     virtual ~GitClone();
     
 	void	exec( GitParameter param );

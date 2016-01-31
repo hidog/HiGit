@@ -8,8 +8,8 @@
 /*******************************************************************
 	GitClone
 ********************************************************************/
-GitClone::GitClone( QWidget *parent )
-    :   GitCommand(parent)
+GitClone::GitClone( QObject *parent )
+    :	GitCommand(parent)
 {}
 
 
@@ -67,13 +67,13 @@ void	GitClone::exec( GitParameter param )
 	last_msg.clear();
 	remain_msg.clear();
 	
-	connect(	proc,	SIGNAL(readyReadStandardError()),				this,	SLOT(clone_output_err_slot())						);
-	connect(	proc,	SIGNAL(readyReadStandardOutput()),				this,	SLOT(clone_output_std_slot())						);
-	connect(	proc,	SIGNAL(readyRead()),							this,	SLOT(clone_output_slot())							);
-	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,	SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
-	connect(	proc,	SIGNAL(started()),								this,	SLOT(clone_start_slot())							);
-	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,	SLOT(clone_error_slot(QProcess::ProcessError))		);
-	connect(	this,	SIGNAL(abort_signal()),							proc,	SLOT(kill())										);
+	connect(	proc,	SIGNAL(readyReadStandardError()),				this,			SLOT(clone_output_err_slot())						);
+	connect(	proc,	SIGNAL(readyReadStandardOutput()),				this,			SLOT(clone_output_std_slot())						);
+	connect(	proc,	SIGNAL(readyRead()),							this,			SLOT(clone_output_slot())							);
+	connect(	proc,	SIGNAL(finished(int,QProcess::ExitStatus)),		this,			SLOT(clone_finish_slot(int,QProcess::ExitStatus))	);
+	connect(	proc,	SIGNAL(started()),								this,			SLOT(clone_start_slot())							);
+	connect(	proc,	SIGNAL(error(QProcess::ProcessError)),			this,			SLOT(clone_error_slot(QProcess::ProcessError))		);
+	connect(	this,	SIGNAL(abort_signal()),							proc,			SLOT(kill())										);
 
 	/*
 		note: need use -v, otherwise no message.
@@ -169,6 +169,12 @@ void	GitClone::abort_slot()
 {
 	qDebug() << "GitClone::abort_slot()";
 	emit abort_signal();
+
+	QByteArray	str		=	"user abort git clone.";
+	set_color( str, GIT_FONT_RED );
+	output_list.push_back( str );
+
+	set_ui_dynamic_output_func( output_list );
 }
 
 

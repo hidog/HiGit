@@ -7,7 +7,8 @@
 /*******************************************************************
 	GitControl
 ********************************************************************/
-GitCommand::GitCommand( QWidget *parent )
+GitCommand::GitCommand( QObject *parent )
+	:	QObject(parent)
 {
 }
 
@@ -49,7 +50,7 @@ void	GitCommand::splite_remain( QByteArray &output )
 
 
 /*******************************************************************
-	need_password
+	abort_slot
 ********************************************************************/
 void	GitCommand::abort_slot()
 {
@@ -160,7 +161,6 @@ void	GitCommand::refresh_dynamic_output( QByteArray data, QByteArray msg )
 		}
 		else
 			output_list.last()	=	data;
-			//output_list[output_list.size()-1]	=	data;	// 更新最後一筆資料.
 	}
 
 	set_ui_dynamic_output_func(output_list);

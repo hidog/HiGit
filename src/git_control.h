@@ -75,8 +75,6 @@ protected slots:
 	void		error_slot( QProcess::ProcessError err );
 
 
-
-
 private:
 	void		set_connect();
 
