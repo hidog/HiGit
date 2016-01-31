@@ -224,7 +224,6 @@ void	GitClone::clone_output_err_slot()
 	QByteArray	data;		// raw data, contain %. like "Receive 10%"
 	QByteArray	msg;		// splite %, like Receive
 
-	int		i;
 	int		num;
 
 	// get string this term. keep some string in remain_str if needed.

@@ -46,6 +46,9 @@
     <ClCompile Include="..\src\sqlite3.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\ui\projectbutton.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
@@ -74,6 +77,9 @@
     </ClInclude>
     <ClInclude Include="..\src\sqlite3.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\projectbutton.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

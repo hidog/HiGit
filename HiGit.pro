@@ -42,22 +42,27 @@ SOURCES		+=	main.cpp\
 				ui/mainwindow.cpp\
 				ui/clonewindow.cpp\
 				ui/userpwdialog.cpp\
+				ui/projectbutton.cpp\
 				src/git_control.cpp\
 				src/db_manager.cpp\
 				src/sqlite3.c\
 				src/git_cmd/git_command.cpp\
 				src/git_cmd/git_clone.cpp
+    
 
 HEADERS		+=	ui/mainwindow.h\
 				ui/clonewindow.h\
 				ui/userpwdialog.h\
+				ui/projectbutton.h\
 				src/git_control.h\
 				src/db_manager.h\
 				src/sqlite3.h\
 				src/git_cmd/git_command.h\
 				src/git_cmd/git_clone.h\
 				src/def.h
+				
 
 FORMS    	+= 	ui/mainwindow.ui\
 				ui/clonewindow.ui\
-				ui/userpwdialog.ui
+				ui/userpwdialog.ui\
+				ui/projectbutton.ui

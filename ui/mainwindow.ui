@@ -61,6 +61,16 @@
        <height>369</height>
       </rect>
      </property>
+     <widget class="ProjectButton" name="frame">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>60</y>
+        <width>120</width>
+        <height>80</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -100,6 +110,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ProjectButton</class>
+   <extends>QFrame</extends>
+   <header>projectbutton.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
