@@ -113,7 +113,7 @@
  <customwidgets>
   <customwidget>
    <class>ProjectButton</class>
-   <extends>QFrame</extends>
+   <extends>QPushButton</extends>
    <header>projectbutton.h</header>
    <container>1</container>
   </customwidget>
