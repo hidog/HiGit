@@ -19,6 +19,9 @@
     <Filter Include="ui">
       <UniqueIdentifier>{9934da71-b961-4f1f-8111-f5c7fd2b1491}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\git_cmd">
+      <UniqueIdentifier>{d243ec19-03db-4198-8474-320e5cbf34eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -36,6 +39,24 @@
     <ClCompile Include="..\src\git_control.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\git_cmd\git_command.cpp">
+      <Filter>src\git_cmd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\git_cmd\git_clone.cpp">
+      <Filter>src\git_cmd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\db_manager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\sqlite3.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\projectbutton.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\userpwdialog.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\clonewindow.h">
@@ -49,6 +70,24 @@
     </ClInclude>
     <ClInclude Include="..\src\def.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\git_cmd\git_clone.h">
+      <Filter>src\git_cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\git_cmd\git_command.h">
+      <Filter>src\git_cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\db_manager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\sqlite3.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\userpwdialog.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\projectbutton.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
