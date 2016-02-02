@@ -60,6 +60,7 @@
     <ClCompile Include="..\src\db_manager.cpp" />
     <ClCompile Include="..\src\git_cmd\git_clone.cpp" />
     <ClCompile Include="..\src\git_cmd\git_command.cpp" />
+    <ClCompile Include="..\src\git_cmd\git_status.cpp" />
     <ClCompile Include="..\src\git_control.cpp" />
     <ClCompile Include="..\src\sqlite3.c" />
     <ClCompile Include="..\ui\clonewindow.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="..\src\def.h" />
     <ClInclude Include="..\src\git_cmd\git_clone.h" />
     <ClInclude Include="..\src\git_cmd\git_command.h" />
+    <ClInclude Include="..\src\git_cmd\git_status.h" />
     <ClInclude Include="..\src\git_control.h" />
     <ClInclude Include="..\src\sqlite3.h" />
     <ClInclude Include="..\ui\clonewindow.h" />

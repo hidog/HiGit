@@ -193,6 +193,8 @@ bool	GitControl::init( QString path )
 	proc->start( "git", args );
 
 	result	=	proc->waitForFinished();
+	QByteArray	output	=	proc->readAll();
+	qDebug(output);
 
 	if( result )
 		QMessageBox::about( NULL, "init", "init success." );

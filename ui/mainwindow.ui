@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>278</width>
-    <height>537</height>
+    <width>495</width>
+    <height>606</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,8 +45,8 @@
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>251</width>
-      <height>371</height>
+      <width>471</width>
+      <height>511</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -57,8 +57,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>249</width>
-       <height>369</height>
+       <width>469</width>
+       <height>509</height>
       </rect>
      </property>
      <widget class="ProjectButton" name="frame">
@@ -66,12 +66,25 @@
        <rect>
         <x>70</x>
         <y>60</y>
-        <width>120</width>
+        <width>361</width>
         <height>80</height>
        </rect>
       </property>
      </widget>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="openButton">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>10</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -79,7 +92,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>278</width>
+     <width>495</width>
      <height>25</height>
     </rect>
    </property>
