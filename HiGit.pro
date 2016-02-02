@@ -10,10 +10,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-win32 {
 CONFIG += console
 CONFIG -= app_bundle
-}
 
 TARGET		=	HiGit
 TEMPLATE	=	app
@@ -47,7 +45,9 @@ SOURCES		+=	main.cpp\
 				src/db_manager.cpp\
 				src/sqlite3.c\
 				src/git_cmd/git_command.cpp\
-				src/git_cmd/git_clone.cpp
+				src/git_cmd/git_clone.cpp\
+				src/git_cmd/git_init.cpp\
+				src/git_cmd/git_status.cpp
     
 
 HEADERS		+=	ui/mainwindow.h\
@@ -59,6 +59,8 @@ HEADERS		+=	ui/mainwindow.h\
 				src/sqlite3.h\
 				src/git_cmd/git_command.h\
 				src/git_cmd/git_clone.h\
+				src/git_cmd/git_init.h\
+				src/git_cmd/git_status.h\
 				src/def.h
 				
 

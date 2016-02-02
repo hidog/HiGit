@@ -31,6 +31,10 @@
 		6DE4A6041C36B822003F4F94 /* clonewindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = clonewindow.h; path = ../ui/clonewindow.h; sourceTree = "<group>"; };
 		6DE4A6051C36B822003F4F94 /* mainwindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mainwindow.cpp; path = ../ui/mainwindow.cpp; sourceTree = "<group>"; };
 		6DE4A6061C36B822003F4F94 /* mainwindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mainwindow.h; path = ../ui/mainwindow.h; sourceTree = "<group>"; };
+		6DEE53421C60DD350064F3BB /* git_status.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_status.cpp; path = ../src/git_cmd/git_status.cpp; sourceTree = "<group>"; };
+		6DEE53431C60DD350064F3BB /* git_status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_status.h; path = ../src/git_cmd/git_status.h; sourceTree = "<group>"; };
+		6DEE53441C60DD9E0064F3BB /* git_init.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_init.cpp; path = ../src/git_cmd/git_init.cpp; sourceTree = "<group>"; };
+		6DEE53451C60DD9E0064F3BB /* git_init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_init.h; path = ../src/git_cmd/git_init.h; sourceTree = "<group>"; };
 		6DF72C3A1C5E6705001AFC2E /* db_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = db_manager.cpp; path = ../src/db_manager.cpp; sourceTree = "<group>"; };
 		6DF72C3B1C5E6705001AFC2E /* db_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = db_manager.h; path = ../src/db_manager.h; sourceTree = "<group>"; };
 		6DF72C3C1C5E6705001AFC2E /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = ../src/sqlite3.c; sourceTree = "<group>"; };
@@ -52,6 +56,10 @@
 		6DB99B261C5520E100998E69 /* git_cmd */ = {
 			isa = PBXGroup;
 			children = (
+				6DEE53441C60DD9E0064F3BB /* git_init.cpp */,
+				6DEE53451C60DD9E0064F3BB /* git_init.h */,
+				6DEE53421C60DD350064F3BB /* git_status.cpp */,
+				6DEE53431C60DD350064F3BB /* git_status.h */,
 				6DB99B271C5520F100998E69 /* git_clone.cpp */,
 				6DB99B281C5520F100998E69 /* git_clone.h */,
 				6DB99B291C5520F100998E69 /* git_command.cpp */,

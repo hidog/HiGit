@@ -12,6 +12,7 @@
 
 #include "git_cmd/git_command.h"
 #include "git_cmd/git_clone.h"
+#include "git_cmd/git_init.h"
 
 #ifndef Q_MOC_RUN
 #	include<boost/bind.hpp>
@@ -167,12 +168,8 @@ bool	GitControl::check_git_exist()
 ********************************************************************/
 QString		GitControl::get_proj_name( QString path )
 {
-#ifdef _WIN32
 	int		index	=	path.lastIndexOf( '/' );
 	return	path.mid( index+1 );
-#else
-#error need maintain.
-#endif
 }
 
 
@@ -182,28 +179,11 @@ QString		GitControl::get_proj_name( QString path )
 ********************************************************************/
 bool	GitControl::init( QString path )
 {
-	QProcess		*proc	=	new QProcess(this);
-	QStringList		args;
+    GitInit     git_init;
+    QString     result  =   git_init.exec(path);
 
-	bool	result;
+    QMessageBox::about( NULL, "init", result );		
 
-	args << "init";
-	args << path;
-
-	proc->start( "git", args );
-
-	result	=	proc->waitForFinished();
-	QByteArray	output	=	proc->readAll();
-	qDebug(output);
-
-	if( result )
-		QMessageBox::about( NULL, "init", "init success." );
-	else
-		QMessageBox::critical( NULL, "init", "init fail." );		
-
-	delete	proc;
-
-	return	result;
 }
 
 
