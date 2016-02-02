@@ -42,7 +42,7 @@
     <NMakeReBuildCommandLine>nmake debug-clean&amp;&amp;qmake ../HiGit.pro -r -spec win32-msvc2013&amp;&amp;nmake debug</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>nmake debug-clean</NMakeCleanCommandLine>
     <NMakeIncludeSearchPath>D:\QT5\qtbase\include\QtWidgets;D:\QT5\qtbase\include\QtGui;D:\QT5\qtbase\include\QtCore;D:\QT5\qtbase\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
-    <IncludePath>C:\Boost\include\boost-1_60;$(IncludePath)</IncludePath>
+    <IncludePath>D:\code\HiGit\vs2013;C:\Boost\include\boost-1_60;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeOutput>HiGit.exe</NMakeOutput>

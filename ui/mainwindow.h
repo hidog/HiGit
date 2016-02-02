@@ -11,6 +11,7 @@ namespace Ui {
 }
 
 class GitControl;
+class DbManager;
 
 
 /*******************************************************************
@@ -37,6 +38,8 @@ private:
 	void	set_connect();
 
     Ui::MainWindow *ui;
+
+	DbManager	*db_mng;
 };
 
 #endif // MAINWINDOW_H

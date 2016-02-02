@@ -18,6 +18,8 @@
 using namespace std;
 
 
+
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ enum ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 enum	GIT_COMMAND_TYPE
 {
@@ -43,7 +45,7 @@ public:
 	bool		check_git_exist();
 	string		get_version();
 
-	void		init( QString path );
+	bool		init( QString path );
 	void		clone( QString src, QString dest, QString username = "", QString password = "" );
 	//void		clone( QString src, QString dest, QString username, QString password );
 
@@ -52,6 +54,8 @@ public:
 	void		input_user_passwd();
 
 	void		abort_cmd();
+
+	QString		get_proj_name( QString path );
 
 	boost::function<bool()>		get_recursive_state_func;
 	boost::function<bool()>		get_depth_state_func;

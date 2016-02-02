@@ -162,26 +162,46 @@ bool	GitControl::check_git_exist()
 
 
 
+/*******************************************************************
+	get_proj_name
+********************************************************************/
+QString		GitControl::get_proj_name( QString path )
+{
+#ifdef _WIN32
+	int		index	=	path.lastIndexOf( '/' );
+	return	path.mid( index+1 );
+#else
+#error need maintain.
+#endif
+}
+
+
 
 /*******************************************************************
 	init
 ********************************************************************/
-void	GitControl::init( QString path )
+bool	GitControl::init( QString path )
 {
 	QProcess		*proc	=	new QProcess(this);
 	QStringList		args;
+
+	bool	result;
 
 	args << "init";
 	args << path;
 
 	proc->start( "git", args );
 
-	if( proc->waitForFinished() )
+	result	=	proc->waitForFinished();
+
+	if( result )
 		QMessageBox::about( NULL, "init", "init success." );
 	else
 		QMessageBox::critical( NULL, "init", "init fail." );		
 
 	delete	proc;
+
+	return	result;
 }
 
 

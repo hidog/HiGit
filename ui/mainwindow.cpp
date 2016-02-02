@@ -10,6 +10,7 @@
 
 #include "../ui/clonewindow.h"
 #include "../src/git_control.h"
+#include "../src/db_manager.h"
 
 using namespace std;
 
@@ -24,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	init();
 	set_connect();
+
+	db_mng	=	new DbManager();
 
 	if( git_ctrl->check_git_exist() == false )
 	{
@@ -73,7 +76,10 @@ void	MainWindow::set_connect()
 void	MainWindow::init_slot()
 {
 	QString		path	=	QFileDialog::getExistingDirectory();
-	git_ctrl->init( path );
+	QString		name	=	git_ctrl->get_proj_name(path);	
+	
+	if( git_ctrl->init( path ) == true )
+		db_mng->add_proj( path.toStdString(), name.toStdString() );
 }
 
 
