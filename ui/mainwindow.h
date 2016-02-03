@@ -30,6 +30,7 @@ public slots:
 protected slots:
 	void	clone_slot();
 	void	init_slot();
+	void	open_slot();
 
 private:
 	GitControl	*git_ctrl;

@@ -13,6 +13,7 @@
 #include "git_cmd/git_command.h"
 #include "git_cmd/git_clone.h"
 #include "git_cmd/git_init.h"
+#include "git_cmd/git_rev_parse.h"
 
 #ifndef Q_MOC_RUN
 #	include<boost/bind.hpp>
@@ -113,6 +114,18 @@ void	GitControl::abort_cmd()
 }
 
 
+/*******************************************************************
+	check_exist_git_repository
+********************************************************************/
+QString		GitControl::check_exist_git_repository( QString path )
+{
+	GitRevParse		git_rev_parse;
+	QString			root_path	=	git_rev_parse.get_root_path(path);
+
+	return	root_path;
+}
+
+
 
 /*******************************************************************
 	cmd_finished_slot
@@ -168,8 +181,25 @@ bool	GitControl::check_git_exist()
 ********************************************************************/
 QString		GitControl::get_proj_name( QString path )
 {
+	// parse content. use for default project name.
 	int		index	=	path.lastIndexOf( '/' );
-	return	path.mid( index+1 );
+	if( index != -1 )
+	{
+		QRegExp		rexp( "(\\w+)" );
+		QString		name;
+
+		if( rexp.indexIn( path, index ) != -1 )
+			name	=	rexp.cap(1);
+		else
+			name	=	QString("default_name");
+
+		return	name;
+	}
+	else
+		return	QString("default_name");
+
+	//int		index	=	path.lastIndexOf( '/' );
+	//return	path.mid( index+1 );
 }
 
 

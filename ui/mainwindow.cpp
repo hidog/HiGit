@@ -67,6 +67,7 @@ void	MainWindow::set_connect()
 {
 	connect(	ui->cloneButton,	SIGNAL(clicked()),	this,	SLOT(clone_slot())	);
 	connect(	ui->initButton,		SIGNAL(clicked()),	this,	SLOT(init_slot())	);
+	connect(	ui->openButton,		SIGNAL(clicked()),	this,	SLOT(open_slot())	);
 }
 
 
@@ -80,6 +81,24 @@ void	MainWindow::init_slot()
 	
 	if( git_ctrl->init( path ) == true )
 		db_mng->add_proj( path.toStdString(), name.toStdString() );
+}
+
+
+
+
+/*******************************************************************
+	open_slot
+********************************************************************/
+void	MainWindow::open_slot()
+{
+	QString		path		=	QFileDialog::getExistingDirectory();
+	QString		root_path	=	git_ctrl->check_exist_git_repository(path);
+
+
+	/*QString		name	=	git_ctrl->get_proj_name(path);	
+	
+	if( git_ctrl->init( path ) == true )
+		db_mng->add_proj( path.toStdString(), name.toStdString() );*/
 }
 
 

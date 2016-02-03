@@ -1,5 +1,5 @@
-#ifndef GIT_STATUS_H
-#define GIT_STATUS_H
+#ifndef GIT_REV_PARSE_H
+#define GIT_REV_PARSE_H
 
 #include <QString>
 
@@ -14,6 +14,7 @@ public:
     GitRevParse();
     ~GitRevParse();
     
+	QString		get_root_path( QString path );
     
 private:
 };

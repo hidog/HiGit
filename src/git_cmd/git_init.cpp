@@ -32,7 +32,8 @@ bool    GitInit::exec( QString path )
     
     args << "init";
     args << path;
-    
+
+	proc->start( "git", args );    
     result  =   proc->waitForFinished();
     
     if( result == true )

@@ -55,6 +55,7 @@ public:
 	void		abort_cmd();
 
 	QString		get_proj_name( QString path );
+	QString		check_exist_git_repository( QString path );
 
 	boost::function<bool()>		get_recursive_state_func;
 	boost::function<bool()>		get_depth_state_func;
