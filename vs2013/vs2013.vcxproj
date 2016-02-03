@@ -61,6 +61,7 @@
     <ClCompile Include="..\src\db_manager.cpp" />
     <ClCompile Include="..\src\git_cmd\git_clone.cpp" />
     <ClCompile Include="..\src\git_cmd\git_command.cpp" />
+    <ClCompile Include="..\src\git_cmd\git_init.cpp" />
     <ClCompile Include="..\src\git_cmd\git_rev_parse.cpp" />
     <ClCompile Include="..\src\git_cmd\git_status.cpp" />
     <ClCompile Include="..\src\git_control.cpp" />
@@ -75,6 +76,7 @@
     <ClInclude Include="..\src\def.h" />
     <ClInclude Include="..\src\git_cmd\git_clone.h" />
     <ClInclude Include="..\src\git_cmd\git_command.h" />
+    <ClInclude Include="..\src\git_cmd\git_init.h" />
     <ClInclude Include="..\src\git_cmd\git_rev_parse.h" />
     <ClInclude Include="..\src\git_cmd\git_status.h" />
     <ClInclude Include="..\src\git_control.h" />

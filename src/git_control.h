@@ -47,7 +47,6 @@ public:
 
 	bool		init( QString path );
 	void		clone( QString src, QString dest, QString username = "", QString password = "" );
-	//void		clone( QString src, QString dest, QString username, QString password );
 
 	void		set_progress( int num );
 	void		set_ui_dynamic_output( QList<QByteArray> output_list );

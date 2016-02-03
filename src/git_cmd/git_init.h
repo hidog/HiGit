@@ -8,12 +8,13 @@
 /*******************************************************************
 	GitStatus
 ********************************************************************/
-class   GitRevParse
+class   GitInit
 {
 public:
-    GitRevParse();
-    ~GitRevParse();
+    GitInit();
+    ~GitInit();
     
+    bool    exec( QString path );
     
 private:
 };

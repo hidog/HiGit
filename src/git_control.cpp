@@ -180,33 +180,14 @@ QString		GitControl::get_proj_name( QString path )
 bool	GitControl::init( QString path )
 {
     GitInit     git_init;
-    QString     result  =   git_init.exec(path);
+    bool	    result  =   git_init.exec(path);
 
-    QMessageBox::about( NULL, "init", result );		
-
+    return	result;
 }
 
 
 
 
-
-/*******************************************************************
-	clone
-********************************************************************/
-#if 0
-void	GitControl::clone( QString src, QString dest )
-{
-	GitParameter	param;
-
-	param.insert( make_pair( GIT_CLONE_SOURCE,		src ) );
-	param.insert( make_pair( GIT_CLONE_DESTINATION, dest ) );
-
-	if( get_recursive_state_func() == true )
-		param.insert( make_pair( GIT_CLONE_RECURSIVE, QString("true") ) );
-
-	exec_command( GIT_CMD_CLONE, param );
-}
-#endif
 
 /*******************************************************************
 	clone
