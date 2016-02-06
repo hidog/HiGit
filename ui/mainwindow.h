@@ -25,6 +25,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void    init_proj_button();
+    
 public slots:
 
 protected slots:

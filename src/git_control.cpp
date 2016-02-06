@@ -121,6 +121,13 @@ QString		GitControl::check_exist_git_repository( QString path )
 {
 	GitRevParse		git_rev_parse;
 	QString			root_path	=	git_rev_parse.get_root_path(path);
+    
+    int     size    =   root_path.size();
+    if( size > 0 )
+    {
+        if( root_path[size-1] == '\n')
+            root_path.remove(size-1,1);
+    }
 
 	return	root_path;
 }

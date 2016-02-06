@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QFileDialog>
+#include <QPushButton>
 
 #include "../ui/clonewindow.h"
 #include "../src/git_control.h"
@@ -32,6 +33,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	{
 		// choose git exe file.
 	}
+    
+    // load db data to init.
+    init_proj_button();
 }
 
 
@@ -48,6 +52,38 @@ MainWindow::~MainWindow()
 
     delete ui;
 }
+
+
+/*******************************************************************
+	init_proj_button
+ ********************************************************************/
+void    MainWindow::init_proj_button()
+{
+    bcListDbProj    list    =   db_mng->get_all_proj();
+    string         path;
+    
+    for( boost::container::list<DbProj>::iterator itr = list.begin(); itr != list.end(); ++itr )
+    {
+        cout << itr->path << "\n" << itr->name << "\n\n";
+        path    =   itr->path;
+    }
+    
+   // QWidget     *widget     =   new QWidget();
+   // widget->resize(1000,1000);
+    
+    //ui->scrollArea->setWidget(widget);
+    
+    //QVBoxLayout *layout = new QVBoxLayout(ui->scrollArea);
+    ui->scrollArea->widget()->setMinimumHeight( 1000*30 );
+    
+    for( int i = 0; i < 1000; i++ )
+    {
+        QPushButton     *ptr    =   new QPushButton( QString("%1 %2").arg(path.c_str()).arg(i), ui->scrollArea->widget() );
+        ptr->move( 0, i*30 );
+    }
+}
+
+
 
 
 
@@ -94,11 +130,12 @@ void	MainWindow::open_slot()
 	QString		path		=	QFileDialog::getExistingDirectory();
 	QString		root_path	=	git_ctrl->check_exist_git_repository(path);
 
-
-	/*QString		name	=	git_ctrl->get_proj_name(path);	
-	
-	if( git_ctrl->init( path ) == true )
-		db_mng->add_proj( path.toStdString(), name.toStdString() );*/
+    if( path.size() > 0 )
+    {
+    
+        QString		name	=	git_ctrl->get_proj_name(path);
+        db_mng->add_proj( path.toStdString(), name.toStdString() );
+    }
 }
 
 

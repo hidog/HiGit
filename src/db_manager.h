@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include <boost/container/list.hpp>
 
 
 #define HIGIT_DB_BUF_SIZE	1000
@@ -14,6 +15,21 @@ using namespace std;
 
 // ~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~
 struct	sqlite3;
+
+
+
+// ~~~~~~~~~~~~~~~~~~~~~ struct ~~~~~~~~~~~~~~~~~~~~~
+struct  DbProj
+{
+    string  name;
+    string  path;
+};
+
+
+// ~~~~~~~~~~~~~~~~~~~~~ typedef ~~~~~~~~~~~~~~~~~~~~~
+typedef boost::container::list<DbProj>  bcListDbProj;
+
+
 
 
 /*******************************************************************
@@ -28,6 +44,10 @@ public:
 	bool	is_exist_path( string path );
 	bool	add_proj( string path, string name, string username = "", string password = "" );
 
+    bcListDbProj    get_all_proj();
+    
+    
+    
 private:
 	void	load_main_db();
 

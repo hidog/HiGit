@@ -36,7 +36,7 @@ void	DbManager::load_main_db()
 {
 	char	str[HIGIT_DB_BUF_SIZE];
 	char	*err_msg;
-	int		rc,		i;
+	int		rc;
 
 	// open main db
 	sprintf( str, "HiGit.db" );
@@ -75,6 +75,49 @@ bool	DbManager::add_proj( string path, string name, string username, string pass
 	}
 	else
 		return	true;
+}
+
+
+
+
+
+/*********************************************************************
+	get_all_proj
+**********************************************************************/
+bcListDbProj    DbManager::get_all_proj()
+{
+    bcListDbProj    proj_list;
+    DbProj          data;
+    
+    proj_list.clear();
+    
+    int     rc;
+    char    *err_msg    =   NULL;
+    char    str[HIGIT_DB_BUF_SIZE];
+    
+    //
+    sprintf( str, "SELECT PATH,NAME,USERNAME,PASSWORD FROM GIT_PROJ_TABLE" );
+    
+    sqlite3_stmt    *stmt;
+    sqlite3_prepare_v2( db, str, strlen(str)+1, &stmt, 0 );
+    
+    while(true)
+    {
+        rc  =   sqlite3_step(stmt);
+        if( rc == SQLITE_ROW )
+        {
+            data.path   =   (char*)sqlite3_column_text( stmt, 0 );
+            data.name   =   (char*)sqlite3_column_text( stmt, 1 );
+            proj_list.push_back(data);
+        }
+        else if( rc == SQLITE_DONE )
+            break;
+        else
+            ERRLOG("db error. msg = %s", err_msg );
+    }
+    
+    sqlite3_finalize(stmt);
+    return  proj_list;
 }
 
 

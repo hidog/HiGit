@@ -10,17 +10,27 @@
     <height>79</height>
    </rect>
   </property>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="pathLabel">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>20</y>
-     <width>58</width>
-     <height>15</height>
+     <x>190</x>
+     <y>30</y>
+     <width>261</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>test</string>
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="nameLEdit">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>30</y>
+     <width>113</width>
+     <height>21</height>
+    </rect>
    </property>
   </widget>
  </widget>
