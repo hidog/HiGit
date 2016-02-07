@@ -48,6 +48,8 @@ public:
 	boost::function<void(QList<QByteArray>)>	set_ui_dynamic_output_func;
 	boost::function<void()>						input_user_passwd_func;
 
+	static QString	get_proj_name( QString path );
+
 signals:
 
 	void		finished_signal();

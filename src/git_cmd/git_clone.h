@@ -10,6 +10,7 @@
 #define GIT_CLONE_USERNAME		QString("username")
 #define GIT_CLONE_PASSWORD		QString("password")
 #define GIT_CLONE_DEPTH			QString("depth")
+#define GIT_CLONE_LOCAL			QString("local")
 
 
 /*******************************************************************

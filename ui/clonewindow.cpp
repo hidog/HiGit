@@ -12,6 +12,7 @@
 #endif
 
 #include "../src/git_control.h"
+#include "../src/git_cmd/git_rev_parse.h"
 
 #include "userpwdialog.h"
 
@@ -204,7 +205,7 @@ void	CloneWindow::userpw_slot( QString username, QString password )
 	QString		src		=	ui->srcLEdit->text();
 	QString		dest	=	ui->destLEdit->text();
 
-	git_ctrl->clone( src, dest, username, password );
+	git_ctrl->clone( src, dest, false, username, password );
 
 	ui->abortButton->setEnabled(true);
 	ui->closeButton->setEnabled(false);
@@ -271,12 +272,25 @@ void	CloneWindow::ok_slot()
 {
 	QString		src		=	ui->srcLEdit->text();
 	QString		dest	=	ui->destLEdit->text();
+	QAction		*act	=	ui->srcButton->defaultAction();
+
 	QRegExp		rexp("(\\S)");
+	bool		is_local_path;
 
 	if( rexp.indexIn(src) == -1 || rexp.indexIn(dest) == -1 )
 		return;
 
-	git_ctrl->clone( src, dest );
+	if( act->text() == QString("URL") )
+		is_local_path	=	false;
+	else
+	{
+		GitRevParse		git_rev_parse;
+
+		src	=	git_rev_parse.get_root_path(src);
+		is_local_path	=	true;
+	}
+
+	git_ctrl->clone( src, dest, is_local_path );
 
 	ui->okButton->hide();
 	ui->cancelButton->hide();

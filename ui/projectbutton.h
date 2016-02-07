@@ -32,6 +32,16 @@ public:
 	static int	fixed_width();
 	static int	fixed_height();
 
+	virtual void	mouseDoubleClickEvent( QMouseEvent *event );
+
+public slots:
+	void	test_slot();
+
+signals:
+	void	test_sig();
+
+
+
 private:
     Ui::ProjectButton *ui;
 

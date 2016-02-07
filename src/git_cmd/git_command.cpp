@@ -22,6 +22,36 @@ GitCommand::~GitCommand()
 
 
 
+/*******************************************************************
+	get_proj_name
+********************************************************************/
+QString		GitCommand::get_proj_name( QString path )
+{
+	if( *(path.end()-1) == '/' || *(path.end()-1) == '\\' )
+		path.remove( path.size()-1, 1 );
+
+	int		tmp1	=	path.lastIndexOf( '/' );
+	int		tmp2	=	path.lastIndexOf( '\\' );
+
+	int		index	=	tmp1 > tmp2 ? tmp1 : tmp2;
+
+	if( index != -1 )
+	{
+		QRegExp		rexp( "(\\w+)" );
+		QString		name;
+
+		if( rexp.indexIn( path, index ) != -1 )
+			name	=	rexp.cap(1);
+		else
+			name	=	QString("default_name");
+
+		return	name;
+	}
+	else
+		return	QString("default_name");
+}
+
+
 
 /*******************************************************************
 	splite_remain

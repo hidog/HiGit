@@ -32,10 +32,20 @@ void	GitClone::exec( GitParameter param )
 	QString			src		=	param[GIT_CLONE_SOURCE];
 	QString			dest	=	param[GIT_CLONE_DESTINATION];
 	QString			fixed_src;
+
+	bool			is_local_path;
+
+	if( param[GIT_CLONE_LOCAL] == "true" )
+		is_local_path	=	true;
+	else
+		is_local_path	=	false;
 	
 	args << "clone";
 	args << "-v";
 	args << "--progress";
+
+	if( is_local_path == true )
+		args << "--local";
 
 	if( param.find(GIT_CLONE_RECURSIVE) != param.end() )
 		args << "--recusive";
@@ -43,32 +53,43 @@ void	GitClone::exec( GitParameter param )
 	if( param.find(GIT_CLONE_DEPTH) != param.end() )
 		args << QString("--depth") << param[GIT_CLONE_DEPTH];
 
-	for( int i = 0; i < args.size(); i++ )
-		qDebug() << args[i];
+	//for( int i = 0; i < args.size(); i++ )
+		//qDebug() << args[i];
 
-	// get username, password, project name.
-	parse_host( src, type, host, username, password, port, content );
-
-	if( param.find(GIT_CLONE_PASSWORD) != param.end() )
+	// set data. like username, projname, etc.
+	if( is_local_path == false )
 	{
-		username	=	param[GIT_CLONE_USERNAME];
-		password	=	param[GIT_CLONE_PASSWORD];
-		// replace username, password.
-		fixed_src	=	QString("%1://%2:%3@%4").arg(type).arg(username).arg(password).arg(host);
+		parse_host( src, type, host, username, password, port, content );
+
+		if( param.find(GIT_CLONE_PASSWORD) != param.end() )
+		{
+			username	=	param[GIT_CLONE_USERNAME];
+			password	=	param[GIT_CLONE_PASSWORD];
+			// replace username, password.
+			fixed_src	=	QString("%1://%2:%3@%4").arg(type).arg(username).arg(password).arg(host);
+		}
+		else
+		{
+			username	=	"";
+			password	=	"";
+			fixed_src	=	src;
+		}
+
+		// set member data. it will use when git clone finish.
+		path	=	dest;
+		name	=	content;
 	}
 	else
 	{
-		username	=	"";
-		password	=	"";
+		type		=	"";		host		=	"";		username	=	"";		password	=	"";		port		=	-1;		content		=	"";
+
 		fixed_src	=	src;
+		path		=	dest;
+		name		=	get_proj_name(path);
 	}
 
 	args << fixed_src;
 	args << dest;	
-
-	// set member data. it will use when git clone finish.
-	path	=	dest;
-	name	=	content;
 
 	// init data.
 	output_list.clear();

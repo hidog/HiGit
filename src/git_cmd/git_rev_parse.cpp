@@ -38,6 +38,10 @@ QString		GitRevParse::get_root_path( QString path )
 	if( result )
 	{
 		QString		root_path	=	proc->readAll();
+
+		while( root_path.contains("\n") )
+			root_path.replace( "\n", "" );
+
 		return	root_path;
 	}
 	else
