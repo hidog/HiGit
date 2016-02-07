@@ -3,6 +3,7 @@
 #include "sqlite3.h"
 #include "def.h"
 
+#include <string.h>
 #include <iostream>
 #include <cassert>
 

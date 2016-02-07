@@ -6,7 +6,7 @@
 
 message("HiGit...")
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,18 +22,27 @@ win32 {
 	message("win32")
 	Release:DESTDIR	=	../release
 	Debug:DESTDIR	=	../debug
-	INCLUDEPATH		+=	C:\Boost\include\boost-1_60
-	LIBPATH			+=	C:\Boost\lib
+	INCLUDEPATH	+=	C:\Boost\include\boost-1_60
+	LIBPATH		+=	C:\Boost\lib
 }
 
 macx {
 	message("macx")
 	INCLUDEPATH 	+=	/usr/local/include
-	LIBPATH 		+=	/usr/local/lib
+	LIBPATH 	+=	/usr/local/lib
 	OBJECTS_DIR 	=	./obj
-	MOC_DIR 		=	./obj
-	RCC_DIR 		=	./obj
-	UI_DIR 			=	./obj
+	MOC_DIR 	=	./obj
+	RCC_DIR 	=	./obj
+	UI_DIR 		=	./obj
+}
+
+unix:!macx{
+	message("linux")
+	OBJECTS_DIR 	=	./obj
+	MOC_DIR 	=	./obj
+	RCC_DIR 	=	./obj
+	UI_DIR 		=	./obj
+	LIBS 		+=	-ldl
 }
 
 SOURCES		+=	main.cpp\
