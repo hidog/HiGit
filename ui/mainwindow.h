@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QProcess>
+#include "../src/def.h"
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -10,8 +11,10 @@ namespace Ui {
 	class MainWindow;
 }
 
+
 class GitControl;
 class DbManager;
+class ProjectButton;
 
 
 /*******************************************************************
@@ -26,8 +29,11 @@ public:
     ~MainWindow();
 
     void    init_proj_button();
+	void	add_ui_proj( DbProj proj );
     
 public slots:
+	void	update_proj_button_slot( DbProj );
+
 
 protected slots:
 	void	clone_slot();
@@ -43,6 +49,8 @@ private:
     Ui::MainWindow *ui;
 
 	DbManager	*db_mng;
+
+	QList<ProjectButton*>	proj_list;
 };
 
 #endif // MAINWINDOW_H

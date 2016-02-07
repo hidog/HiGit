@@ -157,6 +157,9 @@ void	CloneWindow::git_clone_finished_slot()
 {
 	ui->abortButton->setEnabled(false);
 	ui->closeButton->setEnabled(true);
+
+	// update view. add proj button.
+
 }
 
 

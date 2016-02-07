@@ -72,6 +72,7 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 	{
 		case GIT_CMD_CLONE:
 			git_cmd		=	new GitClone();
+			connect(	(GitClone*)git_cmd,		SIGNAL(update_proj_button_signal(DbProj)),		this->parent()->parent(),		SLOT(update_proj_button_slot(DbProj))	);
 			break;
 		default:
 			assert(0);
@@ -81,8 +82,8 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 		assert(0);
 	else
 	{
-		connect(	git_cmd,	SIGNAL(finished_signal()),	this,		SLOT(cmd_finished_slot())	);
-		connect(	this,		SIGNAL(abort_signal()),		git_cmd,	SLOT(abort_slot())			);
+		connect(	git_cmd,	SIGNAL(finished_signal()),		this,			SLOT(cmd_finished_slot())		);
+		connect(	this,		SIGNAL(abort_signal()),			git_cmd,		SLOT(abort_slot())				);
 
 		git_cmd->set_progress_func			=	boost::bind( &GitControl::set_progress, this, _1 );
 		git_cmd->set_ui_dynamic_output_func	=	boost::bind( &GitControl::set_ui_dynamic_output, this, _1 );

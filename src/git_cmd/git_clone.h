@@ -2,7 +2,7 @@
 #define GIT_CLONE_H
 
 #include "git_command.h"
-
+#include "../def.h"
 
 #define	GIT_CLONE_SOURCE		QString("source")
 #define GIT_CLONE_DESTINATION	QString("destination")
@@ -27,6 +27,7 @@ public:
 
 signals:
 	void		abort_signal();
+	void		update_proj_button_signal( DbProj );
 
 
 public slots:
@@ -45,6 +46,8 @@ private:
 	QString		type, host,	content;		
 	QString		username, password;
 	int			port;
+
+	QString		path,	name;		// local path and proj name.
 
 };
 

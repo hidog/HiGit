@@ -12,6 +12,11 @@
 #include "../ui/clonewindow.h"
 #include "../src/git_control.h"
 #include "../src/db_manager.h"
+#include "../ui/projectbutton.h"
+
+#ifndef Q_MOC_RUN
+	#include <boost/foreach.hpp>
+#endif
 
 using namespace std;
 
@@ -23,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+	proj_list.clear();
 
 	init();
 	set_connect();
@@ -60,27 +67,20 @@ MainWindow::~MainWindow()
 void    MainWindow::init_proj_button()
 {
     bcListDbProj    list    =   db_mng->get_all_proj();
-    string         path;
-    
-    for( boost::container::list<DbProj>::iterator itr = list.begin(); itr != list.end(); ++itr )
-    {
-        cout << itr->path << "\n" << itr->name << "\n\n";
-        path    =   itr->path;
-    }
-    
-   // QWidget     *widget     =   new QWidget();
-   // widget->resize(1000,1000);
-    
-    //ui->scrollArea->setWidget(widget);
-    
-    //QVBoxLayout *layout = new QVBoxLayout(ui->scrollArea);
-    ui->scrollArea->widget()->setMinimumHeight( 1000*30 );
-    
-    for( int i = 0; i < 1000; i++ )
-    {
-        QPushButton     *ptr    =   new QPushButton( QString("%1 %2").arg(path.c_str()).arg(i), ui->scrollArea->widget() );
-        ptr->move( 0, i*30 );
-    }
+
+	int		count	=	0;
+
+	BOOST_FOREACH( DbProj proj, list )
+	{
+		proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget() ) );
+		proj_list.last()->move( 0, count*ProjectButton::fixed_height() );
+		count++;
+	}
+
+	int		width	=	ProjectButton::fixed_width();
+	int		height	=	ProjectButton::fixed_height() * proj_list.size();;
+
+	ui->scrollArea->widget()->setMinimumHeight( height );
 }
 
 
@@ -107,6 +107,20 @@ void	MainWindow::set_connect()
 }
 
 
+
+/*******************************************************************
+	update_proj_button_slot
+********************************************************************/
+void	MainWindow::update_proj_button_slot( DbProj proj )
+{
+	if( db_mng->is_exist_proj( proj ) == false )
+	{
+		db_mng->add_proj( proj );
+		add_ui_proj( proj );
+	}
+}
+
+
 /*******************************************************************
 	init_slot
 ********************************************************************/
@@ -116,7 +130,17 @@ void	MainWindow::init_slot()
 	QString		name	=	git_ctrl->get_proj_name(path);	
 	
 	if( git_ctrl->init( path ) == true )
-		db_mng->add_proj( path.toStdString(), name.toStdString() );
+	{
+		DbProj	proj;
+
+		proj.path		=	path.toStdString();
+		proj.name		=	name.toStdString();
+		proj.username	=	"";
+		proj.password	=	"";
+
+		db_mng->add_proj( proj );
+		add_ui_proj( proj );
+	}
 }
 
 
@@ -130,13 +154,42 @@ void	MainWindow::open_slot()
 	QString		path		=	QFileDialog::getExistingDirectory();
 	QString		root_path	=	git_ctrl->check_exist_git_repository(path);
 
-    if( path.size() > 0 )
-    {
-    
-        QString		name	=	git_ctrl->get_proj_name(path);
-        db_mng->add_proj( path.toStdString(), name.toStdString() );
-    }
+    if( root_path.size() > 0 )
+    {    
+		QString		name	=	git_ctrl->get_proj_name(root_path);
+		DbProj		proj;
+
+		proj.name		=	name.toStdString();
+		proj.path		=	root_path.toStdString();
+		proj.username	=	"";
+		proj.password	=	"";
+
+		if( db_mng->is_exist_proj( proj ) == false )
+		{
+			// update ui, db and list.
+			db_mng->add_proj( proj );
+			add_ui_proj( proj );
+		}
+	}
 }
+
+
+
+
+/*******************************************************************
+	add_proj
+********************************************************************/
+void	MainWindow::add_ui_proj( DbProj proj )
+{
+	proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget() ) );
+	proj_list.last()->setVisible(true);		// needed!! otherwise view will not update.	
+
+	int		count	=	proj_list.size();
+
+	proj_list.last()->move( 0, (count - 1) * ProjectButton::fixed_height() );
+	ui->scrollArea->widget()->setMinimumHeight( count * ProjectButton::fixed_height() );
+}
+
 
 
 
@@ -146,6 +199,5 @@ void	MainWindow::open_slot()
 void	MainWindow::clone_slot()
 {
 	CloneWindow		*clone_window	=	new CloneWindow( this );
-	connect(	clone_window,	SIGNAL(close()),	clone_window,	SLOT(deleteLater())		);
 	clone_window->show();
 }

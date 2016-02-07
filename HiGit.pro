@@ -48,8 +48,7 @@ SOURCES		+=	main.cpp\
 				src/git_cmd/git_clone.cpp\
 				src/git_cmd/git_init.cpp\
 				src/git_cmd/git_status.cpp\
-				src/git_cmd/git_rev_parse.cpp \
-    mainwindowaaaaaa.cpp
+				src/git_cmd/git_rev_parse.cpp 
     
 
 HEADERS		+=	ui/mainwindow.h\
@@ -64,8 +63,7 @@ HEADERS		+=	ui/mainwindow.h\
 				src/git_cmd/git_init.h\
 				src/git_cmd/git_status.h\
 				src/git_cmd/git_rev_parse.h\
-				src/def.h \
-    mainwindowaaaaaa.h
+				src/def.h 
 				
 
 FORMS    	+= 	ui/mainwindow.ui\

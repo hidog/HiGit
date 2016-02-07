@@ -57,10 +57,18 @@ void	GitClone::exec( GitParameter param )
 		fixed_src	=	QString("%1://%2:%3@%4").arg(type).arg(username).arg(password).arg(host);
 	}
 	else
+	{
+		username	=	"";
+		password	=	"";
 		fixed_src	=	src;
+	}
 
 	args << fixed_src;
 	args << dest;	
+
+	// set member data. it will use when git clone finish.
+	path	=	dest;
+	name	=	content;
 
 	// init data.
 	output_list.clear();
@@ -143,11 +151,18 @@ void	GitClone::clone_finish_slot( int exit_code, QProcess::ExitStatus exit_statu
 	delete		proc;
 
 	QByteArray	output;
+	DbProj		proj;
+
+	proj.path		=	path.toStdString();
+	proj.name		=	name.toStdString();
+	proj.username	=	username.toStdString();
+	proj.password	=	password.toStdString();;
 
 	switch(exit_status)
 	{
 		case QProcess::NormalExit:
 			PRINT_ENUM(QProcess::NormalExit);
+			emit update_proj_button_signal( proj );
 			break;
 		case QProcess::CrashExit:
 			PRINT_ENUM(QProcess::CrashExit);

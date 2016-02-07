@@ -57,7 +57,7 @@ void	DbManager::load_main_db()
 /*********************************************************************
 	add_proj
 **********************************************************************/
-bool	DbManager::add_proj( string path, string name, string username, string password )
+bool	DbManager::add_proj( DbProj proj )
 {
 	int		i,	rc;
 	char	*err_msg;	
@@ -65,7 +65,7 @@ bool	DbManager::add_proj( string path, string name, string username, string pass
 
 	// 
 	sprintf( str, "INSERT OR IGNORE INTO GIT_PROJ_TABLE(PATH,NAME,USERNAME,PASSWORD) VALUES('%s','%s','%s','%s')" 
-			,path.c_str(), name.c_str(), username.c_str(), password.c_str() );
+			, proj.path.c_str(), proj.name.c_str(), proj.username.c_str(), proj.password.c_str() );
 
 	rc	=	sqlite3_exec( db, str, 0, 0, &err_msg );
 	if( rc != SQLITE_OK )
@@ -125,13 +125,13 @@ bcListDbProj    DbManager::get_all_proj()
 /*********************************************************************
 	is_exist_path
 **********************************************************************/
-bool	DbManager::is_exist_path( string path )
+bool	DbManager::is_exist_proj( DbProj proj )
 {
 	int		rc;
 	char	str[HIGIT_DB_BUF_SIZE];
 	int		result;
 
-	sprintf( str, "SELECT COUNT(*) FROM GIT_PROJ_TABLE WHERE PATH='%s'", path.c_str() );
+	sprintf( str, "SELECT COUNT(*) FROM GIT_PROJ_TABLE WHERE PATH='%s'", proj.path.c_str() );
 
 	//
 	sqlite3_stmt	*stmt;

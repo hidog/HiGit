@@ -4,8 +4,9 @@
 #include <QObject>
 #include <QProcess>
 #include <QString>
-
 #include <string>
+
+#include "def.h"
 
 #ifndef Q_MOC_RUN
 #	include <boost/function.hpp>

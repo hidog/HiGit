@@ -58,18 +58,18 @@
      <rect>
       <x>30</x>
       <y>60</y>
-      <width>431</width>
-      <height>481</height>
+      <width>430</width>
+      <height>480</height>
      </rect>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOn</enum>
+     <enum>Qt::ScrollBarAsNeeded</enum>
     </property>
     <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOn</enum>
+     <enum>Qt::ScrollBarAsNeeded</enum>
     </property>
     <property name="widgetResizable">
      <bool>true</bool>
@@ -79,9 +79,15 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>413</width>
-       <height>463</height>
+       <width>428</width>
+       <height>478</height>
       </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
@@ -104,13 +110,14 @@
     </widget>
    </widget>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>495</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="defaultUp">
@@ -123,15 +130,8 @@
     <addaction name="actionCreate"/>
     <addaction name="actionClone"/>
    </widget>
-   <widget class="QMenu" name="menuTest">
-    <property name="title">
-     <string>test</string>
-    </property>
-   </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuTest"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionClone">
    <property name="text">
     <string>Clone</string>

@@ -38,7 +38,6 @@ QString		GitRevParse::get_root_path( QString path )
 	if( result )
 	{
 		QString		root_path	=	proc->readAll();
-		qDebug() << root_path;
 		return	root_path;
 	}
 	else

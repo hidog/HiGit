@@ -50,7 +50,7 @@ public:
 
 signals:
 
-	void			finished_signal();
+	void		finished_signal();
 
 
 protected:
