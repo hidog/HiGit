@@ -3,9 +3,13 @@
 
 #include <QWidget>
 
+
 namespace Ui {
-class LogWidget;
+	class LogWidget;
 }
+
+
+
 
 class LogWidget : public QWidget
 {

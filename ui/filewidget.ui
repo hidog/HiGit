@@ -83,21 +83,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QScrollArea" name="scrollArea">
-       <property name="widgetResizable">
-        <bool>true</bool>
-       </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>499</width>
-          <height>474</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
+      <widget class="QTableView" name="fileTView"/>
      </item>
     </layout>
    </item>

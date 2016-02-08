@@ -4,6 +4,7 @@
 
 #include <QPushButton>
 #include "../src/db_manager.h"
+#include "../src/def.h"
 
 
 #define	PJ_BUTTON_WIDTH			430
@@ -39,6 +40,8 @@ public:
 	virtual void	mouseDoubleClickEvent( QMouseEvent *event );
 
 public slots:
+
+	void	pj_window_destroyed_slot();
 
 
 signals:

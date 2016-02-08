@@ -18,6 +18,7 @@
 	#include <boost/foreach.hpp>
 #endif
 
+
 using namespace std;
 
 /*******************************************************************
@@ -45,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     
     // load db data to init.
     init_proj_button();
+
 }
 
 

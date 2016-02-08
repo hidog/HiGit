@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\model\file_model.cpp" />
     <ClCompile Include="..\src\db_manager.cpp" />
     <ClCompile Include="..\src\git_cmd\git_clone.cpp" />
     <ClCompile Include="..\src\git_cmd\git_command.cpp" />
@@ -74,6 +75,7 @@
     <ClCompile Include="..\ui\userpwdialog.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\model\file_model.h" />
     <ClInclude Include="..\src\db_manager.h" />
     <ClInclude Include="..\src\def.h" />
     <ClInclude Include="..\src\git_cmd\git_clone.h" />

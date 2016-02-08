@@ -14,6 +14,9 @@
     <Filter Include="src\git_cmd">
       <UniqueIdentifier>{23e14199-9a27-41b0-8edc-14ae6d7e5a15}</UniqueIdentifier>
     </Filter>
+    <Filter Include="model">
+      <UniqueIdentifier>{fcfda8fd-d9f9-49f1-abda-2fad05e26386}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -67,6 +70,9 @@
     <ClCompile Include="..\ui\filewidget.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\model\file_model.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
@@ -116,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="..\ui\logwidget.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\model\file_model.h">
+      <Filter>model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

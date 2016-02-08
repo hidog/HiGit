@@ -60,7 +60,7 @@ void	DbManager::load_main_db()
 **********************************************************************/
 bool	DbManager::add_proj( DbProj proj )
 {
-	int		i,	rc;
+	int		rc;
 	char	*err_msg;	
 	char	str[HIGIT_DB_BUF_SIZE];
 

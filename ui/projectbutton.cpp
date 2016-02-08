@@ -1,6 +1,10 @@
 #include "projectbutton.h"
 #include "ui_projectbutton.h"
+
 #include "projwindow.h"
+#include <QDebug>
+
+
 
 
 /*******************************************************************
@@ -31,10 +35,23 @@ void	ProjectButton::mouseDoubleClickEvent( QMouseEvent *event )
 {
 	if( pj_window == NULL )
 	{
-		pj_window		=	new ProjWindow();
+		pj_window		=	new ProjWindow( proj, this );
+		connect(	pj_window,	SIGNAL(destroyed()),	this,	SLOT(pj_window_destroyed_slot())	);
 		pj_window->show();
 	}
 }
+
+
+
+
+/*******************************************************************
+	pj_window_destroyed_slot
+********************************************************************/
+void	ProjectButton::pj_window_destroyed_slot()
+{
+	pj_window	=	NULL;
+}
+
 
 
 

@@ -70,6 +70,8 @@ bool	CloneWindow::get_depth_state()
 		return	false;
 	else if( ui->depthCBox->checkState() == Qt::Checked )
 		return	true;
+	else
+		return	false;
 }
 
 
