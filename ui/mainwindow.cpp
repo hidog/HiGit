@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+	this->setWindowTitle(QString("HiGit"));
+
 	proj_list.clear();
 
 	init();

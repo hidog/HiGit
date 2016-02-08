@@ -9,6 +9,7 @@
 ProjectButton::ProjectButton( DbProj _proj, QWidget *parent) 
 	:	QPushButton(parent),
 		proj(_proj),
+		pj_window(NULL),
 		ui(new Ui::ProjectButton)
 {
     ui->setupUi(this);
@@ -18,7 +19,6 @@ ProjectButton::ProjectButton( DbProj _proj, QWidget *parent)
 	ui->nameLEdit->setText( QString(proj.name.c_str()) );
 	ui->pathLabel->setText( QString(proj.path.c_str()) );
 
-	connect(	this,	SIGNAL(test_sig()),	this,	SLOT(test_slot())	);
 }
 
 
@@ -29,7 +29,11 @@ ProjectButton::ProjectButton( DbProj _proj, QWidget *parent)
 ********************************************************************/
 void	ProjectButton::mouseDoubleClickEvent( QMouseEvent *event )
 {
-	emit test_sig();
+	if( pj_window == NULL )
+	{
+		pj_window		=	new ProjWindow();
+		pj_window->show();
+	}
 }
 
 
@@ -43,18 +47,6 @@ ProjectButton::~ProjectButton()
     delete ui;
 }
 
-
-
-
-
-/*******************************************************************
-	test_slot
-********************************************************************/
-void	ProjectButton::test_slot()
-{
-	ProjWindow	*pw		=	new ProjWindow();
-	pw->show();
-}
 
 
 

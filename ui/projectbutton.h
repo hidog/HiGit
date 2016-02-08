@@ -16,6 +16,10 @@ class ProjectButton;
 
 
 
+// ~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~
+class ProjWindow;
+
+
 
 
 /*******************************************************************
@@ -35,17 +39,18 @@ public:
 	virtual void	mouseDoubleClickEvent( QMouseEvent *event );
 
 public slots:
-	void	test_slot();
+
 
 signals:
-	void	test_sig();
+
 
 
 
 private:
     Ui::ProjectButton *ui;
 
-	DbProj	proj;
+	DbProj			proj;
+	ProjWindow		*pj_window;
 };
 
 #endif // PROJECTBUTTON_H

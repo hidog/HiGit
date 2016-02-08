@@ -61,6 +61,12 @@
     <ClCompile Include="..\src\git_cmd\git_init.cpp">
       <Filter>src\git_cmd</Filter>
     </ClCompile>
+    <ClCompile Include="..\ui\logwidget.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\filewidget.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
@@ -104,6 +110,12 @@
     </ClInclude>
     <ClInclude Include="..\src\git_cmd\git_init.h">
       <Filter>src\git_cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\filewidget.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\logwidget.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

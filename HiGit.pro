@@ -51,6 +51,8 @@ SOURCES		+=	main.cpp\
 				ui/userpwdialog.cpp\
 				ui/projectbutton.cpp\
 				ui/projwindow.cpp\
+				ui/logwidget.cpp\
+				ui/filewidget.cpp\
 				src/git_control.cpp\
 				src/db_manager.cpp\
 				src/sqlite3.c\
@@ -58,13 +60,16 @@ SOURCES		+=	main.cpp\
 				src/git_cmd/git_clone.cpp\
 				src/git_cmd/git_init.cpp\
 				src/git_cmd/git_status.cpp\
-				src/git_cmd/git_rev_parse.cpp    
+				src/git_cmd/git_rev_parse.cpp
+
 
 HEADERS		+=	ui/mainwindow.h\
 				ui/clonewindow.h\
 				ui/userpwdialog.h\
 				ui/projectbutton.h\
 				ui/projwindow.h\
+				ui/logwidget.h\
+				ui/filewidget.h\
 				src/git_control.h\
 				src/db_manager.h\
 				src/sqlite3.h\
@@ -75,10 +80,11 @@ HEADERS		+=	ui/mainwindow.h\
 				src/git_cmd/git_rev_parse.h\
 				src/def.h
 
-				
 
 FORMS    	+= 	ui/mainwindow.ui\
 				ui/clonewindow.ui\
 				ui/userpwdialog.ui\
-				ui/projectbutton.ui \
-				ui/projwindow.ui
+				ui/projectbutton.ui\
+				ui/projwindow.ui\
+				ui/logwidget.ui\
+				ui/filewidget.ui

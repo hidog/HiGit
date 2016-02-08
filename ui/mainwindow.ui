@@ -142,11 +142,6 @@
     <string>Create</string>
    </property>
   </action>
-  <action name="actionDelete">
-   <property name="text">
-    <string>Delete</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
