@@ -20,6 +20,16 @@
 		6D2F797A1C55241000312F1A /* userpwdialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = userpwdialog.cpp; path = ../ui/userpwdialog.cpp; sourceTree = "<group>"; };
 		6D2F797B1C55241000312F1A /* userpwdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = userpwdialog.h; path = ../ui/userpwdialog.h; sourceTree = "<group>"; };
 		6D40E9311C53BF08009D76D8 /* def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = def.h; path = ../src/def.h; sourceTree = "<group>"; };
+		6D5388851C68FD6300DA4765 /* git_rev_parse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_rev_parse.cpp; path = ../src/git_cmd/git_rev_parse.cpp; sourceTree = "<group>"; };
+		6D5388861C68FD6300DA4765 /* git_rev_parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_rev_parse.h; path = ../src/git_cmd/git_rev_parse.h; sourceTree = "<group>"; };
+		6D5388871C68FD7A00DA4765 /* filewidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = filewidget.cpp; path = ../ui/filewidget.cpp; sourceTree = "<group>"; };
+		6D5388881C68FD7A00DA4765 /* filewidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = filewidget.h; path = ../ui/filewidget.h; sourceTree = "<group>"; };
+		6D5388891C68FD7A00DA4765 /* logwidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = logwidget.cpp; path = ../ui/logwidget.cpp; sourceTree = "<group>"; };
+		6D53888A1C68FD7A00DA4765 /* logwidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = logwidget.h; path = ../ui/logwidget.h; sourceTree = "<group>"; };
+		6D53888B1C68FD7A00DA4765 /* projwindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = projwindow.cpp; path = ../ui/projwindow.cpp; sourceTree = "<group>"; };
+		6D53888C1C68FD7A00DA4765 /* projwindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = projwindow.h; path = ../ui/projwindow.h; sourceTree = "<group>"; };
+		6D53888E1C68FD9E00DA4765 /* file_model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = file_model.cpp; path = ../model/file_model.cpp; sourceTree = "<group>"; };
+		6D53888F1C68FD9E00DA4765 /* file_model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = file_model.h; path = ../model/file_model.h; sourceTree = "<group>"; };
 		6DB99B271C5520F100998E69 /* git_clone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_clone.cpp; path = ../src/git_cmd/git_clone.cpp; sourceTree = "<group>"; };
 		6DB99B281C5520F100998E69 /* git_clone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_clone.h; path = ../src/git_cmd/git_clone.h; sourceTree = "<group>"; };
 		6DB99B291C5520F100998E69 /* git_command.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_command.cpp; path = ../src/git_cmd/git_command.cpp; sourceTree = "<group>"; };
@@ -44,9 +54,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		6D53888D1C68FD8E00DA4765 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				6D53888E1C68FD9E00DA4765 /* file_model.cpp */,
+				6D53888F1C68FD9E00DA4765 /* file_model.h */,
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
 		6D9530D51C36B64C0004B577 = {
 			isa = PBXGroup;
 			children = (
+				6D53888D1C68FD8E00DA4765 /* model */,
 				6DE4A6021C36B816003F4F94 /* ui */,
 				6DE4A5FF1C36B800003F4F94 /* main.cpp */,
 				6DE4A5FE1C36B7E4003F4F94 /* src */,
@@ -56,6 +76,8 @@
 		6DB99B261C5520E100998E69 /* git_cmd */ = {
 			isa = PBXGroup;
 			children = (
+				6D5388851C68FD6300DA4765 /* git_rev_parse.cpp */,
+				6D5388861C68FD6300DA4765 /* git_rev_parse.h */,
 				6DEE53441C60DD9E0064F3BB /* git_init.cpp */,
 				6DEE53451C60DD9E0064F3BB /* git_init.h */,
 				6DEE53421C60DD350064F3BB /* git_status.cpp */,
@@ -86,6 +108,12 @@
 		6DE4A6021C36B816003F4F94 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				6D5388871C68FD7A00DA4765 /* filewidget.cpp */,
+				6D5388881C68FD7A00DA4765 /* filewidget.h */,
+				6D5388891C68FD7A00DA4765 /* logwidget.cpp */,
+				6D53888A1C68FD7A00DA4765 /* logwidget.h */,
+				6D53888B1C68FD7A00DA4765 /* projwindow.cpp */,
+				6D53888C1C68FD7A00DA4765 /* projwindow.h */,
 				6DF72C3E1C5E671A001AFC2E /* projectbutton.cpp */,
 				6DF72C3F1C5E671A001AFC2E /* projectbutton.h */,
 				6D2F797A1C55241000312F1A /* userpwdialog.cpp */,

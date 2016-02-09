@@ -17,7 +17,7 @@ FileWidget::FileWidget(QWidget *parent) :
     ui->setupUi(this);
 
 	model	=	new FileModel( this );
-	ui->fileTView->setModel( model );
+	//ui->fileTView->setModel( model );
 }
 
 
@@ -40,16 +40,12 @@ FileWidget::~FileWidget()
 void	FileWidget::set_root_path( QString _path )
 {
 	root_path	=	_path;
-
-	// init view.
-	init_file_list();
+    
+    model->set_root_path( root_path );
+    model->init_file_list();
+    
+	ui->fileTView->setModel( model );
+    //this->repaint();
 }
 
 
-
-/*******************************************************************
-	init_file_list
-********************************************************************/
-void	FileWidget::init_file_list()
-{
-}

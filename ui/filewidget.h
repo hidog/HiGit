@@ -30,8 +30,9 @@ public:
     ~FileWidget();
 
 	void	set_root_path( QString _path );
-	void	init_file_list();
 
+    
+    
 private:
     Ui::FileWidget *ui;
 
