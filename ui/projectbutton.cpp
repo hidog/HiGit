@@ -18,7 +18,7 @@ ProjectButton::ProjectButton( DbProj _proj, QWidget *parent)
 {
     ui->setupUi(this);
 
-	this->resize( PJ_BUTTON_WIDTH, PJ_BUTTON_HEIGHT );
+	//this->resize( PJ_BUTTON_WIDTH, PJ_BUTTON_HEIGHT );
 
 	ui->nameLEdit->setText( QString(proj.name.c_str()) );
 	ui->pathLabel->setText( QString(proj.path.c_str()) );

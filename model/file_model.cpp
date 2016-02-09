@@ -16,7 +16,6 @@ FileModel::FileModel( QObject *parent ) :
 	
 	dir.setSorting( QDir::Name | QDir::DirsFirst );
 	dir.setFilter( QDir::NoDot | QDir::Dirs | QDir::Files );
-
 }
 
 

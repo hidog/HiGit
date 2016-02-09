@@ -78,15 +78,14 @@ void    MainWindow::init_proj_button()
 
 	BOOST_FOREACH( DbProj proj, list )
 	{
-		proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget() ) );
-		//proj_list.push_back( new ProjectButton( proj, ui->areaVLayout->widget()) );
-
-		//proj_list.last()->move( 0, count*ProjectButton::fixed_height() );
+		proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget() ) );		
+		proj_list.last()->move( 0, count*ProjectButton::fixed_height() );
+		
 		count++;
 	}
 
-	int		width	=	ProjectButton::fixed_width();
-	int		height	=	ProjectButton::fixed_height() * proj_list.size();;
+	//int		width	=	ProjectButton::fixed_width();
+	int		height	=	ProjectButton::fixed_height() * proj_list.size();
 
 	ui->scrollArea->widget()->setMinimumHeight( height );
 }

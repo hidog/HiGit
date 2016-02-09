@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>495</width>
-    <height>606</height>
+    <width>569</width>
+    <height>807</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -70,10 +70,6 @@
           <string>open</string>
          </property>
         </widget>
-        <zorder>initButton</zorder>
-        <zorder>cloneButton</zorder>
-        <zorder>openButton</zorder>
-        <zorder>scrollArea</zorder>
        </widget>
       </item>
       <item>
@@ -100,27 +96,27 @@
           <height>200</height>
          </size>
         </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustToContents</enum>
+        </property>
         <property name="widgetResizable">
          <bool>true</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignJustify|Qt::AlignVCenter</set>
         </property>
         <widget class="QWidget" name="scrollAreaWidgetContents">
          <property name="geometry">
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>469</width>
-           <height>412</height>
+           <width>543</width>
+           <height>613</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QPushButton" name="pushButton">
-            <property name="text">
-             <string>PushButton</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </widget>
        </widget>
       </item>
@@ -134,7 +130,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>495</width>
+     <width>569</width>
      <height>25</height>
     </rect>
    </property>
