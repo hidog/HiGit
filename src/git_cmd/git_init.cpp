@@ -29,36 +29,40 @@ bool    GitInit::exec( QString path )
     QStringList     args;
     
     bool    result;
+	bool	proc_result;
     
     args << "init";
     args << path;
 
 	proc->start( "git", args );    
-    result  =   proc->waitForFinished();
+    proc_result  =   proc->waitForFinished();
     
-    if( result == true )
+    if( proc_result == true )
     {
         QByteArray  output  =   proc->readAll();
 
 		if( output.contains("Initialized empty Git repository") == true )
 		{
 			QMessageBox::about( NULL, "init", "init success" );		
-			return	true;
+			result	=	true;
 		}
 		else if( output.contains("Reinitialized existing Git repository") == true )
 		{
 			QMessageBox::about( NULL, "init", "re-init." );		
-			return	true;
+			result	=	true;
 		}
 		else
 		{
 			QMessageBox::about( NULL, "init", "error" );		
-			return	false;
+			result	=	false;
 		}
     }
     else
 	{
 		QMessageBox::about( NULL, "init", "init fail" );		
-		return	false;
+		result	=	false;
 	}
+
+	delete	proc;
+	return	result;
 }

@@ -2,19 +2,24 @@
 #define GIT_STATUS_H
 
 #include <QString>
-
+#include "git_command.h"
+#include "../def.h"
 
 
 /*******************************************************************
 	GitStatus
 ********************************************************************/
-class   GitStatus
+class   GitStatus : public GitCommand
 {
 public:
-    GitStatus();
+    GitStatus( QObject *parent = 0 );
     ~GitStatus();
     
-    bool    open_folder( QString path );
+	QString			get_file_status( QString path, QString filename );
+	QStringList		get_delete_files( QString path );
+
+	void	exec( GitParameter param ) { ERRLOG("no use.") }
+
     
 private:
 };

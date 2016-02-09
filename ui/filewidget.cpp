@@ -34,7 +34,7 @@ void	FileWidget::refresh_view_slot()
 	ui->fileTView->setModel( model );
 
 	ui->fileTView->setColumnWidth( 1, 300 );
-	ui->fileTView->setColumnWidth( 2, 70 );
+	ui->fileTView->setColumnWidth( 2, 80 );
 	ui->fileTView->setColumnWidth( 3, 70 );
 }
 

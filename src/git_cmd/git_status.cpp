@@ -1,11 +1,16 @@
 #include "git_status.h"
 
 #include <QProcess>
+#include "../def.h"
+#include <QDebug>
+
+
 
 /*******************************************************************
 	GitStatus
 ********************************************************************/
-GitStatus::GitStatus()
+GitStatus::GitStatus( QObject *parent ) :
+	GitCommand(parent)
 {}
 
 
@@ -19,27 +24,121 @@ GitStatus::~GitStatus()
 
 
 
+
 /*******************************************************************
-	open_folder
+	get_delete_files
 ********************************************************************/
-bool    GitStatus::open_folder( QString path )
+QStringList		GitStatus::get_delete_files( QString path )
 {
-    QProcess        *proc   =   new QProcess();
-    QStringList     args;
-    
-    bool    result;
-    
-    args << "status";
-    args << path;
-    
-    result  =   proc->waitForFinished();
-    
-    if( result == true )
-    {
-        QByteArray  output  =   proc->readAll();
-        
-        return  true;
-    }
-    else
-        return  false;
+	QProcess		*proc	=	new QProcess();
+	QStringList		args;
+
+	//qDebug() << path << " " << filename;
+
+	proc->setWorkingDirectory( path );
+	args << "status";
+	proc->start( "git", args );    
+
+	bool	result;
+	result	=	proc->waitForFinished();
+
+	QString			status;
+	QByteArray		output,	str;
+	int				index;
+	QRegExp			rexp( "(\\S+)" );
+	QString			filename;
+
+	QStringList		list;
+
+	if( result == true )
+	{
+		output	=	proc->readAll();
+		remain_msg	=	"";
+
+		while( output.length() > 0 )
+		{
+			str		=	splite_git_output( output );
+			if( str.contains("deleted:") )
+			{
+				//qDebug() << str;
+				index	=	str.indexOf(':');
+				if( rexp.indexIn( str, index+1 ) != -1 )
+				{
+					filename	=	rexp.cap(1);
+					index		=	filename.lastIndexOf('/');
+
+					//qDebug() << filename;
+#if 0
+					// 移除folder的sample code.
+					if( index >= 0 )
+						filename.remove( 0, index+1 );
+#endif
+
+					//qDebug() << filename;
+					// 同目錄的才顯示.
+					if( index < 0 )
+						list << filename;
+				}
+				
+			}
+		}	
+	}
+	else
+		status	=	QString("");
+
+	delete	proc;
+	return	list;
+}
+
+
+/*******************************************************************
+	get_file_status
+********************************************************************/
+QString		GitStatus::get_file_status( QString path, QString filename )
+{
+	QProcess		*proc	=	new QProcess();
+	QStringList		args;
+
+	//qDebug() << path << " " << filename;
+
+	proc->setWorkingDirectory( path );
+
+	args << "status";
+	args << filename;
+
+	proc->start( "git", args );    
+
+	bool	result;
+	result	=	proc->waitForFinished();
+
+	QString		status;
+
+	if( result == true )
+	{
+		QByteArray	output	=	proc->readAll();
+
+		if( output.contains("nothing to commit, working directory clean") == true )
+			status	=	"tracked";
+
+		else if( output.contains("modified:") == true )
+			status	=	"modified";
+
+		else if( output.contains("new file:") == true )
+			status	=	"added";
+
+		else if( output.contains("Untracked files:") == true )
+			status	=	"untracked";
+
+		else if( output.contains("deleted:") == true )
+			status	=	"deleted";
+
+		else
+			ERRLOG("error. output = %s", qPrintable(output) )
+		
+	}
+	else
+		status	=	QString("");
+
+	delete	proc;
+	return	status;
 }

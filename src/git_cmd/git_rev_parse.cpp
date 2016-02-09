@@ -33,19 +33,19 @@ QString		GitRevParse::get_root_path( QString path )
 	proc->setWorkingDirectory(path);
 	proc->start( "git", args );
 
-	bool	result	=	proc->waitForFinished();
+	bool		result	=	proc->waitForFinished();
+	QString		root_path;
 
 	if( result )
 	{
-		QString		root_path	=	proc->readAll();
+		root_path	=	proc->readAll();
 
 		while( root_path.contains("\n") )
 			root_path.replace( "\n", "" );
-
-		return	root_path;
 	}
 	else
-	{
-		return	QString("");
-	}
+		root_path	=	QString("");
+
+	delete	proc;
+	return	root_path;
 }

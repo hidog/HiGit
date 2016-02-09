@@ -1,7 +1,7 @@
 #include "file_model.h"
 
 #include <QDebug>
-
+#include "../src/git_cmd/git_status.h"
 
 
 /*******************************************************************
@@ -36,7 +36,7 @@ FileModel::~FileModel()
 ********************************************************************/
 int		FileModel::rowCount( const QModelIndex &parent ) const 
 { 
-    return	file_list.size();
+	return	file_list.size() + delete_file_list.size();
 }
 
 
@@ -47,7 +47,7 @@ int		FileModel::rowCount( const QModelIndex &parent ) const
 ********************************************************************/
 int		FileModel::columnCount( const QModelIndex &parent ) const 
 { 
-    return	head_list.size();;
+    return	head_list.size();
 }
 
 
@@ -103,6 +103,7 @@ void	FileModel::enter_dir_slot( const QModelIndex &index )
 	int			row		=	index.row();
 	QFileInfo	info	=	file_list[row];
 	QString		path	=	info.fileName();
+	GitStatus	git_status;
 
 	//qDebug() << path;
 
@@ -113,7 +114,9 @@ void	FileModel::enter_dir_slot( const QModelIndex &index )
 		else
 			dir.cd(path);
 
+		delete_file_list	=	git_status.get_delete_files( dir.path() );
 		file_list	=	get_file_list();
+
 
 		/*QList<QFileInfo>::Iterator	itr;
 		for( itr = file_list.begin(); itr != file_list.end(); ++itr )
@@ -137,6 +140,8 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 
 	//qDebug () << col << " " << row;
 
+	QString		filename	=	row < file_list.size() ? file_list[row].fileName() : delete_file_list.at( row - file_list.size() );
+
 	if (role == Qt::DisplayRole)
 	{
         switch( col )
@@ -144,12 +149,41 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
             case 0:
                 return QString("%1").arg(row);
             case 1:
-                return file_list[row].fileName();
+				return	filename;
+				/*if( row < file_list.size() )
+					return	file_list[row].fileName();
+				else
+					return	delete_file_list.at(row - file_list.size());*/
             case 2:
-                return QString("test");//file_list[index.row()].extends();
+				if( row < file_list.size() )
+				{
+					if( file_list[row].isFile() == true )
+					{
+						GitStatus	git_status;
+						return	git_status.get_file_status( dir.path(), filename );
+						//return QString("test");//file_list[index.row()].extends();
+					}
+					else
+						return	QString("dir");
+				}
+				else
+				{
+					GitStatus	git_status;
+					return	git_status.get_file_status( dir.path(), filename );
+				}
 				
+
             case 3:
-				return	file_list[row].suffix();
+				if( row < file_list.size() )
+				{
+					if( file_list[row].isDir() == true )
+						return	QString("dir");
+					else
+						return	get_extension( filename );
+				}
+				else
+					return	get_extension( filename );
+				//return	file_list[row].suffix();
 
                 /*if( file_list[row].isDir() == true )
 					return	QString("");
@@ -169,6 +203,22 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 
 
 
+
+/*******************************************************************
+	get_extension
+********************************************************************/
+QString		FileModel::get_extension( QString filename ) const
+{
+	int		index	=	filename.lastIndexOf('.');
+	if( index < 0 )
+		return	QString("");
+	else
+		return	filename.mid( index+1 );
+
+	//return	QString("");
+}
+
+
 /*******************************************************************
 	set_root_path
 ********************************************************************/
@@ -185,7 +235,10 @@ void    FileModel::set_root_path( QString path )
 ********************************************************************/
 void    FileModel::init_file_list()
 {
-	file_list   =	get_file_list();
+	GitStatus	git_status;
+
+	delete_file_list	=	git_status.get_delete_files( dir.path() );
+	file_list			=	get_file_list();
 
 	/*QList<QFileInfo>::Iterator	itr;
     for( itr = file_list.begin(); itr != file_list.end(); ++itr )

@@ -8,8 +8,8 @@
 /*******************************************************************
 	GitClone
 ********************************************************************/
-GitClone::GitClone( QObject *parent )
-    :	GitCommand(parent)
+GitClone::GitClone( QObject *parent ) :	
+	GitCommand(parent)
 {}
 
 

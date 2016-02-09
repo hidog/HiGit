@@ -28,6 +28,7 @@ public:
 
 	void	refresh_view();
 
+	QString			get_extension( QString filename ) const;
 	QVariant		data(const QModelIndex &index, int role = Qt::DisplayRole) const ;
 	QVariant		headerData(int section, Qt::Orientation orientation, int role) const ;
     
@@ -48,6 +49,8 @@ private:
     
     QDir            dir;
     QFileInfoList   file_list;
+
+	QStringList		delete_file_list;
 
 	QModelIndex		last_index;
     
