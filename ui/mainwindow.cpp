@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	}
     
     // load db data to init.
-    init_proj_button();
+	init_proj_button();
 
 }
 
@@ -74,10 +74,14 @@ void    MainWindow::init_proj_button()
 
 	int		count	=	0;
 
+	
+
 	BOOST_FOREACH( DbProj proj, list )
 	{
 		proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget() ) );
-		proj_list.last()->move( 0, count*ProjectButton::fixed_height() );
+		//proj_list.push_back( new ProjectButton( proj, ui->areaVLayout->widget()) );
+
+		//proj_list.last()->move( 0, count*ProjectButton::fixed_height() );
 		count++;
 	}
 
@@ -156,23 +160,26 @@ void	MainWindow::init_slot()
 void	MainWindow::open_slot()
 {
 	QString		path		=	QFileDialog::getExistingDirectory();
-	QString		root_path	=	git_ctrl->check_exist_git_repository(path);
+	if( path.size() > 0 )
+	{
+		QString		root_path	=	git_ctrl->check_exist_git_repository(path);
 
-    if( root_path.size() > 0 )
-    {    
-		QString		name	=	git_ctrl->get_proj_name(root_path);
-		DbProj		proj;
+		if( root_path.size() > 0 )
+		{    
+			QString		name	=	git_ctrl->get_proj_name(root_path);
+			DbProj		proj;
 
-		proj.name		=	name.toStdString();
-		proj.path		=	root_path.toStdString();
-		proj.username	=	"";
-		proj.password	=	"";
+			proj.name		=	name.toStdString();
+			proj.path		=	root_path.toStdString();
+			proj.username	=	"";
+			proj.password	=	"";
 
-		if( db_mng->is_exist_proj( proj ) == false )
-		{
-			// update ui, db and list.
-			db_mng->add_proj( proj );
-			add_ui_proj( proj );
+			if( db_mng->is_exist_proj( proj ) == false )
+			{
+				// update ui, db and list.
+				db_mng->add_proj( proj );
+				add_ui_proj( proj );
+			}
 		}
 	}
 }

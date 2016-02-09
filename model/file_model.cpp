@@ -11,6 +11,12 @@ FileModel::FileModel( QObject *parent ) :
 	QAbstractTableModel( parent )
 {
     head_list << " " << "path" << "status" << "extends";
+	
+	last_index	=	createIndex( 0, 0 );
+	
+	dir.setSorting( QDir::Name | QDir::DirsFirst );
+	dir.setFilter( QDir::NoDot | QDir::Dirs | QDir::Files );
+
 }
 
 
@@ -49,29 +55,115 @@ int		FileModel::columnCount( const QModelIndex &parent ) const
 
 
 /*******************************************************************
+	refresh_view
+	這邊會紀錄上一次的file_size
+	取max, 避免有網格沒更新到.
+	(例如從數量多的folder移動到數量少的)
+	P.S. 畫面更新沒測試過,有空在測試,包含效能的影響.
+********************************************************************/
+void	FileModel::refresh_view()
+{
+	int		row		=	file_list.size() > last_index.row() ? file_list.size() : last_index.row();;
+	int		col		=	head_list.size();
+
+	QModelIndex		left_top		=	createIndex( 0, 0 );
+	QModelIndex		right_bottom	=	createIndex( row, col );
+
+	emit dataChanged( left_top, right_bottom );
+	emit refresh_signal();
+
+	last_index	=	createIndex( file_list.size(), col );
+
+}
+
+
+
+
+
+/*******************************************************************
+	get_file_list
+********************************************************************/
+QFileInfoList	FileModel::get_file_list()
+{
+	QFileInfoList	list	=	dir.entryInfoList();
+
+	if( dir.path() == root_path )
+		list.removeAt(0);
+
+	return	list;
+}
+
+
+
+
+/*******************************************************************
+	enter_dir
+********************************************************************/
+void	FileModel::enter_dir_slot( const QModelIndex &index )
+{
+	int			row		=	index.row();
+	QFileInfo	info	=	file_list[row];
+	QString		path	=	info.fileName();
+
+	//qDebug() << path;
+
+	if( file_list[row].isDir() )
+	{
+		if( path == QString("..") )
+			dir.cdUp();
+		else
+			dir.cd(path);
+
+		file_list	=	get_file_list();
+
+		/*QList<QFileInfo>::Iterator	itr;
+		for( itr = file_list.begin(); itr != file_list.end(); ++itr )
+			qDebug() << itr->fileName();*/
+
+		//emit refresh_signal();
+
+		refresh_view();
+	}
+}
+
+
+
+/*******************************************************************
 	data
 ********************************************************************/
 QVariant	FileModel::data( const QModelIndex &index, int role ) const
 {
+	int		col		=	index.column();
+	int		row		=	index.row();
+
+	//qDebug () << col << " " << row;
+
 	if (role == Qt::DisplayRole)
 	{
-        switch( index.column() )
+        switch( col )
         {
             case 0:
-                return QString(" ");
+                return QString("%1").arg(row);
             case 1:
-                return file_list[index.row()].fileName();
+                return file_list[row].fileName();
             case 2:
                 return QString("test");//file_list[index.row()].extends();
+				
             case 3:
-                return QString("status");
+				return	file_list[row].suffix();
+
+                /*if( file_list[row].isDir() == true )
+					return	QString("");
+				else
+				{
+					QString		name	=	file_list[row].fileName();
+					int			index	=	name.lastIndexOf('.');
+					if( index < 0 )
+						return	QString("");
+					else
+						return	name.mid( index+1 );
+				}*/
         }
-        
-        //return  file_list[index.row()].fileName();
-        
-       /* return QString("Row%1, Column%2")
-				   .arg(index.row() + 1)
-				   .arg(index.column() +1);*/
 	}
 	return QVariant();
 }
@@ -94,16 +186,16 @@ void    FileModel::set_root_path( QString path )
 ********************************************************************/
 void    FileModel::init_file_list()
 {
-    file_list   =   dir.entryInfoList();
-    
-    QModelIndex     top_left    =   createIndex( 1, 1 );
-    emit dataChanged( top_left, top_left );
-    
-    //QList<QFileInfo>::iterator  itr;
-    
-    //for( itr = file_list.begin(); itr != file_list.end(); ++itr )
-      //  qDebug() << (*itr).fileName();
+	file_list   =	get_file_list();
+
+	/*QList<QFileInfo>::Iterator	itr;
+    for( itr = file_list.begin(); itr != file_list.end(); ++itr )
+		qDebug() << itr->fileName();*/
+
+	refresh_view();
 }
+
+
 
 
 

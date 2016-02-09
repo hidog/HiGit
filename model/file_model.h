@@ -23,11 +23,23 @@ public:
 	int     rowCount( const QModelIndex &parent = QModelIndex() ) const ;
 	int     columnCount( const QModelIndex &parent = QModelIndex() ) const ;
 
-	QVariant	data(const QModelIndex &index, int role = Qt::DisplayRole) const ;
-	QVariant	headerData(int section, Qt::Orientation orientation, int role) const ;
-    
     void    set_root_path( QString path );
     void    init_file_list();
+
+	void	refresh_view();
+
+	QVariant		data(const QModelIndex &index, int role = Qt::DisplayRole) const ;
+	QVariant		headerData(int section, Qt::Orientation orientation, int role) const ;
+    
+	QFileInfoList	get_file_list();
+
+public slots:
+	void	enter_dir_slot( const QModelIndex &index );
+
+
+signals:
+	void	refresh_signal();
+
 
 private:
     
@@ -36,6 +48,8 @@ private:
     
     QDir            dir;
     QFileInfoList   file_list;
+
+	QModelIndex		last_index;
     
 };
 

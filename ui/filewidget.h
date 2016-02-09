@@ -31,9 +31,20 @@ public:
 
 	void	set_root_path( QString _path );
 
-    
+
+
+
+public slots:
+	void	double_clicked_slot( const QModelIndex &index );
+	void	refresh_view_slot();
+
+signals:
+	void	enter_dir_signal( const QModelIndex & );
     
 private:
+
+	void	set_connect();
+
     Ui::FileWidget *ui;
 
 	FileModel	*model;
