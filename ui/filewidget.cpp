@@ -84,11 +84,6 @@ void	FileWidget::set_root_path( QString _path )
     
     model->set_root_path( root_path );
     model->init_file_list();
-
-	//ui->fileTView->setColumnWidth( 1, 300 );
-	//ui->fileTView->setColumnWidth( 2, 70 );
-	//ui->fileTView->setColumnWidth( 3, 70 );
-
 }
 
 

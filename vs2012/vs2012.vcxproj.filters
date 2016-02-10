@@ -73,6 +73,12 @@
     <ClCompile Include="..\model\file_model.cpp">
       <Filter>model</Filter>
     </ClCompile>
+    <ClCompile Include="..\model\log_model.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\git_cmd\git_log.cpp">
+      <Filter>src\git_cmd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
@@ -125,6 +131,12 @@
     </ClInclude>
     <ClInclude Include="..\model\file_model.h">
       <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\model\log_model.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\git_cmd\git_log.h">
+      <Filter>src\git_cmd</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

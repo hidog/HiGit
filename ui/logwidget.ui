@@ -17,7 +17,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QListView" name="listView"/>
+      <widget class="QTableView" name="logTView"/>
      </item>
      <item>
       <spacer name="verticalSpacer_2">

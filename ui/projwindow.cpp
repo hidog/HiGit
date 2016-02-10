@@ -18,7 +18,7 @@ ProjWindow::ProjWindow( DbProj _proj, QWidget *parent ) :
 	this->setWindowTitle( QString(proj.name.c_str()) );
 
 	ui->fileFW->set_root_path( QString(proj.path.c_str()) );
-
+	ui->logLW->set_root_path( QString(proj.path.c_str()) );
 }
 
 

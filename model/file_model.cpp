@@ -122,8 +122,6 @@ void	FileModel::enter_dir_slot( const QModelIndex &index )
 		for( itr = file_list.begin(); itr != file_list.end(); ++itr )
 			qDebug() << itr->fileName();*/
 
-		//emit refresh_signal();
-
 		refresh_view();
 	}
 }
@@ -150,10 +148,6 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
                 return QString("%1").arg(row);
             case 1:
 				return	filename;
-				/*if( row < file_list.size() )
-					return	file_list[row].fileName();
-				else
-					return	delete_file_list.at(row - file_list.size());*/
             case 2:
 				if( row < file_list.size() )
 				{
@@ -161,7 +155,6 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 					{
 						GitStatus	git_status;
 						return	git_status.get_file_status( dir.path(), filename );
-						//return QString("test");//file_list[index.row()].extends();
 					}
 					else
 						return	QString("dir");
@@ -183,19 +176,6 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 				}
 				else
 					return	get_extension( filename );
-				//return	file_list[row].suffix();
-
-                /*if( file_list[row].isDir() == true )
-					return	QString("");
-				else
-				{
-					QString		name	=	file_list[row].fileName();
-					int			index	=	name.lastIndexOf('.');
-					if( index < 0 )
-						return	QString("");
-					else
-						return	name.mid( index+1 );
-				}*/
         }
 	}
 	return QVariant();

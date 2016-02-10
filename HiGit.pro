@@ -22,27 +22,27 @@ win32 {
 	message("win32")
 	Release:DESTDIR	=	../release
 	Debug:DESTDIR	=	../debug
-	INCLUDEPATH	+=	C:\Boost\include\boost-1_60
-	LIBPATH		+=	C:\Boost\lib
+	INCLUDEPATH		+=	C:\Boost\include\boost-1_60
+	LIBPATH			+=	C:\Boost\lib
 }
 
 macx {
 	message("macx")
 	INCLUDEPATH 	+=	/usr/local/include
-	LIBPATH 	+=	/usr/local/lib
+	LIBPATH 		+=	/usr/local/lib
 	OBJECTS_DIR 	=	./obj
-	MOC_DIR 	=	./obj
-	RCC_DIR 	=	./obj
-	UI_DIR 		=	./obj
+	MOC_DIR 		=	./obj
+	RCC_DIR 		=	./obj
+	UI_DIR 			=	./obj
 }
 
 unix:!macx{
 	message("linux")
 	OBJECTS_DIR 	=	./obj
-	MOC_DIR 	=	./obj
-	RCC_DIR 	=	./obj
-	UI_DIR 		=	./obj
-	LIBS 		+=	-ldl
+	MOC_DIR 		=	./obj
+	RCC_DIR 		=	./obj
+	UI_DIR 			=	./obj
+	LIBS 			+=	-ldl
 }
 
 SOURCES		+=	main.cpp\
@@ -61,7 +61,9 @@ SOURCES		+=	main.cpp\
 				src/git_cmd/git_init.cpp\
 				src/git_cmd/git_status.cpp\
 				src/git_cmd/git_rev_parse.cpp\
-				model/file_model.cpp
+				src/git_cmd/git_log.cpp\
+				model/file_model.cpp\
+				model/log_model.cpp
 
 
 HEADERS		+=	ui/mainwindow.h\
@@ -79,9 +81,12 @@ HEADERS		+=	ui/mainwindow.h\
 				src/git_cmd/git_init.h\
 				src/git_cmd/git_status.h\
 				src/git_cmd/git_rev_parse.h\
+				src/git_cmd/git_log.h\
 				src/def.h\
-				model/file_model.h
-
+				model/file_model.h\
+				model/log_model.h
+				
+				
 
 FORMS    	+= 	ui/mainwindow.ui\
 				ui/clonewindow.ui\
