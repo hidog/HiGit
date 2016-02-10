@@ -32,8 +32,8 @@ private:
     Ui::LogWidget *ui;
 
 	QString		root_path;
-
 	LogModel	*model;
+
 };
 
 #endif // LOGWIDGET_H

@@ -4,6 +4,7 @@
 
 #include <QAbstractTableModel>
 #include <QString>
+#include "../src/git_cmd/git_log.h"
 
 
 
@@ -33,11 +34,13 @@ public slots:
 	
 
 signals:
+	void	refresh_signal();
 
 
 private:
-	QString		root_path;
-    
+	QString			root_path;    
+	QStringList		head_list;
+	LogDataList		log_list;
 
     
 };

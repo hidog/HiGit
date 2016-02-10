@@ -3,6 +3,21 @@
 
 #include "git_command.h"
 
+#include <boost/container/list.hpp>
+
+
+struct LogData
+{
+	QString		commit;
+	QString		author;
+	QString		date;
+	QString		title;
+};
+
+typedef QList<LogData>		LogDataList;
+
+
+
 
 /*******************************************************************
 	GitLog
@@ -17,8 +32,12 @@ public:
 
 	void	exec( GitParameter param );
 
+	LogDataList		get_log_list( QString path );
 
-	void	test( QString path );
+	QString			get_commit( QByteArray str );
+	QString			get_author( QByteArray str );
+	QString			get_date( QByteArray str );
+	QString			get_title( QByteArray str );
 
 
 private:
