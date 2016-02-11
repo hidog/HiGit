@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>LogWidget</class>
- <widget class="QWidget" name="logWidget">
+ <widget class="QWidget" name="LogWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -33,7 +33,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QTextBrowser" name="textBrowser"/>
+      <widget class="QTextBrowser" name="titleTBrowser"/>
      </item>
      <item>
       <spacer name="verticalSpacer">
@@ -49,7 +49,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QListView" name="listView_2"/>
+      <widget class="QListWidget" name="fileLWidget"/>
      </item>
     </layout>
    </item>

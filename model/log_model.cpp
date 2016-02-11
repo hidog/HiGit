@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include "../src/git_cmd/git_log.h"
+#include "../src/def.h"
 
 
 /*******************************************************************
@@ -24,6 +25,20 @@ LogModel::~LogModel()
 
 
 
+
+/*******************************************************************
+	get_title
+********************************************************************/
+QString		LogModel::get_title( int row )
+{
+	if( row >= log_list.size() )
+	{
+		ERRLOG( "row=%d, size=%d", row, log_list.size() )
+		return	QString("");
+	}
+
+	return	log_list[row].title;
+}
 
 
 /*******************************************************************
@@ -74,6 +89,35 @@ QVariant	LogModel::data( const QModelIndex &index, int role ) const
 	return QVariant();
 }
 
+
+
+
+/*******************************************************************
+	get_commit
+********************************************************************/
+QString		LogModel::get_commit( int row )
+{
+	if( row >= log_list.size() )
+	{
+		ERRLOG( "log_list.size()=%d,row=%d", log_list.size(), row )
+		return	QString("");
+	}
+	
+	return	log_list[row].commit;
+}
+
+
+
+/*******************************************************************
+	get_default_index
+********************************************************************/
+QModelIndex		LogModel::get_default_index()
+{
+	if( log_list.size() == 0 )
+		ERRLOG("log_list.size() = %d", log_list.size() )
+	
+	return	createIndex(0,0);
+}
 
 
 

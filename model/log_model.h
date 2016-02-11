@@ -20,9 +20,13 @@ public:
 	LogModel( QObject *parent = 0 );
 	~LogModel();
 
-    void    set_root_path( QString path );
-    void    init_log_view();
+    void			set_root_path( QString path );
+    void			init_log_view();
 
+	QString			get_title( int row );
+	QString			get_commit( int row );
+
+	QModelIndex		get_default_index();
 
 	int				rowCount( const QModelIndex &parent = QModelIndex() ) const ;
 	int				columnCount( const QModelIndex &parent = QModelIndex() ) const ;

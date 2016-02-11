@@ -33,6 +33,7 @@ public:
 	void	exec( GitParameter param );
 
 	LogDataList		get_log_list( QString path );
+	QStringList		get_file_list( QString path, QString commit );
 
 	QString			get_commit( QByteArray str );
 	QString			get_author( QByteArray str );

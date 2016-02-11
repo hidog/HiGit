@@ -161,3 +161,57 @@ LogDataList	GitLog::get_log_list( QString path )
 	delete	proc;
 	return	list;
 }
+
+
+
+
+
+/*******************************************************************
+	get_file_list
+	只列出修改的檔案清單 
+********************************************************************/
+QStringList		GitLog::get_file_list( QString path, QString commit )
+{
+	QProcess		*proc	=	new QProcess(this);
+	QStringList		args;
+
+	QStringList		list;
+
+	proc->setWorkingDirectory( path );
+
+	args << "show";
+	args << commit;
+	args << "--name-only";
+
+	proc->start( "git", args );
+
+	bool	res		=	proc->waitForFinished();
+
+	QByteArray	output, str;
+
+	if( res )
+	{
+		output	=	proc->readAll();
+
+		while( output.length() > 0 )
+		{
+			str		=	splite_git_output(output);
+			//qDebug(str);
+			if( str.contains("commit ") == false	&& 
+				str.contains("Author: ") == false	&&
+				str.contains("Date: ") == false		&&
+				str.contains("Merge: ") == false	&& 
+				str.size() > 0 && str.mid(0,4) != QString("    ") )
+			{
+				list << QString(str);
+			}
+		}
+	}
+
+	/*QStringList::iterator	itr;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+		qDebug() << *itr;*/
+
+	delete	proc;
+	return	list;
+}

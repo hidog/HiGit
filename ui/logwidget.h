@@ -27,6 +27,10 @@ public:
 	void	set_root_path( QString path );
 
 
+public slots:
+	void	select_slot( const QModelIndex& index );
+
+
 
 private:
     Ui::LogWidget *ui;
