@@ -53,6 +53,7 @@ SOURCES		+=	main.cpp\
 				ui/projectbutton.cpp\
 				ui/logwidget.cpp\
 				ui/filewidget.cpp\
+				ui/commitwindow.cpp\
 				src/git_control.cpp\
 				src/db_manager.cpp\
 				src/sqlite3.c\
@@ -66,6 +67,7 @@ SOURCES		+=	main.cpp\
 				model/log_model.cpp
 
 
+
 HEADERS		+=	ui/mainwindow.h\
 				ui/clonewindow.h\
 				ui/userpwdialog.h\
@@ -73,6 +75,7 @@ HEADERS		+=	ui/mainwindow.h\
 				ui/projectbutton.h\
 				ui/logwidget.h\
 				ui/filewidget.h\
+				ui/commitwindow.h\
 				src/git_control.h\
 				src/db_manager.h\
 				src/sqlite3.h\
@@ -85,7 +88,7 @@ HEADERS		+=	ui/mainwindow.h\
 				src/def.h\
 				model/file_model.h\
 				model/log_model.h
-				
+
 				
 
 FORMS    	+= 	ui/mainwindow.ui\
@@ -94,4 +97,5 @@ FORMS    	+= 	ui/mainwindow.ui\
 				ui/projwindow.ui\
 				ui/projectbutton.ui\
 				ui/logwidget.ui\
-				ui/filewidget.ui
+				ui/filewidget.ui\ 
+				ui/commitwindow.ui

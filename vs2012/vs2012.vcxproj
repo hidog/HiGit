@@ -69,6 +69,7 @@
     <ClCompile Include="..\src\git_control.cpp" />
     <ClCompile Include="..\src\sqlite3.c" />
     <ClCompile Include="..\ui\clonewindow.cpp" />
+    <ClCompile Include="..\ui\commitwindow.cpp" />
     <ClCompile Include="..\ui\filewidget.cpp" />
     <ClCompile Include="..\ui\logwidget.cpp" />
     <ClCompile Include="..\ui\mainwindow.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="..\src\git_control.h" />
     <ClInclude Include="..\src\sqlite3.h" />
     <ClInclude Include="..\ui\clonewindow.h" />
+    <ClInclude Include="..\ui\commitwindow.h" />
     <ClInclude Include="..\ui\filewidget.h" />
     <ClInclude Include="..\ui\logwidget.h" />
     <ClInclude Include="..\ui\mainwindow.h" />

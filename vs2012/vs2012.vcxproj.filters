@@ -79,6 +79,9 @@
     <ClCompile Include="..\src\git_cmd\git_log.cpp">
       <Filter>src\git_cmd</Filter>
     </ClCompile>
+    <ClCompile Include="..\ui\commitwindow.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
@@ -137,6 +140,9 @@
     </ClInclude>
     <ClInclude Include="..\src\git_cmd\git_log.h">
       <Filter>src\git_cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\commitwindow.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -182,6 +182,7 @@ QStringList		GitLog::get_file_list( QString path, QString commit )
 	args << "show";
 	args << commit;
 	args << "--name-only";
+	args << "--pretty=format:";
 
 	proc->start( "git", args );
 
@@ -196,15 +197,17 @@ QStringList		GitLog::get_file_list( QString path, QString commit )
 		while( output.length() > 0 )
 		{
 			str		=	splite_git_output(output);
-			//qDebug(str);
-			if( str.contains("commit ") == false	&& 
+			//qDebug() << "str = " << str << " end";
+			/*if( str.contains("commit ") == false	&& 
 				str.contains("Author: ") == false	&&
 				str.contains("Date: ") == false		&&
 				str.contains("Merge: ") == false	&& 
 				str.size() > 0 && str.mid(0,4) != QString("    ") )
 			{
 				list << QString(str);
-			}
+			}*/
+			if( str.size() > 0 )
+				list << QString(str);
 		}
 	}
 

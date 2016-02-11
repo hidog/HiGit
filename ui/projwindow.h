@@ -24,6 +24,7 @@ public:
     ~ProjWindow();
 
 public slots:
+	void	commit_slot();
 
 signals:
 

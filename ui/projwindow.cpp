@@ -1,7 +1,7 @@
 #include "projwindow.h"
 #include "ui_projwindow.h"
 
-
+#include "commitwindow.h"
 
 
 
@@ -19,6 +19,8 @@ ProjWindow::ProjWindow( DbProj _proj, QWidget *parent ) :
 
 	ui->fileFW->set_root_path( QString(proj.path.c_str()) );
 	ui->logLW->set_root_path( QString(proj.path.c_str()) );
+
+	connect(	ui->commitButton,	SIGNAL(clicked()),	this,	SLOT(commit_slot())		);
 }
 
 
@@ -46,3 +48,13 @@ void	ProjWindow::closeEvent( QCloseEvent *event )
 }
 
 
+
+
+/*******************************************************************
+	commit_slot
+********************************************************************/
+void	ProjWindow::commit_slot()
+{
+	CommitWIndow	*commit_window	=	new CommitWIndow();
+	commit_window->show();
+}
