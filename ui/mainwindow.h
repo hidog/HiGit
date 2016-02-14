@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QProcess>
+#include <QVBoxLayout>
 #include "../src/def.h"
 
 
@@ -30,6 +31,8 @@ public:
 
     void    init_proj_button();
 	void	add_ui_proj( DbProj proj );
+
+	void	resizeEvent( QResizeEvent *event );
     
 public slots:
 	void	update_proj_button_slot( DbProj );
@@ -48,7 +51,7 @@ private:
 
     Ui::MainWindow *ui;
 
-	DbManager	*db_mng;
+	DbManager		*db_mng;
 
 	QList<ProjectButton*>	proj_list;
 };
