@@ -41,6 +41,12 @@
 		6DE4A6041C36B822003F4F94 /* clonewindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = clonewindow.h; path = ../ui/clonewindow.h; sourceTree = "<group>"; };
 		6DE4A6051C36B822003F4F94 /* mainwindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mainwindow.cpp; path = ../ui/mainwindow.cpp; sourceTree = "<group>"; };
 		6DE4A6061C36B822003F4F94 /* mainwindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mainwindow.h; path = ../ui/mainwindow.h; sourceTree = "<group>"; };
+		6DE4A7D21C74ADFF009835F4 /* git_log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_log.cpp; path = ../src/git_cmd/git_log.cpp; sourceTree = "<group>"; };
+		6DE4A7D31C74ADFF009835F4 /* git_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_log.h; path = ../src/git_cmd/git_log.h; sourceTree = "<group>"; };
+		6DE4A7D51C74AE20009835F4 /* commitwindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = commitwindow.cpp; path = ../ui/commitwindow.cpp; sourceTree = "<group>"; };
+		6DE4A7D61C74AE20009835F4 /* commitwindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = commitwindow.h; path = ../ui/commitwindow.h; sourceTree = "<group>"; };
+		6DE4A7DE1C74AE2F009835F4 /* log_model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = log_model.cpp; path = ../model/log_model.cpp; sourceTree = "<group>"; };
+		6DE4A7DF1C74AE2F009835F4 /* log_model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = log_model.h; path = ../model/log_model.h; sourceTree = "<group>"; };
 		6DEE53421C60DD350064F3BB /* git_status.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_status.cpp; path = ../src/git_cmd/git_status.cpp; sourceTree = "<group>"; };
 		6DEE53431C60DD350064F3BB /* git_status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_status.h; path = ../src/git_cmd/git_status.h; sourceTree = "<group>"; };
 		6DEE53441C60DD9E0064F3BB /* git_init.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_init.cpp; path = ../src/git_cmd/git_init.cpp; sourceTree = "<group>"; };
@@ -57,6 +63,8 @@
 		6D53888D1C68FD8E00DA4765 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				6DE4A7DE1C74AE2F009835F4 /* log_model.cpp */,
+				6DE4A7DF1C74AE2F009835F4 /* log_model.h */,
 				6D53888E1C68FD9E00DA4765 /* file_model.cpp */,
 				6D53888F1C68FD9E00DA4765 /* file_model.h */,
 			);
@@ -76,6 +84,8 @@
 		6DB99B261C5520E100998E69 /* git_cmd */ = {
 			isa = PBXGroup;
 			children = (
+				6DE4A7D21C74ADFF009835F4 /* git_log.cpp */,
+				6DE4A7D31C74ADFF009835F4 /* git_log.h */,
 				6D5388851C68FD6300DA4765 /* git_rev_parse.cpp */,
 				6D5388861C68FD6300DA4765 /* git_rev_parse.h */,
 				6DEE53441C60DD9E0064F3BB /* git_init.cpp */,
@@ -108,6 +118,8 @@
 		6DE4A6021C36B816003F4F94 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				6DE4A7D51C74AE20009835F4 /* commitwindow.cpp */,
+				6DE4A7D61C74AE20009835F4 /* commitwindow.h */,
 				6D5388871C68FD7A00DA4765 /* filewidget.cpp */,
 				6D5388881C68FD7A00DA4765 /* filewidget.h */,
 				6D5388891C68FD7A00DA4765 /* logwidget.cpp */,
