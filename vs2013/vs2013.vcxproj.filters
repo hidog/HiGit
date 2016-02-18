@@ -22,6 +22,9 @@
     <Filter Include="src\git_cmd">
       <UniqueIdentifier>{d243ec19-03db-4198-8474-320e5cbf34eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="model">
+      <UniqueIdentifier>{95ae990b-1cdf-4dfd-a604-d2adf3de0ed5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -66,6 +69,27 @@
     <ClCompile Include="..\src\git_cmd\git_init.cpp">
       <Filter>src\git_cmd</Filter>
     </ClCompile>
+    <ClCompile Include="..\model\log_model.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\model\file_model.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\git_cmd\git_log.cpp">
+      <Filter>src\git_cmd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\commitwindow.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\filewidget.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\logwidget.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\projwindow.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\clonewindow.h">
@@ -106,6 +130,27 @@
     </ClInclude>
     <ClInclude Include="..\src\git_cmd\git_init.h">
       <Filter>src\git_cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\model\file_model.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\model\log_model.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\git_cmd\git_log.h">
+      <Filter>src\git_cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\commitwindow.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\filewidget.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\logwidget.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\projwindow.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
