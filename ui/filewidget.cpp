@@ -69,6 +69,7 @@ void	FileWidget::double_clicked_slot( const QModelIndex &index )
 ********************************************************************/
 FileWidget::~FileWidget()
 {
+    delete model;
     delete ui;
 }
 

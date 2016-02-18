@@ -20,7 +20,7 @@ LogWidget::LogWidget(QWidget *parent) :
 
 	model	=	new LogModel(this);
 	ui->logTView->setModel(model);
-
+    connect(    model,          SIGNAL(refresh_signal()),                   this,   SLOT(refresh_view_slot())                   );
 	connect(	ui->logTView,	SIGNAL(pressed(const QModelIndex&)),		this,	SLOT(select_slot(const QModelIndex&))		);
 }
 
@@ -33,9 +33,24 @@ LogWidget::LogWidget(QWidget *parent) :
 ********************************************************************/
 LogWidget::~LogWidget()
 {
+    delete model;
     delete ui;
 }
 
+
+
+/*******************************************************************
+	refresh_view_slot
+ ********************************************************************/
+void	LogWidget::refresh_view_slot()
+{
+    ui->logTView->setModel( NULL );
+    ui->logTView->setModel( model );
+    
+    //ui->fileTView->setColumnWidth( 1, 300 );
+    //ui->fileTView->setColumnWidth( 2, 80 );
+    //ui->fileTView->setColumnWidth( 3, 70 );
+}
 
 
 

@@ -45,7 +45,7 @@ QString		LogModel::get_title( int row )
 	rowCount
 ********************************************************************/
 int		LogModel::rowCount( const QModelIndex &parent ) const 
-{ 
+{
 	return	log_list.size();
 }
 
@@ -130,7 +130,11 @@ void    LogModel::set_root_path( QString path )
 
 	GitLog	git_log;
 	log_list	=	git_log.get_log_list( root_path );
-
+    
+    QModelIndex left_top        =   createIndex( 0, 0);
+    QModelIndex right_bottom    =   createIndex( log_list.size(), head_list.size() );
+    
+    emit dataChanged( left_top, right_bottom );
 	emit refresh_signal();
 }
 

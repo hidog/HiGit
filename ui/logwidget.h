@@ -29,6 +29,7 @@ public:
 
 public slots:
 	void	select_slot( const QModelIndex& index );
+    void	refresh_view_slot();
 
 
 
