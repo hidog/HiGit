@@ -31,6 +31,7 @@ public:
 
     void    init_proj_button();
 	void	add_ui_proj( DbProj proj );
+    void    remove_all_proj_button();
 
 	void	resizeEvent( QResizeEvent *event );
     

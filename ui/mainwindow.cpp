@@ -88,19 +88,35 @@ void	MainWindow::resizeEvent( QResizeEvent *event )
 
 /*******************************************************************
 	delete_slot
- ********************************************************************/
+********************************************************************/
 void    MainWindow::delete_slot( DbProj proj )
 {
-    QMessageBox::about( 0, "test", "test");
+    //QMessageBox::about( 0, "test", "test");
+    db_mng->delete_proj( proj );
+    
+    remove_all_proj_button();
+    init_proj_button();
 }
 
 
+/*******************************************************************
+	remove_all_proj_button
+********************************************************************/
+void    MainWindow::remove_all_proj_button()
+{
+    ProjectButton   *button;
+    
+    foreach( button, proj_list )
+        delete  button;
+
+    proj_list.clear();
+}
 
 
 
 /*******************************************************************
 	init_proj_button
- ********************************************************************/
+********************************************************************/
 void    MainWindow::init_proj_button()
 {
     bcListDbProj    list    =   db_mng->get_all_proj();
@@ -111,7 +127,9 @@ void    MainWindow::init_proj_button()
 	BOOST_FOREACH( DbProj proj, list )
 	{
 		proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget(), this ) );
-		proj_list.last()->move( 0, count*ProjectButton::fixed_height() );		
+		proj_list.last()->move( 0, count*ProjectButton::fixed_height() );
+        proj_list.last()->setVisible(true);
+        //proj_list.last()->setMaximumWidth(10);
 		count++;
 	}
 
@@ -228,7 +246,13 @@ void	MainWindow::add_ui_proj( DbProj proj )
 	int		count	=	proj_list.size();
 
 	proj_list.last()->move( 0, (count - 1) * ProjectButton::fixed_height() );
-	ui->scrollArea->widget()->setMinimumHeight( count * ProjectButton::fixed_height() );
+    proj_list.last()->setMaximumWidth(10);
+    
+    //int		width	=	ProjectButton::fixed_width();
+    int		height	=	ProjectButton::fixed_height() * proj_list.size();
+    
+    ui->scrollArea->widget()->setMinimumHeight( height );
+    
 }
 
 

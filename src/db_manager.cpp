@@ -81,6 +81,23 @@ bool	DbManager::add_proj( DbProj proj )
 
 
 
+/*********************************************************************
+	delete_proj
+**********************************************************************/
+void    DbManager::delete_proj( DbProj proj )
+{
+    int     rc;
+    char    str[HIGIT_DB_BUF_SIZE];
+    char    *err_msg;
+    
+    sprintf( str, "DELETE FROM GIT_PROJ_TABLE WHERE PATH='%s'", proj.path.c_str() );
+
+    rc  =   sqlite3_exec( db, str, 0, 0, &err_msg );
+    if( rc != SQLITE_OK )
+        ERRLOG("delete proj fail, msg = %s", err_msg );
+}
+
+
 
 /*********************************************************************
 	get_all_proj

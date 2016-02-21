@@ -38,9 +38,10 @@ public:
 
 	bool	is_exist_proj( DbProj proj );
 	bool	add_proj( DbProj proj );
+    
+    void    delete_proj( DbProj proj );
 
     bcListDbProj    get_all_proj();
-    
     
     
 private:
