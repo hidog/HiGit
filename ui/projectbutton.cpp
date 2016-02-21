@@ -3,14 +3,15 @@
 
 #include "projwindow.h"
 #include <QDebug>
-
+#include <QMessageBox>
+#include <QString>
 
 
 
 /*******************************************************************
 	ProjectButton
 ********************************************************************/
-ProjectButton::ProjectButton( DbProj _proj, QWidget *parent) 
+ProjectButton::ProjectButton( DbProj _proj, QWidget *parent, QWidget *main_window )
 	:	QPushButton(parent),
 		proj(_proj),
 		pj_window(NULL),
@@ -23,6 +24,9 @@ ProjectButton::ProjectButton( DbProj _proj, QWidget *parent)
 	ui->nameLEdit->setText( QString(proj.name.c_str()) );
 	ui->pathLabel->setText( QString(proj.path.c_str()) );
 
+    connect(    ui->delButton,      SIGNAL(clicked()),                  this,            SLOT(del_project_slot())    );
+    connect(    this,               SIGNAL(delete_signal(DbProj)),      main_window,     SLOT(delete_slot(DbProj))   );
+    
 }
 
 
@@ -41,6 +45,25 @@ void	ProjectButton::mouseDoubleClickEvent( QMouseEvent *event )
 	}
 }
 
+
+
+/*******************************************************************
+	del_project_slot
+********************************************************************/
+void    ProjectButton::del_project_slot()
+{
+    QMessageBox::StandardButton     res;
+    
+    QString text    =   QString( "delete proj %1?" ).arg( proj.name.c_str() );
+    
+    res     =   QMessageBox::question( this, "delete", text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No );
+    
+    if( res == QMessageBox::Yes )
+    {
+        //QMessageBox::about(this,"delete.","delete");
+        emit delete_signal( proj );
+    }
+}
 
 
 

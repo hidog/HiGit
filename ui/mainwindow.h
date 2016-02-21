@@ -42,6 +42,7 @@ protected slots:
 	void	clone_slot();
 	void	init_slot();
 	void	open_slot();
+    void    delete_slot( DbProj proj );
 
 private:
 	GitControl	*git_ctrl;

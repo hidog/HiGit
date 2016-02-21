@@ -68,7 +68,7 @@ MainWindow::~MainWindow()
 
 /*******************************************************************
 	resizeEvent
- ********************************************************************/
+********************************************************************/
 void	MainWindow::resizeEvent( QResizeEvent *event )
 {
 	//cout << ui->scrollArea->width() << " " << ui->scrollArea->height() << endl;
@@ -85,6 +85,19 @@ void	MainWindow::resizeEvent( QResizeEvent *event )
 
 
 
+
+/*******************************************************************
+	delete_slot
+ ********************************************************************/
+void    MainWindow::delete_slot( DbProj proj )
+{
+    QMessageBox::about( 0, "test", "test");
+}
+
+
+
+
+
 /*******************************************************************
 	init_proj_button
  ********************************************************************/
@@ -97,7 +110,7 @@ void    MainWindow::init_proj_button()
 	
 	BOOST_FOREACH( DbProj proj, list )
 	{
-		proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget() ) );			
+		proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget(), this ) );
 		proj_list.last()->move( 0, count*ProjectButton::fixed_height() );		
 		count++;
 	}
@@ -209,7 +222,7 @@ void	MainWindow::open_slot()
 ********************************************************************/
 void	MainWindow::add_ui_proj( DbProj proj )
 {
-	proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget() ) );
+	proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget(), this ) );
 	proj_list.last()->setVisible(true);		// needed!! otherwise view will not update.	
 
 	int		count	=	proj_list.size();

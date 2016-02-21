@@ -31,7 +31,7 @@ class ProjectButton : public QPushButton
     Q_OBJECT
 
 public:
-    explicit ProjectButton( DbProj _proj, QWidget *parent = 0 );
+    explicit ProjectButton( DbProj _proj, QWidget *parent = 0, QWidget *main_window = 0 );
     ~ProjectButton();
 
 	static int	fixed_width();
@@ -42,12 +42,14 @@ public:
 public slots:
 
 	void	pj_window_destroyed_slot();
+    void    del_project_slot();
 
 
 signals:
-
-
-
+    
+    void    delete_signal( DbProj );
+    
+    
 
 private:
     Ui::ProjectButton *ui;

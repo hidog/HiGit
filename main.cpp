@@ -7,8 +7,8 @@
 
 int		main(int argc, char *argv[])
 {
-	//qRegisterMetaType<DbProj>("ResultData");
-	//qRegisterMetaType<DbProj>("ResultData&");
+	qRegisterMetaType<DbProj>("DbProj");
+	qRegisterMetaType<DbProj>("DbProj&");
 
     QApplication	a(argc, argv);
     MainWindow		w;
