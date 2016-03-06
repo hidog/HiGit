@@ -1,6 +1,8 @@
 #include "file_model.h"
 
 #include <QDebug>
+#include <QFileIconProvider>
+
 #include "../src/git_cmd/git_status.h"
 
 
@@ -30,13 +32,21 @@ FileModel::~FileModel()
 
 
 
+/*******************************************************************
+	get_header_count
+********************************************************************/
+int		FileModel::get_header_count()
+{
+	return	head_list.size();
+}
+
 
 /*******************************************************************
 	rowCount
 ********************************************************************/
 int		FileModel::rowCount( const QModelIndex &parent ) const 
 { 
-	return	file_list.size() + delete_file_list.size();
+	return	file_list.size();
 }
 
 
@@ -114,9 +124,7 @@ void	FileModel::enter_dir_slot( const QModelIndex &index )
 		else
 			dir.cd(path);
 
-		delete_file_list	=	git_status.get_delete_files( dir.path() );
 		file_list	=	get_file_list();
-
 
 		/*QList<QFileInfo>::Iterator	itr;
 		for( itr = file_list.begin(); itr != file_list.end(); ++itr )
@@ -124,6 +132,77 @@ void	FileModel::enter_dir_slot( const QModelIndex &index )
 
 		refresh_view();
 	}
+}
+
+
+
+/*******************************************************************
+	text_data
+********************************************************************/
+QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
+{
+	int		col		=	index.column();
+	int		row		=	index.row();
+
+	QString		filename	=	file_list[row].fileName();
+	QVariant	result;
+	GitStatus	git_status;
+
+	// handle DisplayRole only.
+	if( role != Qt::DisplayRole )
+		assert(false);
+
+	switch( col )
+	{
+		case 1:
+			result	=	filename;
+			break;
+		case 2:
+			if( file_list[row].isFile() == true )
+				result	=	git_status.get_file_status( dir.path(), filename );				
+			else
+				result	=	QString("dir");
+			break;		
+		case 3:
+			if( file_list[row].isDir() == true )
+				result	=	QString("dir");
+			else
+				result	=	get_extension( filename );
+	}
+
+	return	result;
+}
+
+
+
+/*******************************************************************
+	icon_data
+********************************************************************/
+QVariant	FileModel::icon_data( const QModelIndex &index, int role ) const
+{
+	int		col		=	index.column();
+	int		row		=	index.row();
+
+	QString		filename	=	file_list[row].fileName();
+
+	assert( row < file_list.size() );
+
+	QFileInfo			info	=	 file_list[row]; //delete_file_list.at( row - file_list.size() );
+	QFileIconProvider	icon_pv;
+	QVariant			result;
+
+	// handle DecorationRole only.
+	if( role != Qt::DecorationRole )
+		assert(false);
+
+	switch( col )
+	{
+		case 0:
+			result	=	icon_pv.icon(info);
+			break;
+	}
+
+	return result;
 }
 
 
@@ -138,46 +217,19 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 
 	//qDebug () << col << " " << row;
 
-	QString		filename	=	row < file_list.size() ? file_list[row].fileName() : delete_file_list.at( row - file_list.size() );
+	assert( row < file_list.size() );
 
-	if (role == Qt::DisplayRole)
+	QString		filename	=	file_list[row].fileName();
+
+	switch( role )
 	{
-        switch( col )
-        {
-            case 0:
-                return QString("%1").arg(row);
-            case 1:
-				return	filename;
-            case 2:
-				if( row < file_list.size() )
-				{
-					if( file_list[row].isFile() == true )
-					{
-						GitStatus	git_status;
-						return	git_status.get_file_status( dir.path(), filename );
-					}
-					else
-						return	QString("dir");
-				}
-				else
-				{
-					GitStatus	git_status;
-					return	git_status.get_file_status( dir.path(), filename );
-				}
-				
-
-            case 3:
-				if( row < file_list.size() )
-				{
-					if( file_list[row].isDir() == true )
-						return	QString("dir");
-					else
-						return	get_extension( filename );
-				}
-				else
-					return	get_extension( filename );
-        }
+		case Qt::DisplayRole:
+			return	text_data( index, role );
+		case Qt::DecorationRole:
+			return	icon_data( index, role );		
 	}
+
+
 	return QVariant();
 }
 
@@ -217,7 +269,6 @@ void    FileModel::init_file_list()
 {
 	GitStatus	git_status;
 
-	delete_file_list	=	git_status.get_delete_files( dir.path() );
 	file_list			=	get_file_list();
 
 	/*QList<QFileInfo>::Iterator	itr;

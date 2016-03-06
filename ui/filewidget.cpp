@@ -13,11 +13,22 @@ FileWidget::FileWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FileWidget)
 {
+	int		i;
+
     ui->setupUi(this);
 
 	model	=	new FileModel( this );
-
 	ui->fileTView->setModel( model );
+
+	header_width_vec.resize( model->get_header_count() );
+
+	assert( header_width_vec.size() == 4 );
+
+	//header_width_vec[0]	=	;	don't set icon width.
+	//ui->fileTView->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Fixed );  need set after refresh.
+	header_width_vec[1]	=	300;
+	header_width_vec[2]	=	80;
+	header_width_vec[3]	=	70;
 
 	set_connect();
 }
@@ -30,12 +41,29 @@ FileWidget::FileWidget(QWidget *parent) :
 ********************************************************************/
 void	FileWidget::refresh_view_slot()
 {
+	int		i;
+
 	ui->fileTView->setModel( NULL );
 	ui->fileTView->setModel( model );
 
-	ui->fileTView->setColumnWidth( 1, 300 );
-	ui->fileTView->setColumnWidth( 2, 80 );
-	ui->fileTView->setColumnWidth( 3, 70 );
+	ui->fileTView->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Fixed );
+
+	for( i = 1; i < header_width_vec.size(); i++ )
+		ui->fileTView->setColumnWidth( i, header_width_vec[i] );
+
+}
+
+
+
+/*******************************************************************
+	refresh_view_slot
+********************************************************************/
+void	FileWidget::header_resize_slot( int index, int old_size, int new_size )
+{
+	assert( index < header_width_vec.size() );
+	assert( index != 0 );
+
+	header_width_vec[index]		=	new_size;
 }
 
 
@@ -47,6 +75,8 @@ void	FileWidget::set_connect()
 	connect(	ui->fileTView,		SIGNAL(doubleClicked(const QModelIndex&)),			this,		SLOT(double_clicked_slot(const QModelIndex&))	);
 	connect(	this,				SIGNAL(enter_dir_signal(const QModelIndex&)),		model,		SLOT(enter_dir_slot(const QModelIndex&))		);
 	connect(	model,				SIGNAL(refresh_signal()),							this,		SLOT(refresh_view_slot())						);
+
+	connect(	ui->fileTView->horizontalHeader(),		SIGNAL(sectionResized(int,int,int)),		this,		SLOT(header_resize_slot(int,int,int))		);
 }
 
 

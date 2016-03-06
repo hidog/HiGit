@@ -28,11 +28,15 @@ public:
 	QString			get_extension( QString filename ) const;
 	QFileInfoList	get_file_list();
 
+	int				get_header_count();
+
 	int			    rowCount( const QModelIndex &parent = QModelIndex() ) const ;
 	int				columnCount( const QModelIndex &parent = QModelIndex() ) const ;
 	QVariant		data( const QModelIndex &index, int role = Qt::DisplayRole ) const ;
 	QVariant		headerData( int section, Qt::Orientation orientation, int role ) const ;
     
+	QVariant		text_data( const QModelIndex &index, int role ) const;
+	QVariant		icon_data( const QModelIndex &index, int role ) const;
 
 public slots:
 	void	enter_dir_slot( const QModelIndex &index );
@@ -49,8 +53,6 @@ private:
     
     QDir            dir;
     QFileInfoList   file_list;
-
-	QStringList		delete_file_list;
 
 	QModelIndex		last_index;
     

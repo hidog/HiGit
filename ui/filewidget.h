@@ -5,6 +5,8 @@
 #include <string>
 #include <QDir>
 
+#include <boost/container/vector.hpp>
+
 using namespace std;
 
 
@@ -32,16 +34,17 @@ public:
 	void	set_root_path( QString _path );
 
 
-
-
 public slots:
 	void	double_clicked_slot( const QModelIndex &index );
 	void	refresh_view_slot();
+	void	header_resize_slot( int index, int old_size, int new_size );
 
 signals:
 	void	enter_dir_signal( const QModelIndex & );
     
 private:
+
+	boost::container::vector<int>	header_width_vec;
 
 	void	set_connect();
 
