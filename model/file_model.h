@@ -38,6 +38,9 @@ public:
 	QVariant		text_data( const QModelIndex &index, int role ) const;
 	QVariant		icon_data( const QModelIndex &index, int role ) const;
 
+	QString			get_filesize_str( qint64 size ) const;
+
+
 public slots:
 	void	enter_dir_slot( const QModelIndex &index );
 

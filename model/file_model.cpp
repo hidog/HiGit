@@ -12,7 +12,7 @@
 FileModel::FileModel( QObject *parent ) :
 	QAbstractTableModel( parent )
 {
-    head_list << " " << "path" << "status" << "extends";
+    head_list << " " << "file name" << "status" << "extends" << "size";
 	
 	last_index	=	createIndex( 0, 0 );
 	
@@ -168,9 +168,58 @@ QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
 				result	=	QString("dir");
 			else
 				result	=	get_extension( filename );
+			break;
+		case 4:
+			if( file_list[row].isFile() == true )
+				result	=	get_filesize_str( file_list[row].size() );
+			else
+				result	=	QString("");
+			break;
 	}
 
 	return	result;
+}
+
+
+
+/*******************************************************************
+	get_filesize_str
+********************************************************************/
+QString		FileModel::get_filesize_str( qint64 size ) const
+{
+	int			count	=	0;
+	double		d		=	size;
+	QString		unit	=	QString();
+	QString		str;
+
+	while( d > 1024 )
+	{
+		d	/=	1024;
+		count++;
+	}
+
+	switch(count)
+	{
+		case 0:
+			unit	=	"Bytes";
+			break;
+		case 1:
+			unit	=	"KB";
+			break;
+		case 2:
+			unit	=	"MB";
+			break;
+		case 3:
+			unit	=	"GB";
+			break;
+	}
+
+	if( count == 0 )
+		str		=	str.sprintf( "%lld %s", size, unit.toStdString().c_str() );
+	else
+		str		=	str.sprintf( "%.1lf %s", d, unit.toStdString().c_str() );
+
+	return	str;
 }
 
 
