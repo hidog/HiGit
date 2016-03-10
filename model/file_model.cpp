@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QFileIconProvider>
+#include <QColor>
 
 #include "../src/git_cmd/git_status.h"
 
@@ -159,7 +160,7 @@ QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
 			break;
 		case 2:
 			if( file_list[row].isFile() == true )
-				result	=	git_status.get_file_status( dir.path(), filename );				
+				result	=	git_status.get_file_status( dir.path(), filename );
 			else
 				result	=	QString("dir");
 			break;		
@@ -192,12 +193,14 @@ QString		FileModel::get_filesize_str( qint64 size ) const
 	QString		unit	=	QString();
 	QString		str;
 
+	//
 	while( d > 1024 )
 	{
 		d	/=	1024;
 		count++;
 	}
 
+	//
 	switch(count)
 	{
 		case 0:
@@ -214,6 +217,7 @@ QString		FileModel::get_filesize_str( qint64 size ) const
 			break;
 	}
 
+	//
 	if( count == 0 )
 		str		=	str.sprintf( "%lld %s", size, unit.toStdString().c_str() );
 	else
@@ -264,6 +268,8 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 	int		col		=	index.column();
 	int		row		=	index.row();
 
+	QVariant	var	=	QVariant();
+
 	//qDebug () << col << " " << row;
 
 	assert( row < file_list.size() );
@@ -273,15 +279,47 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 	switch( role )
 	{
 		case Qt::DisplayRole:
-			return	text_data( index, role );
+			var	=	text_data( index, role );
+			break;
 		case Qt::DecorationRole:
-			return	icon_data( index, role );		
+			var	=	icon_data( index, role );		
+			break;
+		case Qt::TextColorRole:
+			var	=	get_font_color( index, role );
+			break;
 	}
 
 
-	return QVariant();
+	return var;
 }
 
+
+
+/*******************************************************************
+	get_font_color
+********************************************************************/
+QVariant	FileModel::get_font_color( const QModelIndex &index, int role ) const
+{
+	int		col		=	index.column();
+	int		row		=	index.row();
+
+	QVariant	result;
+	GitStatus	git_status;
+
+	// handle DisplayRole only.
+	if( role != Qt::TextColorRole )
+		assert(false);
+
+	switch( col )
+	{
+		case 1:
+		case 2:
+			result	=	git_status.get_file_color( dir.path(), file_list[row].fileName() );			
+			break;		
+	}
+
+	return	result;
+}
 
 
 

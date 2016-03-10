@@ -3,7 +3,7 @@
 #include <QProcess>
 #include "../def.h"
 #include <QDebug>
-
+#include <QColor>
 
 
 /*******************************************************************
@@ -89,6 +89,28 @@ QStringList		GitStatus::get_delete_files( QString path )
 	delete	proc;
 	return	list;
 }
+
+
+
+/*******************************************************************
+	get_file_color
+********************************************************************/
+QColor		GitStatus::get_file_color( QString path, QString filename )
+{
+	QString		status	=	get_file_status( path, filename );
+	QColor		color	=	QColor();
+
+	if( status == "tracked" )
+		color	=	QColor(Qt::darkGreen);
+	else if( status == "added" )
+		color	=	QColor(Qt::blue);
+	else if( status == "modified" )
+		color	=	QColor(Qt::red);
+
+	return	color;
+}
+
+
 
 
 /*******************************************************************

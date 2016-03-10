@@ -17,6 +17,7 @@ public:
     
 	QString			get_file_status( QString path, QString filename );
 	QStringList		get_delete_files( QString path );
+	QColor			get_file_color( QString path, QString filename );
 
 	void	exec( GitParameter param ) { ERRLOG("no use.") }
 
