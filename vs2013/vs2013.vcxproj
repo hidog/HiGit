@@ -50,6 +50,7 @@
     <NMakeBuildCommandLine>qmake ../HiGit.pro -r -spec win32-msvc2013&amp;&amp;nmake release</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>nmake release-clean&amp;&amp;qmake ../HiGit.pro -r -spec win32-msvc2013&amp;&amp;nmake release</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>nmake release-clean</NMakeCleanCommandLine>
+    <IncludePath>D:\QT5\qtbase\include\QtWidgets;D:\QT5\qtbase\include\QtGui;D:\QT5\qtbase\include\QtCore;D:\code\HiGit;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>

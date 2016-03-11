@@ -145,7 +145,8 @@ QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
 	int		col		=	index.column();
 	int		row		=	index.row();
 
-	QString		filename	=	file_list[row].fileName();
+	QFileInfo	info		=	file_list[row];
+	//QString		filename	=	file_list[row].fileName();
 	QVariant	result;
 	GitStatus	git_status;
 
@@ -156,23 +157,23 @@ QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
 	switch( col )
 	{
 		case 1:
-			result	=	filename;
+			result	=	info.fileName();
 			break;
 		case 2:
-			if( file_list[row].isFile() == true )
-				result	=	git_status.get_file_status( dir.path(), filename );
+			if( info.isFile() == true )
+				result	=	git_status.get_file_status( dir.path(), info.fileName() );
 			else
 				result	=	QString("dir");
 			break;		
 		case 3:
-			if( file_list[row].isDir() == true )
+			if( info.isDir() == true )
 				result	=	QString("dir");
 			else
-				result	=	get_extension( filename );
+				result	=	get_extension( info.fileName() );
 			break;
 		case 4:
-			if( file_list[row].isFile() == true )
-				result	=	get_filesize_str( file_list[row].size() );
+			if( info.isFile() == true )
+				result	=	get_filesize_str( info.size() );
 			else
 				result	=	QString("");
 			break;
@@ -236,7 +237,7 @@ QVariant	FileModel::icon_data( const QModelIndex &index, int role ) const
 	int		col		=	index.column();
 	int		row		=	index.row();
 
-	QString		filename	=	file_list[row].fileName();
+	//QString		filename	=	file_list[row].fileName();
 
 	assert( row < file_list.size() );
 
@@ -274,7 +275,8 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 
 	assert( row < file_list.size() );
 
-	QString		filename	=	file_list[row].fileName();
+	//QFileInfo	info		=	file_list[row];
+	//QString		filename	=	file_list[row].fileName();
 
 	switch( role )
 	{
@@ -303,6 +305,7 @@ QVariant	FileModel::get_font_color( const QModelIndex &index, int role ) const
 	int		col		=	index.column();
 	int		row		=	index.row();
 
+	QFileInfo	info	=	file_list[row];
 	QVariant	result;
 	GitStatus	git_status;
 
@@ -314,7 +317,7 @@ QVariant	FileModel::get_font_color( const QModelIndex &index, int role ) const
 	{
 		case 1:
 		case 2:
-			result	=	git_status.get_file_color( dir.path(), file_list[row].fileName() );			
+			result	=	git_status.get_file_color( dir.path(), info.fileName() );			
 			break;		
 	}
 
