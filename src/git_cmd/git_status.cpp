@@ -98,6 +98,24 @@ QStringList		GitStatus::get_delete_files( QString path )
 QColor		GitStatus::get_file_color( QString path, QString filename )
 {
 	QString		status	=	get_file_status( path, filename );
+	QColor		color	=	get_status_color( status );
+
+	/*if( status == "tracked" )
+		color	=	QColor(Qt::darkGreen);
+	else if( status == "added" )
+		color	=	QColor(Qt::blue);
+	else if( status == "modified" )
+		color	=	QColor(Qt::red);*/
+
+	return	color;
+}
+
+
+/*******************************************************************
+	get_file_color
+********************************************************************/
+QColor		GitStatus::get_status_color( QString status )
+{
 	QColor		color	=	QColor();
 
 	if( status == "tracked" )
@@ -138,6 +156,8 @@ QString		GitStatus::get_file_status( QString path, QString filename )
 	if( result == true )
 	{
 		QByteArray	output	=	proc->readAll();
+
+		//qDebug() << output;
 
 		if( output.contains("nothing to commit, working directory clean") == true )
 			status	=	"tracked";

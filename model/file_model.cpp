@@ -93,12 +93,31 @@ void	FileModel::refresh_view()
 /*******************************************************************
 	get_file_list
 ********************************************************************/
-QFileInfoList	FileModel::get_file_list()
+FileInfoList	FileModel::get_file_list()
 {
-	QFileInfoList	list	=	dir.entryInfoList();
+	QFileInfoList	qlist	=	dir.entryInfoList();
+	FileInfoList	list;
+	FileInfo		info;
+	GitStatus		git_status;
 
 	if( dir.path() == root_path )
 		list.removeAt(0);
+
+	foreach( QFileInfo file, qlist )
+	{
+		info.name			=	file.fileName();
+		info.path			=	file.path();
+		info.is_dir			=	file.isDir();
+		info.size			=	file.size();
+
+		if( info.name != QString("..") )
+		{
+			info.status			=	git_status.get_file_status( info.path, info.name );
+			info.font_color		=	git_status.get_status_color( info.status );
+		}
+
+		list.push_back(info);
+	}
 
 	return	list;
 }
@@ -112,13 +131,13 @@ QFileInfoList	FileModel::get_file_list()
 void	FileModel::enter_dir_slot( const QModelIndex &index )
 {
 	int			row		=	index.row();
-	QFileInfo	info	=	file_list[row];
-	QString		path	=	info.fileName();
+	FileInfo	info	=	file_list[row];
+	QString		path	=	info.name;
 	GitStatus	git_status;
 
 	//qDebug() << path;
 
-	if( file_list[row].isDir() )
+	if( info.is_dir )
 	{
 		if( path == QString("..") )
 			dir.cdUp();
@@ -145,7 +164,7 @@ QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
 	int		col		=	index.column();
 	int		row		=	index.row();
 
-	QFileInfo	info		=	file_list[row];
+	FileInfo	info		=	file_list[row];
 	//QString		filename	=	file_list[row].fileName();
 	QVariant	result;
 	GitStatus	git_status;
@@ -157,23 +176,23 @@ QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
 	switch( col )
 	{
 		case 1:
-			result	=	info.fileName();
+			result	=	info.name;
 			break;
 		case 2:
-			if( info.isFile() == true )
-				result	=	git_status.get_file_status( dir.path(), info.fileName() );
+			if( info.is_dir == false )
+				result	=	info.status; //  git_status.get_file_status( dir.path(), info.name );
 			else
 				result	=	QString("dir");
 			break;		
 		case 3:
-			if( info.isDir() == true )
+			if( info.is_dir == true )
 				result	=	QString("dir");
 			else
-				result	=	get_extension( info.fileName() );
+				result	=	get_extension( info.name );
 			break;
 		case 4:
-			if( info.isFile() == true )
-				result	=	get_filesize_str( info.size() );
+			if( info.is_dir == false )
+				result	=	get_filesize_str( info.size );
 			else
 				result	=	QString("");
 			break;
@@ -241,7 +260,8 @@ QVariant	FileModel::icon_data( const QModelIndex &index, int role ) const
 
 	assert( row < file_list.size() );
 
-	QFileInfo			info	=	 file_list[row]; //delete_file_list.at( row - file_list.size() );
+	FileInfo			info	=	file_list[row]; //delete_file_list.at( row - file_list.size() );
+	QFileInfo			qinfo	=	QFileInfo( info.path, info.name );
 	QFileIconProvider	icon_pv;
 	QVariant			result;
 
@@ -252,7 +272,7 @@ QVariant	FileModel::icon_data( const QModelIndex &index, int role ) const
 	switch( col )
 	{
 		case 0:
-			result	=	icon_pv.icon(info);
+			result	=	icon_pv.icon(qinfo);
 			break;
 	}
 
@@ -275,7 +295,7 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 
 	assert( row < file_list.size() );
 
-	//QFileInfo	info		=	file_list[row];
+	FileInfo	info		=	file_list[row];
 	//QString		filename	=	file_list[row].fileName();
 
 	switch( role )
@@ -287,7 +307,7 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 			var	=	icon_data( index, role );		
 			break;
 		case Qt::TextColorRole:
-			var	=	get_font_color( index, role );
+			var	=	info.font_color;	//get_font_color( index, role );
 			break;
 	}
 
@@ -305,7 +325,7 @@ QVariant	FileModel::get_font_color( const QModelIndex &index, int role ) const
 	int		col		=	index.column();
 	int		row		=	index.row();
 
-	QFileInfo	info	=	file_list[row];
+	FileInfo	info	=	file_list[row];
 	QVariant	result;
 	GitStatus	git_status;
 
@@ -317,7 +337,7 @@ QVariant	FileModel::get_font_color( const QModelIndex &index, int role ) const
 	{
 		case 1:
 		case 2:
-			result	=	git_status.get_file_color( dir.path(), info.fileName() );			
+			result	=	git_status.get_file_color( dir.path(), info.name );			
 			break;		
 	}
 

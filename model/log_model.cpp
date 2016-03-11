@@ -33,7 +33,7 @@ QString		LogModel::get_title( int row )
 {
 	if( row >= log_list.size() )
 	{
-		ERRLOG( "row=%d, size=%d", row, log_list.size() )
+		//ERRLOG( "row=%d, size=%d", row, log_list.size() )
 		return	QString("");
 	}
 
@@ -99,7 +99,7 @@ QString		LogModel::get_commit( int row )
 {
 	if( row >= log_list.size() )
 	{
-		ERRLOG( "log_list.size()=%d,row=%d", log_list.size(), row )
+		//ERRLOG( "log_list.size()=%d,row=%d", log_list.size(), row )
 		return	QString("");
 	}
 	
@@ -113,8 +113,8 @@ QString		LogModel::get_commit( int row )
 ********************************************************************/
 QModelIndex		LogModel::get_default_index()
 {
-	if( log_list.size() == 0 )
-		ERRLOG("log_list.size() = %d", log_list.size() )
+	//if( log_list.size() == 0 )
+		//ERRLOG("log_list.size() = %d", log_list.size() )
 	
 	return	createIndex(0,0);
 }

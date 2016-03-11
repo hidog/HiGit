@@ -6,6 +6,22 @@
 #include <QAbstractTableModel>
 #include <QString>
 #include <QDir>
+#include <QColor>
+
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ struct ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+struct	FileInfo
+{
+	bool		is_dir;
+	qint64		size;
+	QString		name;
+	QString		path;
+	QString		status;
+	QColor		font_color;
+};
+typedef QList<FileInfo>		FileInfoList;
+
 
 
 /*******************************************************************
@@ -26,7 +42,7 @@ public:
 	void	refresh_view();
 
 	QString			get_extension( QString filename ) const;
-	QFileInfoList	get_file_list();
+	FileInfoList	get_file_list();
 
 	int				get_header_count();
 
@@ -56,7 +72,7 @@ private:
     QString         root_path;
     
     QDir            dir;
-    QFileInfoList   file_list;
+    FileInfoList    file_list;
 
 	QModelIndex		last_index;
     
