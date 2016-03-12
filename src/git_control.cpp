@@ -12,6 +12,7 @@
 
 #include "git_cmd/git_command.h"
 #include "git_cmd/git_clone.h"
+#include "git_cmd/git_status.h"
 #include "git_cmd/git_init.h"
 #include "git_cmd/git_rev_parse.h"
 
@@ -92,6 +93,8 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 		git_cmd->exec( param );
 	}
 }
+
+
 
 
 

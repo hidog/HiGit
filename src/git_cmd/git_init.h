@@ -1,5 +1,5 @@
-#ifndef GIT_STATUS_H
-#define GIT_STATUS_H
+#ifndef GIT_INIT_H
+#define GIT_INIT_H
 
 #include <QString>
 

@@ -25,6 +25,7 @@ using namespace std;
 enum	GIT_COMMAND_TYPE
 {
 	GIT_CMD_CLONE,
+	GIT_CMD_STATUS,
 };
 
 

@@ -10,7 +10,7 @@
 	GitStatus
 ********************************************************************/
 GitStatus::GitStatus( QObject *parent ) :
-	GitCommand(parent)
+	GitBase(parent)
 {}
 
 
@@ -19,6 +19,8 @@ GitStatus::GitStatus( QObject *parent ) :
 ********************************************************************/
 GitStatus::~GitStatus()
 {}
+
+
 
 
 

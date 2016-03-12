@@ -5,7 +5,7 @@
 #include <QColor>
 
 #include "../src/git_cmd/git_status.h"
-
+#include "../src/git_control.h"
 
 /*******************************************************************
 	FileWidget

@@ -1,7 +1,7 @@
 #ifndef GIT_LOG_H
 #define GIT_LOG_H
 
-#include "git_command.h"
+#include "git_base.h"
 
 #include <boost/container/list.hpp>
 
@@ -22,7 +22,7 @@ typedef QList<LogData>		LogDataList;
 /*******************************************************************
 	GitLog
 ********************************************************************/
-class GitLog : public GitCommand
+class GitLog : public GitBase
 {
 	Q_OBJECT
 
@@ -30,7 +30,6 @@ public:
 	GitLog( QObject *parent = 0 );
 	~GitLog();
 
-	void	exec( GitParameter param );
 
 	LogDataList		get_log_list( QString path );
 	QStringList		get_file_list( QString path, QString commit );

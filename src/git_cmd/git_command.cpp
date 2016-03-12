@@ -8,7 +8,7 @@
 	GitControl
 ********************************************************************/
 GitCommand::GitCommand( QObject *parent )
-	:	QObject(parent)
+	:	GitBase(parent)
 {
 }
 
@@ -21,84 +21,6 @@ GitCommand::~GitCommand()
 }
 
 
-
-/*******************************************************************
-	get_proj_name
-********************************************************************/
-QString		GitCommand::get_proj_name( QString path )
-{
-	if( *(path.end()-1) == '/' || *(path.end()-1) == '\\' )
-		path.remove( path.size()-1, 1 );
-
-	int		tmp1	=	path.lastIndexOf( '/' );
-	int		tmp2	=	path.lastIndexOf( '\\' );
-
-	int		index	=	tmp1 > tmp2 ? tmp1 : tmp2;
-
-	if( index != -1 )
-	{
-		QRegExp		rexp( "(\\w+)" );
-		QString		name;
-
-		if( rexp.indexIn( path, index ) != -1 )
-			name	=	rexp.cap(1);
-		else
-			name	=	QString("default_name");
-
-		return	name;
-	}
-	else
-		return	QString("default_name");
-}
-
-
-
-/*******************************************************************
-	splite_remain
-********************************************************************/
-void	GitCommand::splite_remain( QByteArray &output )
-{
-	QByteArray	tmp		=	remain_msg + output;
-	int		i, index;
-
-	// search lst '\r', '\n'
-	index	=	tmp.length();
-	for( i = tmp.length()-1; i >= 0; i-- )
-	{
-		if( tmp[i] == '\r' || tmp[i] == '\n' )
-		{
-			index	=	i;
-			break;
-		}
-	}
-
-	output		=	tmp.mid( 0, index );
-	remain_msg	=	tmp.mid( index+1 );
-}
-
-
-
-
-/*******************************************************************
-	abort_slot
-********************************************************************/
-void	GitCommand::abort_slot()
-{
-	qDebug() << "GitCommand::abort_slot()";
-}
-
-
-
-/*******************************************************************
-	need_password
-********************************************************************/
-bool	GitCommand::need_password( QByteArray data )
-{
-	if( data.contains("/dev/tty") )
-		return	true;
-	else
-		return	false;
-}
 
 
 
@@ -133,25 +55,6 @@ void	GitCommand::splite_progress( QByteArray data, QByteArray &msg, int &num )
 
 
 
-/*******************************************************************
-	set_color
-********************************************************************/
-void	GitCommand::set_color( QByteArray& data, GIT_FONT_COLOR color )
-{
-	switch( color )
-	{
-		case GIT_FONT_RED:
-			data.push_front("<font color=\"red\">");	
-			data.push_back("</font>");
-			break;
-		case GIT_FONT_BLUE:
-			data.push_front("<font color=\"blue\">");	
-			data.push_back("</font>");
-			break;
-		default:
-			assert(0);
-	}
-}
 
 /*******************************************************************
 	set_progess
@@ -197,35 +100,7 @@ void	GitCommand::refresh_dynamic_output( QByteArray data, QByteArray msg )
 }
 
 
-/*******************************************************************
-	splite_git_output
-********************************************************************/
-QByteArray		GitCommand::splite_git_output( QByteArray &output )
-{
-	QByteArray	data	=	"";
-	int		i, index;
 
-	//
-	for( i = 0; i < output.length(); i++ )
-	{
-		if( output[i] == '\r' || output[i] == '\n' )
-		{
-			index	=	i;
-			break;
-		}
-	}
-
-	// first is end charector
-	if( i == 0 )
-		output.remove( 0, 1 );
-	else
-	{
-		data	=	output.mid( 0, index );
-		output.remove( 0, index + 1 );
-	}	
-
-	return	data;
-}
 
 
 

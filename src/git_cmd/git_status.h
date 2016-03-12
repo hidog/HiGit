@@ -2,14 +2,14 @@
 #define GIT_STATUS_H
 
 #include <QString>
-#include "git_command.h"
+#include "git_base.h"
 #include "../def.h"
 
 
 /*******************************************************************
 	GitStatus
 ********************************************************************/
-class   GitStatus : public GitCommand
+class   GitStatus : public GitBase
 {
 public:
     GitStatus( QObject *parent = 0 );
@@ -20,7 +20,6 @@ public:
 	QColor			get_status_color( QString status );
 	QStringList		get_delete_files( QString path );
 
-	void	exec( GitParameter param ) { ERRLOG("no use.") }
 
     
 private:

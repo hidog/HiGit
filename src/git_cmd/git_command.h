@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QProcess>
 #include <QString>
+#include "git_base.h"
 
 #include <string>
 
@@ -20,19 +21,13 @@
 typedef boost::container::map<QString,QString>	GitParameter;
 
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ enum ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-enum	GIT_FONT_COLOR
-{
-	GIT_FONT_RED,
-	GIT_FONT_BLUE,
-};
 
 
 
 /*******************************************************************
 	GitCommand
 ********************************************************************/
-class	GitCommand : public QObject
+class	GitCommand : public GitBase
 {
 	Q_OBJECT
 
@@ -48,7 +43,6 @@ public:
 	boost::function<void(QList<QByteArray>)>	set_ui_dynamic_output_func;
 	boost::function<void()>						input_user_passwd_func;
 
-	static QString	get_proj_name( QString path );
 
 signals:
 
@@ -56,23 +50,10 @@ signals:
 
 
 protected:
-	void			splite_remain( QByteArray &output );
-	QByteArray		splite_git_output( QByteArray &output );
-	bool			need_password( QByteArray data );
 	void			splite_progress( QByteArray data, QByteArray &msg, int &num );
 	void			set_progess( int num );
 	void			refresh_dynamic_output( QByteArray data, QByteArray msg );
-	void			set_color( QByteArray& data, GIT_FONT_COLOR color );
 
-
-	QList<QByteArray>	output_list;	// use for update view message.s
-
-	QByteArray		last_msg;		
-	QByteArray		remain_msg;		
-
-protected slots:
-
-	virtual void	abort_slot();
 
 private:
 

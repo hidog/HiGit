@@ -60,6 +60,7 @@
     <ClCompile Include="..\model\file_model.cpp" />
     <ClCompile Include="..\model\log_model.cpp" />
     <ClCompile Include="..\src\db_manager.cpp" />
+    <ClCompile Include="..\src\git_cmd\git_base.cpp" />
     <ClCompile Include="..\src\git_cmd\git_clone.cpp" />
     <ClCompile Include="..\src\git_cmd\git_command.cpp" />
     <ClCompile Include="..\src\git_cmd\git_init.cpp" />
@@ -82,6 +83,7 @@
     <ClInclude Include="..\model\log_model.h" />
     <ClInclude Include="..\src\db_manager.h" />
     <ClInclude Include="..\src\def.h" />
+    <ClInclude Include="..\src\git_cmd\git_base.h" />
     <ClInclude Include="..\src\git_cmd\git_clone.h" />
     <ClInclude Include="..\src\git_cmd\git_command.h" />
     <ClInclude Include="..\src\git_cmd\git_init.h" />
