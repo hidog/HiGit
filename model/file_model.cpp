@@ -6,6 +6,7 @@
 
 #include "../src/git_cmd/git_status.h"
 #include "../src/git_control.h"
+#include "../src/tools.h"
 
 /*******************************************************************
 	FileWidget
@@ -117,15 +118,18 @@ FileInfoList	FileModel::get_file_list()
 			info.font_color		=	git_status.get_status_color( info.status );
 		}
 
+		if( qstring_contain_full_width( info.name ) == true )
+		{
+			info.status			=	git_status.get_file_status( info.path, info.name );
+			info.font_color		=	git_status.get_status_color( info.status );
+		}
+
 		list.push_back(info);
 	}
 
 	// git status and merge.
 	FileInfoList	status_list		=	git_status.get_all_status( dir.path() );
 	FileInfoList::iterator	itr;
-
-	//foreach( FileInfo file, status_list )
-		//qDebug() << file.name << " " << file.status;
 
 	foreach( FileInfo file, status_list )
 	{

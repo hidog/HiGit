@@ -27,20 +27,33 @@ GitStatus::~GitStatus()
 	parse_short_status
 	file:///C:/Users/hidog/AppData/Local/Programs/Git/mingw64/share/doc/git-doc/git-status.html
 ********************************************************************/
-void	GitStatus::parse_short_status( FileInfoList &list, const QString &str )
+void	GitStatus::parse_short_status( FileInfoList &list, const QByteArray &str )
 {
 	char		X,	Y;	// naming see above URL.
 	QString		name;
 	FileInfo	info;
 
-	X		=	str[0].toLatin1();
-	Y		=	str[1].toLatin1();;
+	X		=	str[0];
+	Y		=	str[1];
 	name	=	str.mid( 3 );
 
 	// don't needed handle sub directory files.
-	//if( name.contains("/") || name.contains("\\") )
-		//return;
+	// also do not handle chinese file.
+	if( name.contains("/") || name.contains("\\") )
+		return;
 
+	// decide X
+	switch( X )
+	{
+		case 'A':
+			info.name			=	name;
+			info.status			=	GIT_STATUS_ADDED;
+			info.font_color		=	get_status_color( info.status );
+			list.push_back(info);
+			return;
+	}
+
+	// decide Y
 	switch( Y )
 	{
 		case 'M' :	
@@ -85,10 +98,7 @@ FileInfoList	GitStatus::get_all_status( QString path )
 	bool			result;
 	FileInfoList	list;
 	QByteArray		output;
-	QByteArray		line;
-	QString			str;
-	QTextCodec		*codec	=	QTextCodec::codecForName("utf8");
-
+	QByteArray		str;
 
 	proc->setWorkingDirectory( path );
 	args << "status" << "-s";
@@ -104,10 +114,7 @@ FileInfoList	GitStatus::get_all_status( QString path )
 
 		while( output.length() > 0 )
 		{
-			line	=	splite_git_output( output );
-			//str		=	codec->toUnicode( line );
-			str		=	QString::fromLocal8Bit( line.data() );
-			qDebug() << str;
+			str		=	splite_git_output( output );
 
 			if( str.length() > 4 )
 				parse_short_status( list, str );

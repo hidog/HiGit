@@ -31,7 +31,7 @@ public:
 	QStringList		get_delete_files( QString path );
 
 	FileInfoList	get_all_status( QString path );
-	void			parse_short_status( FileInfoList &list, const QString &str );
+	void			parse_short_status( FileInfoList &list, const QByteArray &str );
 
 	static QColor	get_status_color( const QString& status );
     

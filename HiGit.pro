@@ -57,6 +57,7 @@ SOURCES		+=	main.cpp\
 				src/git_control.cpp\
 				src/db_manager.cpp\
 				src/sqlite3.c\
+				src/tools.cpp\
 				src/git_cmd/git_command.cpp\
 				src/git_cmd/git_clone.cpp\
 				src/git_cmd/git_init.cpp\
@@ -80,6 +81,7 @@ HEADERS		+=	ui/mainwindow.h\
 				src/git_control.h\
 				src/db_manager.h\
 				src/sqlite3.h\
+				src/tools.h\
 				src/git_cmd/git_command.h\
 				src/git_cmd/git_clone.h\
 				src/git_cmd/git_init.h\
