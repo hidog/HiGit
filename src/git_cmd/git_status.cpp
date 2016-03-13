@@ -4,6 +4,7 @@
 #include "../def.h"
 #include <QDebug>
 #include <QColor>
+#include <QTextCodec>
 
 
 /*******************************************************************
@@ -22,7 +23,99 @@ GitStatus::~GitStatus()
 
 
 
+/*******************************************************************
+	parse_short_status
+	file:///C:/Users/hidog/AppData/Local/Programs/Git/mingw64/share/doc/git-doc/git-status.html
+********************************************************************/
+void	GitStatus::parse_short_status( FileInfoList &list, const QString &str )
+{
+	char		X,	Y;	// naming see above URL.
+	QString		name;
+	FileInfo	info;
 
+	X		=	str[0].toLatin1();
+	Y		=	str[1].toLatin1();;
+	name	=	str.mid( 3 );
+
+	// don't needed handle sub directory files.
+	//if( name.contains("/") || name.contains("\\") )
+		//return;
+
+	switch( Y )
+	{
+		case 'M' :	
+			info.name			=	name;
+			info.status			=	GIT_STATUS_MODIFY;
+			info.font_color		=	get_status_color( info.status );
+			list.push_back(info);
+			break;
+
+		case 'A' :
+			info.name			=	name;
+			info.status			=	GIT_STATUS_ADDED;
+			info.font_color		=	get_status_color( info.status );
+			list.push_back(info);
+			break;
+
+		case '?' :
+			info.name			=	name;
+			info.status			=	GIT_STATUS_UNTRACKED;
+			info.font_color		=	get_status_color( info.status );
+			list.push_back(info);
+
+		case 'D':
+			break;
+
+		default:
+			// there are something status not define, see above URL.
+			ERRLOG("status fail.")
+	}
+}
+
+
+
+/*******************************************************************
+	get_all_status
+	file:///C:/Users/hidog/AppData/Local/Programs/Git/mingw64/share/doc/git-doc/git-status.html
+********************************************************************/
+FileInfoList	GitStatus::get_all_status( QString path )
+{
+	QProcess		*proc	=	new QProcess();
+	QStringList		args;
+	bool			result;
+	FileInfoList	list;
+	QByteArray		output;
+	QByteArray		line;
+	QString			str;
+	QTextCodec		*codec	=	QTextCodec::codecForName("utf8");
+
+
+	proc->setWorkingDirectory( path );
+	args << "status" << "-s";
+
+	proc->start( "git", args );
+	result	=	proc->waitForFinished();
+
+	//
+	if( result == true )
+	{
+		output	=	proc->readAll();
+		remain_msg	=	"";
+
+		while( output.length() > 0 )
+		{
+			line	=	splite_git_output( output );
+			//str		=	codec->toUnicode( line );
+			str		=	QString::fromLocal8Bit( line.data() );
+			qDebug() << str;
+
+			if( str.length() > 4 )
+				parse_short_status( list, str );
+		}
+	}
+
+	return	list;
+}
 
 
 
@@ -116,15 +209,15 @@ QColor		GitStatus::get_file_color( QString path, QString filename )
 /*******************************************************************
 	get_file_color
 ********************************************************************/
-QColor		GitStatus::get_status_color( QString status )
+QColor		GitStatus::get_status_color( const QString& status )
 {
 	QColor		color	=	QColor();
 
-	if( status == "tracked" )
+	if( status == GIT_STATUS_TRACKED )
 		color	=	QColor(Qt::darkGreen);
-	else if( status == "added" )
+	else if( status == GIT_STATUS_ADDED )
 		color	=	QColor(Qt::blue);
-	else if( status == "modified" )
+	else if( status == GIT_STATUS_MODIFY )
 		color	=	QColor(Qt::red);
 
 	return	color;
@@ -162,19 +255,19 @@ QString		GitStatus::get_file_status( QString path, QString filename )
 		//qDebug() << output;
 
 		if( output.contains("nothing to commit, working directory clean") == true )
-			status	=	"tracked";
+			status	=	GIT_STATUS_TRACKED;
 
 		else if( output.contains("modified:") == true )
-			status	=	"modified";
+			status	=	GIT_STATUS_MODIFY;
 
 		else if( output.contains("new file:") == true )
-			status	=	"added";
+			status	=	GIT_STATUS_ADDED;
 
 		else if( output.contains("Untracked files:") == true )
-			status	=	"untracked";
+			status	=	GIT_STATUS_UNTRACKED;
 
 		else if( output.contains("deleted:") == true )
-			status	=	"deleted";
+			status	=	GIT_STATUS_DELETED;
 
 		else
 			ERRLOG("error. output = %s", qPrintable(output) )

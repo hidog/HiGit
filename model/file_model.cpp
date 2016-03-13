@@ -103,6 +103,7 @@ FileInfoList	FileModel::get_file_list()
 	if( dir.path() == root_path )
 		list.removeAt(0);
 
+	// QFileInfoList to FileInfoList
 	foreach( QFileInfo file, qlist )
 	{
 		info.name			=	file.fileName();
@@ -112,11 +113,31 @@ FileInfoList	FileModel::get_file_list()
 
 		if( info.name != QString("..") )
 		{
-			info.status			=	git_status.get_file_status( info.path, info.name );
+			info.status			=	GIT_STATUS_TRACKED;
 			info.font_color		=	git_status.get_status_color( info.status );
 		}
 
 		list.push_back(info);
+	}
+
+	// git status and merge.
+	FileInfoList	status_list		=	git_status.get_all_status( dir.path() );
+	FileInfoList::iterator	itr;
+
+	//foreach( FileInfo file, status_list )
+		//qDebug() << file.name << " " << file.status;
+
+	foreach( FileInfo file, status_list )
+	{
+		for( itr = list.begin(); itr != list.end(); ++itr )
+		{
+			if( file.name == itr->name )
+			{
+				itr->status		=	file.status;
+				itr->font_color	=	file.font_color;
+				break;
+			}
+		}
 	}
 
 	return	list;

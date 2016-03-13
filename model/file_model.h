@@ -7,20 +7,9 @@
 #include <QString>
 #include <QDir>
 #include <QColor>
+#include "../src/def.h"
 
 
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ struct ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-struct	FileInfo
-{
-	bool		is_dir;
-	qint64		size;
-	QString		name;
-	QString		path;
-	QString		status;
-	QColor		font_color;
-};
-typedef QList<FileInfo>		FileInfoList;
 
 
 
