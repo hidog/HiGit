@@ -114,18 +114,24 @@ FileInfoList	FileModel::get_file_list()
 
 		if( info.name != QString("..") )
 		{
-			info.status			=	GIT_STATUS_TRACKED;
-			info.font_color		=	git_status.get_status_color( info.status );
+			// handle UTF8 files and directory.
+			if( qstring_contain_full_width( info.name ) == true || file.isDir() == true )
+			{
+				info.status			=	git_status.get_file_status( info.path, info.name );
+				info.font_color		=	git_status.get_status_color( info.status );
+			}
+			else
+			{
+				info.status			=	GIT_STATUS_TRACKED;
+				info.font_color		=	git_status.get_status_color( info.status );
+			}
 		}
 
-		if( qstring_contain_full_width( info.name ) == true )
-		{
-			info.status			=	git_status.get_file_status( info.path, info.name );
-			info.font_color		=	git_status.get_status_color( info.status );
-		}
+
 
 		list.push_back(info);
 	}
+
 
 	// git status and merge.
 	FileInfoList	status_list		=	git_status.get_all_status( dir.path() );

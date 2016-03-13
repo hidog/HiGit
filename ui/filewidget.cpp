@@ -1,9 +1,9 @@
-#include "filewidget.h"
+﻿#include "filewidget.h"
 #include "ui_filewidget.h"
 
 #include "../model/file_model.h"
 #include <QDebug>
-
+#include <QMenu>
 
 
 /*******************************************************************
@@ -29,9 +29,33 @@ FileWidget::FileWidget(QWidget *parent) :
 	header_width_vec[3]	=	70;
 	header_width_vec[4] =	60;
 
+
+	// test for menu
+	ui->fileTView->setContextMenuPolicy(Qt::CustomContextMenu); 	  
+	//QTableView *tableview;  
+	//QMenu *rightMenu;  // 右鍵菜單
+	QAction *cutAction;  // 剪貼  
+	QAction *copyAction;  // 複製  
+	QAction *pasteAction;  // 貼上  
+	QAction *deleteAction;  // 刪除 
+	rightMenu = new QMenu;
+	cutAction = new QAction("cut",this);  
+	copyAction = new QAction("copy",this);  
+	pasteAction = new QAction("past",this);  
+	deleteAction = new QAction("delete",this);    
+	rightMenu->addAction(cutAction);  
+	rightMenu->addAction(copyAction);  
+	rightMenu->addAction(pasteAction);  
+	rightMenu->addAction(deleteAction);
+	connect( ui->fileTView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(clicked_rightMenu(QPoint)) );
+
 	set_connect();
 }
 
+void FileWidget::clicked_rightMenu(const QPoint &pos)
+{
+	rightMenu->exec(QCursor::pos()); 
+}
 
 
 
@@ -101,6 +125,7 @@ FileWidget::~FileWidget()
     delete model;
     delete ui;
 }
+
 
 
 

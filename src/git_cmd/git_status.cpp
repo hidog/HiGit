@@ -42,6 +42,8 @@ void	GitStatus::parse_short_status( FileInfoList &list, const QByteArray &str )
 	if( name.contains("/") || name.contains("\\") )
 		return;
 
+	//qDebug() << name;
+
 	// decide X
 	switch( X )
 	{
@@ -61,14 +63,14 @@ void	GitStatus::parse_short_status( FileInfoList &list, const QByteArray &str )
 			info.status			=	GIT_STATUS_MODIFY;
 			info.font_color		=	get_status_color( info.status );
 			list.push_back(info);
-			break;
+			return;
 
 		case 'A' :
 			info.name			=	name;
 			info.status			=	GIT_STATUS_ADDED;
 			info.font_color		=	get_status_color( info.status );
 			list.push_back(info);
-			break;
+			return;
 
 		case '?' :
 			info.name			=	name;
@@ -77,7 +79,7 @@ void	GitStatus::parse_short_status( FileInfoList &list, const QByteArray &str )
 			list.push_back(info);
 
 		case 'D':
-			break;
+			return;
 
 		default:
 			// there are something status not define, see above URL.
@@ -238,6 +240,8 @@ QColor		GitStatus::get_status_color( const QString& status )
 ********************************************************************/
 QString		GitStatus::get_file_status( QString path, QString filename )
 {
+	//qDebug() << filename;
+
 	QProcess		*proc	=	new QProcess();
 	QStringList		args;
 
