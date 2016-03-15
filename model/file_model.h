@@ -8,9 +8,14 @@
 #include <QDir>
 #include <QColor>
 #include "../src/def.h"
+#include "../src/git_cmd/git_status.h"
 
 
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+namespace boost{
+	class	thread;
+} // end namespace boost
 
 
 /*******************************************************************
@@ -31,7 +36,7 @@ public:
 	void	refresh_view();
 
 	QString			get_extension( QString filename ) const;
-	FileInfoList	get_file_list();
+	void			get_file_list();
 
 	int				get_header_count();
 
@@ -45,6 +50,8 @@ public:
 	QVariant		get_font_color( const QModelIndex &index, int role ) const;
 
 	QString			get_filesize_str( qint64 size ) const;
+	void			update_file_status();
+
 
 
 public slots:
@@ -61,10 +68,13 @@ private:
     QString         root_path;
     
     QDir            dir;
-    FileInfoList    file_list;
+    QFileInfoList   file_list;
+	QStatusVec		status_vec;
 
 	QModelIndex		last_index;
     
+	boost::thread	*thr;
+
 };
 
 

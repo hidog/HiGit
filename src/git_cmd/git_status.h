@@ -2,6 +2,8 @@
 #define GIT_STATUS_H
 
 #include <QString>
+#include <QColor>
+
 #include "git_base.h"
 #include "../def.h"
 
@@ -14,7 +16,13 @@
 
 
 
-
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ struct ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+struct FileStatus
+{
+	QString		status;
+	QColor		color;
+};
+typedef QVector<FileStatus>	QStatusVec;
 
 
 /*******************************************************************
@@ -30,8 +38,8 @@ public:
 	QColor			get_file_color( QString path, QString filename );
 	QStringList		get_delete_files( QString path );
 
-	FileInfoList	get_all_status( QString path );
-	void			parse_short_status( FileInfoList &list, const QByteArray &str );
+	//QFileInfoList	get_all_status( QString path );
+	//void			parse_short_status( QFileInfoList &list, const QByteArray &str );
 
 	static QColor	get_status_color( const QString& status );
     

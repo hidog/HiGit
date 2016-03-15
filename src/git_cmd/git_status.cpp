@@ -27,7 +27,7 @@ GitStatus::~GitStatus()
 	parse_short_status
 	file:///C:/Users/hidog/AppData/Local/Programs/Git/mingw64/share/doc/git-doc/git-status.html
 ********************************************************************/
-void	GitStatus::parse_short_status( FileInfoList &list, const QByteArray &str )
+/*void	GitStatus::parse_short_status( FileInfoList &list, const QByteArray &str )
 {
 	char		X,	Y;	// naming see above URL.
 	QString		name;
@@ -85,7 +85,7 @@ void	GitStatus::parse_short_status( FileInfoList &list, const QByteArray &str )
 			// there are something status not define, see above URL.
 			ERRLOG("status fail.")
 	}
-}
+}*/
 
 
 
@@ -93,6 +93,7 @@ void	GitStatus::parse_short_status( FileInfoList &list, const QByteArray &str )
 	get_all_status
 	file:///C:/Users/hidog/AppData/Local/Programs/Git/mingw64/share/doc/git-doc/git-status.html
 ********************************************************************/
+/*
 FileInfoList	GitStatus::get_all_status( QString path )
 {
 	QProcess		*proc	=	new QProcess();
@@ -124,7 +125,7 @@ FileInfoList	GitStatus::get_all_status( QString path )
 	}
 
 	return	list;
-}
+}*/
 
 
 
@@ -245,7 +246,7 @@ QString		GitStatus::get_file_status( QString path, QString filename )
 	QProcess		*proc	=	new QProcess();
 	QStringList		args;
 
-	//qDebug() << path << " " << filename;
+	qDebug() << path << " " << filename;
 
 	proc->setWorkingDirectory( path );
 

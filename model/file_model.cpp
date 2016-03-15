@@ -4,15 +4,19 @@
 #include <QFileIconProvider>
 #include <QColor>
 
-#include "../src/git_cmd/git_status.h"
-#include "../src/git_control.h"
+//#include "../src/git_control.h"
 #include "../src/tools.h"
+
+#include <boost/thread.hpp>
+
+
 
 /*******************************************************************
 	FileWidget
 ********************************************************************/
 FileModel::FileModel( QObject *parent ) :
-	QAbstractTableModel( parent )
+	QAbstractTableModel( parent ),
+	thr(NULL)
 {
     head_list << " " << "file name" << "status" << "extends" << "size";
 	
@@ -29,7 +33,14 @@ FileModel::FileModel( QObject *parent ) :
 	FileWidget
 ********************************************************************/
 FileModel::~FileModel()
-{}
+{
+	if( thr != NULL )
+	{
+		thr->interrupt();
+		delete	thr;
+		thr		=	NULL;
+	}
+}
 
 
 
@@ -94,65 +105,60 @@ void	FileModel::refresh_view()
 /*******************************************************************
 	get_file_list
 ********************************************************************/
-FileInfoList	FileModel::get_file_list()
+void	FileModel::get_file_list()
 {
-	QFileInfoList	qlist	=	dir.entryInfoList();
-	FileInfoList	list;
-	FileInfo		info;
-	GitStatus		git_status;
+	// 
+	if( thr != NULL )
+	{
+		thr->interrupt();
+		delete	thr;
+		thr		=	NULL;
+	}
+
+	//
+	file_list	=	dir.entryInfoList();
 
 	if( dir.path() == root_path )
-		list.removeAt(0);
+		file_list.removeAt(0);
 
-	// QFileInfoList to FileInfoList
-	foreach( QFileInfo file, qlist )
-	{
-		info.name			=	file.fileName();
-		info.path			=	file.path();
-		info.is_dir			=	file.isDir();
-		info.size			=	file.size();
-
-		if( info.name != QString("..") )
-		{
-			// handle UTF8 files and directory.
-			if( qstring_contain_full_width( info.name ) == true || file.isDir() == true )
-			{
-				info.status			=	git_status.get_file_status( info.path, info.name );
-				info.font_color		=	git_status.get_status_color( info.status );
-			}
-			else
-			{
-				info.status			=	GIT_STATUS_TRACKED;
-				info.font_color		=	git_status.get_status_color( info.status );
-			}
-		}
-
-
-
-		list.push_back(info);
-	}
-
-
-	// git status and merge.
-	FileInfoList	status_list		=	git_status.get_all_status( dir.path() );
-	FileInfoList::iterator	itr;
-
-	foreach( FileInfo file, status_list )
-	{
-		for( itr = list.begin(); itr != list.end(); ++itr )
-		{
-			if( file.name == itr->name )
-			{
-				itr->status		=	file.status;
-				itr->font_color	=	file.font_color;
-				break;
-			}
-		}
-	}
-
-	return	list;
+	//
+	status_vec.resize( file_list.size() );
+	thr		=	new boost::thread( &FileModel::update_file_status, this );
 }
 
+
+
+
+
+/*******************************************************************
+	update_file_status
+********************************************************************/
+void	FileModel::update_file_status()
+{
+	GitStatus	git_status;
+	QString		status;
+	QColor		color;
+
+	QFileInfoList::iterator	info_itr	=	file_list.begin();
+	QStatusVec::iterator	status_itr	=	status_vec.begin();
+
+	while(true)
+	{
+		status	=	git_status.get_file_status( dir.path(), info_itr->fileName() );
+		color	=	git_status.get_status_color( status );
+
+		status_itr->status	=	status;
+		status_itr->color	=	color;
+
+		++info_itr;
+		++status_itr;
+
+		if( info_itr == file_list.end() || status_itr == status_vec.end() )
+			break;
+	}
+
+	refresh_view();
+}
 
 
 
@@ -162,24 +168,18 @@ FileInfoList	FileModel::get_file_list()
 void	FileModel::enter_dir_slot( const QModelIndex &index )
 {
 	int			row		=	index.row();
-	FileInfo	info	=	file_list[row];
-	QString		path	=	info.name;
+	QFileInfo	info	=	file_list[row];
+	QString		path	=	info.fileName();
 	GitStatus	git_status;
 
-	//qDebug() << path;
-
-	if( info.is_dir )
+	if( info.isDir() )
 	{
 		if( path == QString("..") )
 			dir.cdUp();
 		else
 			dir.cd(path);
 
-		file_list	=	get_file_list();
-
-		/*QList<QFileInfo>::Iterator	itr;
-		for( itr = file_list.begin(); itr != file_list.end(); ++itr )
-			qDebug() << itr->fileName();*/
+		get_file_list();
 
 		refresh_view();
 	}
@@ -195,8 +195,7 @@ QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
 	int		col		=	index.column();
 	int		row		=	index.row();
 
-	FileInfo	info		=	file_list[row];
-	//QString		filename	=	file_list[row].fileName();
+	QFileInfo	info		=	file_list[row];
 	QVariant	result;
 	GitStatus	git_status;
 
@@ -207,23 +206,23 @@ QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
 	switch( col )
 	{
 		case 1:
-			result	=	info.name;
+			result	=	info.fileName();
 			break;
 		case 2:
-			if( info.is_dir == false )
-				result	=	info.status; //  git_status.get_file_status( dir.path(), info.name );
+			if( info.isDir() == false )
+				result	=	status_vec[row].status;
 			else
 				result	=	QString("dir");
 			break;		
 		case 3:
-			if( info.is_dir == true )
+			if( info.isDir() == true )
 				result	=	QString("dir");
 			else
-				result	=	get_extension( info.name );
+				result	=	get_extension( info.fileName() );		
 			break;
 		case 4:
-			if( info.is_dir == false )
-				result	=	get_filesize_str( info.size );
+			if( info.isDir() == false )
+				result	=	get_filesize_str( info.size() );
 			else
 				result	=	QString("");
 			break;
@@ -287,12 +286,9 @@ QVariant	FileModel::icon_data( const QModelIndex &index, int role ) const
 	int		col		=	index.column();
 	int		row		=	index.row();
 
-	//QString		filename	=	file_list[row].fileName();
-
 	assert( row < file_list.size() );
 
-	FileInfo			info	=	file_list[row]; //delete_file_list.at( row - file_list.size() );
-	QFileInfo			qinfo	=	QFileInfo( info.path, info.name );
+	QFileInfo			info	=	file_list[row]; 
 	QFileIconProvider	icon_pv;
 	QVariant			result;
 
@@ -303,7 +299,7 @@ QVariant	FileModel::icon_data( const QModelIndex &index, int role ) const
 	switch( col )
 	{
 		case 0:
-			result	=	icon_pv.icon(qinfo);
+			result	=	icon_pv.icon(info);
 			break;
 	}
 
@@ -322,12 +318,9 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 
 	QVariant	var	=	QVariant();
 
-	//qDebug () << col << " " << row;
-
 	assert( row < file_list.size() );
 
-	FileInfo	info		=	file_list[row];
-	//QString		filename	=	file_list[row].fileName();
+	QFileInfo	info		=	file_list[row];
 
 	switch( role )
 	{
@@ -338,7 +331,7 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 			var	=	icon_data( index, role );		
 			break;
 		case Qt::TextColorRole:
-			var	=	info.font_color;	//get_font_color( index, role );
+			var	=	status_vec[row].color;
 			break;
 	}
 
@@ -356,7 +349,7 @@ QVariant	FileModel::get_font_color( const QModelIndex &index, int role ) const
 	int		col		=	index.column();
 	int		row		=	index.row();
 
-	FileInfo	info	=	file_list[row];
+	QFileInfo	info	=	file_list[row];
 	QVariant	result;
 	GitStatus	git_status;
 
@@ -368,7 +361,7 @@ QVariant	FileModel::get_font_color( const QModelIndex &index, int role ) const
 	{
 		case 1:
 		case 2:
-			result	=	git_status.get_file_color( dir.path(), info.name );			
+			result	=	git_status.get_file_color( dir.path(), info.fileName() );			
 			break;		
 	}
 
@@ -387,8 +380,6 @@ QString		FileModel::get_extension( QString filename ) const
 		return	QString("");
 	else
 		return	filename.mid( index+1 );
-
-	//return	QString("");
 }
 
 
@@ -408,13 +399,7 @@ void    FileModel::set_root_path( QString path )
 ********************************************************************/
 void    FileModel::init_file_list()
 {
-	GitStatus	git_status;
-
-	file_list			=	get_file_list();
-
-	/*QList<QFileInfo>::Iterator	itr;
-    for( itr = file_list.begin(); itr != file_list.end(); ++itr )
-		qDebug() << itr->fileName();*/
+	get_file_list();
 
 	refresh_view();
 }
