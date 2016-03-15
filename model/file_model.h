@@ -34,6 +34,8 @@ public:
     void    init_file_list();
 
 	void	refresh_view();
+	void	refresh_singal( int row );
+
 
 	QString			get_extension( QString filename ) const;
 	void			get_file_list();
@@ -64,6 +66,8 @@ signals:
 
 private:
     
+	bool			file_loop;
+
     QStringList     head_list;
     QString         root_path;
     

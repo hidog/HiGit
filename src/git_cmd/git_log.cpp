@@ -122,7 +122,7 @@ LogDataList	GitLog::get_log_list( QString path )
 		while( output.length() > 0 )
 		{
 			str		=	splite_git_output(output);
-			qDebug(str);
+			//qDebug(str);
 			if( str.mid(0,6) == QString("commit") )
 			{
 				if( log_data.commit.length() > 0 )
@@ -147,9 +147,9 @@ LogDataList	GitLog::get_log_list( QString path )
 		}
 	}
 
-	LogDataList::iterator	itr;
-	for( itr = list.begin(); itr != list.end(); ++itr )
-		qDebug() << itr->title << "\n\n";
+	//LogDataList::iterator	itr;
+	//for( itr = list.begin(); itr != list.end(); ++itr )
+		//qDebug() << itr->title << "\n\n";
 
 	delete	proc;
 	return	list;

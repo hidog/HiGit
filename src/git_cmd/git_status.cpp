@@ -229,6 +229,8 @@ QColor		GitStatus::get_status_color( const QString& status )
 		color	=	QColor(Qt::blue);
 	else if( status == GIT_STATUS_MODIFY )
 		color	=	QColor(Qt::red);
+	else
+		color	=	QColor(Qt::black);
 
 	return	color;
 }
@@ -242,11 +244,11 @@ QColor		GitStatus::get_status_color( const QString& status )
 QString		GitStatus::get_file_status( QString path, QString filename )
 {
 	//qDebug() << filename;
+	if( filename == QString("..") )
+		return	QString("");
 
 	QProcess		*proc	=	new QProcess();
 	QStringList		args;
-
-	qDebug() << path << " " << filename;
 
 	proc->setWorkingDirectory( path );
 
@@ -282,7 +284,7 @@ QString		GitStatus::get_file_status( QString path, QString filename )
 			status	=	GIT_STATUS_DELETED;
 
 		else
-			ERRLOG("error. output = %s", qPrintable(output) )
+			ERRLOG("error. filename = %s, output = %s", qPrintable(filename), qPrintable(output) )
 		
 	}
 	else

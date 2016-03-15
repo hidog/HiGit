@@ -16,7 +16,8 @@
 ********************************************************************/
 FileModel::FileModel( QObject *parent ) :
 	QAbstractTableModel( parent ),
-	thr(NULL)
+	thr(NULL),
+	file_loop(false)
 {
     head_list << " " << "file name" << "status" << "extends" << "size";
 	
@@ -75,6 +76,19 @@ int		FileModel::columnCount( const QModelIndex &parent ) const
 
 
 
+/*******************************************************************
+	refresh_singal
+********************************************************************/
+void	FileModel::refresh_singal( int row )
+{
+	int		col		=	head_list.size();
+
+	QModelIndex		left_top		=	createIndex( row, 0 );
+	QModelIndex		right_bottom	=	createIndex( row, col );
+
+	emit dataChanged( left_top, right_bottom );
+}
+
 
 /*******************************************************************
 	refresh_view
@@ -85,7 +99,7 @@ int		FileModel::columnCount( const QModelIndex &parent ) const
 ********************************************************************/
 void	FileModel::refresh_view()
 {
-	int		row		=	file_list.size() > last_index.row() ? file_list.size() : last_index.row();;
+	int		row		=	file_list.size() > last_index.row() ? file_list.size() : last_index.row();
 	int		col		=	head_list.size();
 
 	QModelIndex		left_top		=	createIndex( 0, 0 );
@@ -110,7 +124,8 @@ void	FileModel::get_file_list()
 	// 
 	if( thr != NULL )
 	{
-		thr->interrupt();
+		file_loop	=	false;
+		thr->join();
 		delete	thr;
 		thr		=	NULL;
 	}
@@ -122,10 +137,11 @@ void	FileModel::get_file_list()
 		file_list.removeAt(0);
 
 	//
+	status_vec.clear();
 	status_vec.resize( file_list.size() );
-	thr		=	new boost::thread( &FileModel::update_file_status, this );
+	file_loop	=	true;
+	thr			=	new boost::thread( &FileModel::update_file_status, this );
 }
-
 
 
 
@@ -135,6 +151,8 @@ void	FileModel::get_file_list()
 ********************************************************************/
 void	FileModel::update_file_status()
 {
+	int			row		=	0;
+
 	GitStatus	git_status;
 	QString		status;
 	QColor		color;
@@ -142,7 +160,7 @@ void	FileModel::update_file_status()
 	QFileInfoList::iterator	info_itr	=	file_list.begin();
 	QStatusVec::iterator	status_itr	=	status_vec.begin();
 
-	while(true)
+	while(file_loop)
 	{
 		status	=	git_status.get_file_status( dir.path(), info_itr->fileName() );
 		color	=	git_status.get_status_color( status );
@@ -150,14 +168,15 @@ void	FileModel::update_file_status()
 		status_itr->status	=	status;
 		status_itr->color	=	color;
 
+		//qDebug() << row;
+		refresh_singal( row++ );
+
 		++info_itr;
 		++status_itr;
 
 		if( info_itr == file_list.end() || status_itr == status_vec.end() )
 			break;
 	}
-
-	refresh_view();
 }
 
 
