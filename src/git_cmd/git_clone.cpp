@@ -107,7 +107,7 @@ void	GitClone::exec( GitParameter param )
 	/*
 		note: need use -v, otherwise no message.
 	*/
-	proc->setProcessChannelMode( QProcess::SeparateChannels );
+    proc->setProcessChannelMode( QProcess::SeparateChannels );
 	proc->start( "git", args, QProcess::ReadWrite );
 
 	switch(proc->state())
@@ -223,11 +223,6 @@ void	GitClone::clone_start_slot()
 	qDebug() << "git clone start...";
 
 	QProcess	*proc	=	(QProcess*)sender();
-	//proc->write(".");
-
-	QByteArray	output	=	proc->readAll();
-	qDebug() << output ;
-
 }
 
 
@@ -240,8 +235,6 @@ void	GitClone::clone_output_slot()
 	QByteArray	output	=	proc->readAll();	
 
 	qDebug() << output;
-	//qDebug() << output << "end...";
-	//emit( output_signal(output) );
 }
 
 

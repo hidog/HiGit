@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QFileIconProvider>
 #include <QColor>
+#include <QDateTime>
 
 //#include "../src/git_control.h"
 #include "../src/tools.h"
@@ -19,7 +20,7 @@ FileModel::FileModel( QObject *parent ) :
 	thr(NULL),
 	file_loop(false)
 {
-    head_list << " " << "file name" << "status" << "extends" << "size";
+    head_list << " " << "file name" << "status" << "extends" << "size" << "last modified";
 	
 	last_index	=	createIndex( 0, 0 );
 	
@@ -245,6 +246,10 @@ QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
 			else
 				result	=	QString("");
 			break;
+        case 5:
+            if( info.isFile() == true)
+                result  =   info.lastModified();
+            break;
 	}
 
 	return	result;
@@ -350,7 +355,8 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 			var	=	icon_data( index, role );		
 			break;
 		case Qt::TextColorRole:
-			var	=	status_vec[row].color;
+            if( col < 3 )
+                var	=	status_vec[row].color;
 			break;
 	}
 

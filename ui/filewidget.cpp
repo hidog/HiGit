@@ -28,6 +28,7 @@ FileWidget::FileWidget(QWidget *parent) :
 	header_width_vec[2]	=	80;
 	header_width_vec[3]	=	70;
 	header_width_vec[4] =	60;
+    header_width_vec[5] =   200;
 
 
 	// test for menu

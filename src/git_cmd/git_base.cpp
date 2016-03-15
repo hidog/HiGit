@@ -146,5 +146,9 @@ QByteArray		GitBase::splite_git_output( QByteArray &output )
 		output.remove( 0, index + 1 );
 	}	
 
+#ifdef LINUX
+    qDebug() << data;
+#endif
+
 	return	data;
 }
