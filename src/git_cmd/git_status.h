@@ -19,6 +19,7 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ struct ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 struct FileStatus
 {
+    QString     name;
 	QString		status;
 	QColor		color;
 };
@@ -38,8 +39,8 @@ public:
 	QColor			get_file_color( QString path, QString filename );
 	QStringList		get_delete_files( QString path );
 
-	//QFileInfoList	get_all_status( QString path );
-	//void			parse_short_status( QFileInfoList &list, const QByteArray &str );
+    QStatusVec  	get_all_status( QString path );
+    void			parse_short_status( QStatusVec &vec, const QByteArray &str );
 
 	static QColor	get_status_color( const QString& status );
     

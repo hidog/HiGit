@@ -27,11 +27,11 @@ GitStatus::~GitStatus()
 	parse_short_status
 	file:///C:/Users/hidog/AppData/Local/Programs/Git/mingw64/share/doc/git-doc/git-status.html
 ********************************************************************/
-/*void	GitStatus::parse_short_status( FileInfoList &list, const QByteArray &str )
+void	GitStatus::parse_short_status( QStatusVec &vec, const QByteArray &str )
 {
 	char		X,	Y;	// naming see above URL.
 	QString		name;
-	FileInfo	info;
+    FileStatus	sts;
 
 	X		=	str[0];
 	Y		=	str[1];
@@ -48,10 +48,10 @@ GitStatus::~GitStatus()
 	switch( X )
 	{
 		case 'A':
-			info.name			=	name;
-			info.status			=	GIT_STATUS_ADDED;
-			info.font_color		=	get_status_color( info.status );
-			list.push_back(info);
+            sts.name	=	name;
+            sts.status	=	GIT_STATUS_ADDED;
+            sts.color	=	get_status_color( sts.status );
+            vec.push_back(sts);
 			return;
 	}
 
@@ -59,24 +59,24 @@ GitStatus::~GitStatus()
 	switch( Y )
 	{
 		case 'M' :	
-			info.name			=	name;
-			info.status			=	GIT_STATUS_MODIFY;
-			info.font_color		=	get_status_color( info.status );
-			list.push_back(info);
+            sts.name	=	name;
+            sts.status	=	GIT_STATUS_MODIFY;
+            sts.color   =	get_status_color( sts.status );
+            vec.push_back(sts);
 			return;
 
 		case 'A' :
-			info.name			=	name;
-			info.status			=	GIT_STATUS_ADDED;
-			info.font_color		=	get_status_color( info.status );
-			list.push_back(info);
+            sts.name	=	name;
+            sts.status	=	GIT_STATUS_ADDED;
+            sts.color	=	get_status_color( sts.status );
+            vec.push_back(sts);
 			return;
 
 		case '?' :
-			info.name			=	name;
-			info.status			=	GIT_STATUS_UNTRACKED;
-			info.font_color		=	get_status_color( info.status );
-			list.push_back(info);
+            sts.name	=	name;
+            sts.status	=	GIT_STATUS_UNTRACKED;
+            sts.color	=	get_status_color( sts.status );
+            vec.push_back(sts);
 
 		case 'D':
 			return;
@@ -85,7 +85,7 @@ GitStatus::~GitStatus()
 			// there are something status not define, see above URL.
 			ERRLOG("status fail.")
 	}
-}*/
+}
 
 
 
@@ -93,13 +93,12 @@ GitStatus::~GitStatus()
 	get_all_status
 	file:///C:/Users/hidog/AppData/Local/Programs/Git/mingw64/share/doc/git-doc/git-status.html
 ********************************************************************/
-/*
-FileInfoList	GitStatus::get_all_status( QString path )
+QStatusVec  GitStatus::get_all_status( QString path )
 {
 	QProcess		*proc	=	new QProcess();
 	QStringList		args;
 	bool			result;
-	FileInfoList	list;
+    QStatusVec      vec;
 	QByteArray		output;
 	QByteArray		str;
 
@@ -120,12 +119,12 @@ FileInfoList	GitStatus::get_all_status( QString path )
 			str		=	splite_git_output( output );
 
 			if( str.length() > 4 )
-				parse_short_status( list, str );
+                parse_short_status( vec, str );
 		}
 	}
 
-	return	list;
-}*/
+    return	vec;
+}
 
 
 

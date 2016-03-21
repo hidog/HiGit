@@ -7,6 +7,7 @@
 
 //#include "../src/git_control.h"
 #include "../src/tools.h"
+#include "../src/git_cmd/git_status.h"
 
 #include <boost/thread.hpp>
 
@@ -119,9 +120,12 @@ void	FileModel::refresh_view()
 
 /*******************************************************************
 	get_file_list
+    see update_file_status
 ********************************************************************/
 void	FileModel::get_file_list()
 {
+    int     i;
+
 	// 
 	if( thr != NULL )
 	{
@@ -140,6 +144,29 @@ void	FileModel::get_file_list()
 	//
 	status_vec.clear();
 	status_vec.resize( file_list.size() );
+
+    // get file status by use git status -s
+#if 0
+    GitStatus       git_status;
+    QStatusVec      vec     =   git_status.get_all_status( dir.path() );
+
+    QFileInfoList::iterator     itr;
+
+    foreach( FileStatus sts, vec )
+    {
+        for( i = 0, itr = file_list.begin(); itr != file_list.end(); ++itr, i++ )
+        {
+            if( itr->fileName() == sts.name )
+            {
+                status_vec[i].status    =   sts.status;
+                status_vec[i].color     =   sts.color;
+            }
+        }
+    }
+    refresh_view();
+#endif
+
+    // start loop to get all file status.
 	file_loop	=	true;
 	thr			=	new boost::thread( &FileModel::update_file_status, this );
 }
@@ -149,6 +176,9 @@ void	FileModel::get_file_list()
 
 /*******************************************************************
 	update_file_status
+    use git status -s to get all file status.
+    use single git status get chinese file name status.
+    note: git status -s can't get chinese file name, but faster.
 ********************************************************************/
 void	FileModel::update_file_status()
 {
@@ -163,6 +193,9 @@ void	FileModel::update_file_status()
 
 	while(file_loop)
 	{
+        //if( status_itr->status != "" )
+        //    continue;
+
 		status	=	git_status.get_file_status( dir.path(), info_itr->fileName() );
 		color	=	git_status.get_status_color( status );
 
