@@ -40,6 +40,7 @@ public slots:
 	void	refresh_view_slot();
 	void	header_resize_slot( int index, int old_size, int new_size );
 	void	path_change_slot( QString path );
+    void    add_slot();
 
 	void	clicked_rightMenu(const QPoint &pos); 
 

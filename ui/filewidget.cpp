@@ -101,8 +101,26 @@ void	FileWidget::set_connect()
 	connect(	model,				SIGNAL(refresh_signal()),							this,		SLOT(refresh_view_slot())						);
 	connect(	model,				SIGNAL(path_change_signal(QString)),				this,		SLOT(path_change_slot(QString))					);
 	connect(	ui->refreshButton,	SIGNAL(clicked()),									model,		SLOT(refresh_slot())							);
+    connect(    ui->addButton,      SIGNAL(clicked()),                                  this,       SLOT(add_slot())                                );
 
 	connect(	ui->fileTView->horizontalHeader(),		SIGNAL(sectionResized(int,int,int)),		this,		SLOT(header_resize_slot(int,int,int))		);
+}
+
+
+/*******************************************************************
+    add_slot
+********************************************************************/
+void    FileWidget::add_slot()
+{
+    qDebug() << "test";
+
+    //QModelIndexList     list    =   ui->fileTView->selectedIndexes();
+
+    /*foreach( QModelIndex inx, list )
+    {
+        qDebug() << inx.column() << " " << inx.row();
+    }*/
+
 }
 
 

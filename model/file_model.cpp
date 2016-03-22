@@ -173,7 +173,6 @@ void	FileModel::get_file_list()
 
 	// get relative path.
 	QString		relative_path	=	QDir(root_path).relativeFilePath( dir.path() );  //dir.relativeFilePath( root_path );
-	//qDebug() << relative_path;
 	if( relative_path[0] == '.' )
 		relative_path[0]	=	'/';
 	else
