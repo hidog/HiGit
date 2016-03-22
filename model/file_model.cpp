@@ -39,7 +39,8 @@ FileModel::~FileModel()
 {
 	if( thr != NULL )
 	{
-		thr->interrupt();
+		file_loop	=	false;
+		thr->join();
 		delete	thr;
 		thr		=	NULL;
 	}
@@ -124,8 +125,6 @@ void	FileModel::refresh_view()
 ********************************************************************/
 void	FileModel::get_file_list()
 {
-    int     i;
-
 	// 
 	if( thr != NULL )
 	{
@@ -134,6 +133,19 @@ void	FileModel::get_file_list()
 		delete	thr;
 		thr		=	NULL;
 	}
+
+	// get relative path.
+	QString		relative_path	=	QDir(root_path).relativeFilePath( dir.path() );  //dir.relativeFilePath( root_path );
+	//qDebug() << relative_path;
+	if( relative_path[0] == '.' )
+		relative_path[0]	=	'/';
+	else
+		relative_path.push_front('/');
+
+	if( *(relative_path.end()-1) != '/' )
+		relative_path.push_back('/');
+
+	emit path_change_signal( relative_path );
 
 	//
 	file_list	=	dir.entryInfoList();
@@ -191,7 +203,7 @@ void	FileModel::update_file_status()
 	QFileInfoList::iterator	info_itr	=	file_list.begin();
 	QStatusVec::iterator	status_itr	=	status_vec.begin();
 
-	while(file_loop)
+	while( file_loop )
 	{
         //if( status_itr->status != "" )
         //    continue;
@@ -458,10 +470,22 @@ void    FileModel::set_root_path( QString path )
 void    FileModel::init_file_list()
 {
 	get_file_list();
-
 	refresh_view();
 }
 
+
+
+
+/*******************************************************************
+	path_change_slot
+********************************************************************/
+void	FileModel::path_change_slot( const QString &new_path )
+{
+	dir.cd( root_path + new_path );
+
+	get_file_list();
+	refresh_view();
+}
 
 
 

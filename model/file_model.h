@@ -58,10 +58,11 @@ public:
 
 public slots:
 	void	enter_dir_slot( const QModelIndex &index );
-
+	void	path_change_slot( const QString &new_path );
 
 signals:
 	void	refresh_signal();
+	void	path_change_signal(QString);
 
 
 private:

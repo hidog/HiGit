@@ -99,8 +99,44 @@ void	FileWidget::set_connect()
 	connect(	ui->fileTView,		SIGNAL(doubleClicked(const QModelIndex&)),			this,		SLOT(double_clicked_slot(const QModelIndex&))	);
 	connect(	this,				SIGNAL(enter_dir_signal(const QModelIndex&)),		model,		SLOT(enter_dir_slot(const QModelIndex&))		);
 	connect(	model,				SIGNAL(refresh_signal()),							this,		SLOT(refresh_view_slot())						);
+	connect(	model,				SIGNAL(path_change_signal(QString)),				this,		SLOT(path_change_slot(QString))					);
 
 	connect(	ui->fileTView->horizontalHeader(),		SIGNAL(sectionResized(int,int,int)),		this,		SLOT(header_resize_slot(int,int,int))		);
+}
+
+
+
+/*******************************************************************
+	path_change_slot
+********************************************************************/
+void	FileWidget::path_change_slot( QString path )
+{
+	QString		str;
+	int			index	=	0;
+
+	// need disconnect. otherwise, model will get more signals.
+	disconnect(		ui->pathCBox,		SIGNAL(currentIndexChanged(const QString&)),		model,		SLOT(path_change_slot(const QString&))			);
+
+	//
+	ui->pathCBox->clear();
+	while(true)
+	{
+		index	=	path.indexOf( "/", index );
+		if( index < 0 )
+			break;
+
+		str		=	path.mid( 0, index+1 );
+		index++;
+
+		ui->pathCBox->addItem( str );
+	}
+
+	// set to last index.
+	int		last_index	=	ui->pathCBox->count() - 1;
+	ui->pathCBox->setCurrentIndex( last_index );
+
+	//
+	connect(		ui->pathCBox,		SIGNAL(currentIndexChanged(const QString&)),		model,		SLOT(path_change_slot(const QString&))			);
 }
 
 

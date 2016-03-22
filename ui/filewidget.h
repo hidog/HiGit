@@ -39,8 +39,9 @@ public slots:
 	void	double_clicked_slot( const QModelIndex &index );
 	void	refresh_view_slot();
 	void	header_resize_slot( int index, int old_size, int new_size );
+	void	path_change_slot( QString path );
 
-	void clicked_rightMenu(const QPoint &pos); 
+	void	clicked_rightMenu(const QPoint &pos); 
 
 signals:
 	void	enter_dir_signal( const QModelIndex & );
