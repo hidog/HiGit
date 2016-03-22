@@ -100,6 +100,7 @@ void	FileWidget::set_connect()
 	connect(	this,				SIGNAL(enter_dir_signal(const QModelIndex&)),		model,		SLOT(enter_dir_slot(const QModelIndex&))		);
 	connect(	model,				SIGNAL(refresh_signal()),							this,		SLOT(refresh_view_slot())						);
 	connect(	model,				SIGNAL(path_change_signal(QString)),				this,		SLOT(path_change_slot(QString))					);
+	connect(	ui->refreshButton,	SIGNAL(clicked()),									model,		SLOT(refresh_slot())							);
 
 	connect(	ui->fileTView->horizontalHeader(),		SIGNAL(sectionResized(int,int,int)),		this,		SLOT(header_resize_slot(int,int,int))		);
 }

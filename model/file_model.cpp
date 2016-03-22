@@ -4,6 +4,7 @@
 #include <QFileIconProvider>
 #include <QColor>
 #include <QDateTime>
+#include <QTimer>
 
 //#include "../src/git_control.h"
 #include "../src/tools.h"
@@ -19,7 +20,9 @@
 FileModel::FileModel( QObject *parent ) :
 	QAbstractTableModel( parent ),
 	thr(NULL),
-	file_loop(false)
+	file_loop(false),
+	file_loop_fisish(true),
+	timer(NULL)
 {
     head_list << " " << "file name" << "status" << "extends" << "size" << "last modified";
 	
@@ -44,6 +47,40 @@ FileModel::~FileModel()
 		delete	thr;
 		thr		=	NULL;
 	}
+
+	if( timer != NULL )
+	{
+		delete	timer;
+		timer	=	NULL;
+	}
+}
+
+
+
+
+/*******************************************************************
+	refresh_slot
+********************************************************************/
+void	FileModel::refresh_slot()
+{
+	//qDebug() << __FUNCTION__;
+
+	//
+	if( thr != NULL )
+	{
+		if( file_loop_fisish == false )
+			return;
+		else
+		{
+			thr->join();
+			delete	thr;
+			thr		=	NULL;
+		}		
+	}
+
+    // start loop to get all file status.
+	file_loop	=	true;
+	thr			=	new boost::thread( &FileModel::update_file_status, this );
 }
 
 
@@ -194,6 +231,9 @@ void	FileModel::get_file_list()
 ********************************************************************/
 void	FileModel::update_file_status()
 {
+	//
+	file_loop_fisish	=	false;
+
 	int			row		=	0;
 
 	GitStatus	git_status;
@@ -223,6 +263,9 @@ void	FileModel::update_file_status()
 		if( info_itr == file_list.end() || status_itr == status_vec.end() )
 			break;
 	}
+
+	//
+	file_loop_fisish	=	true;
 }
 
 
@@ -471,6 +514,17 @@ void    FileModel::init_file_list()
 {
 	get_file_list();
 	refresh_view();
+
+	if( timer != NULL )
+	{
+		delete	timer;
+		timer	=	NULL;
+	}
+
+	timer	=	new QTimer( this );
+	connect(	timer,		SIGNAL(timeout()),		this,		SLOT(refresh_slot())	);
+	//timer->setInterval( 1000 );
+	timer->start( REFRESH_TIMEOUT );
 }
 
 

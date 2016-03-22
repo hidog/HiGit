@@ -11,11 +11,16 @@
 #include "../src/git_cmd/git_status.h"
 
 
+#define	REFRESH_TIMEOUT		3000
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 namespace boost{
 	class	thread;
 } // end namespace boost
+
+class	QTimer;
+
 
 
 /*******************************************************************
@@ -59,6 +64,7 @@ public:
 public slots:
 	void	enter_dir_slot( const QModelIndex &index );
 	void	path_change_slot( const QString &new_path );
+	void	refresh_slot();
 
 signals:
 	void	refresh_signal();
@@ -68,6 +74,7 @@ signals:
 private:
     
 	bool			file_loop;
+	bool			file_loop_fisish;
 
     QStringList     head_list;
     QString         root_path;
@@ -79,6 +86,8 @@ private:
 	QModelIndex		last_index;
     
 	boost::thread	*thr;
+
+	QTimer			*timer;
 
 };
 
