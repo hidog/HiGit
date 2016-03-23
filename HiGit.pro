@@ -29,11 +29,13 @@ win32 {
 macx {
 	message("macx")
 	INCLUDEPATH 	+=	/usr/local/include
-	LIBPATH 		+=	/usr/local/lib
+	LIBPATH 	+=	/usr/local/lib
 	OBJECTS_DIR 	=	./obj
-	MOC_DIR 		=	./obj
-	RCC_DIR 		=	./obj
-	UI_DIR 			=	./obj
+	MOC_DIR 	=	./obj
+	RCC_DIR 	=	./obj
+	UI_DIR 		=	./obj
+	LIBS 		+=	-lboost_thread \
+				-lboost_system
 }
 
 unix:!macx{
