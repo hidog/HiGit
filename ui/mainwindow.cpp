@@ -73,7 +73,7 @@ void	MainWindow::resizeEvent( QResizeEvent *event )
 {
 	//cout << ui->scrollArea->width() << " " << ui->scrollArea->height() << endl;
 
-	int		width			=	ui->scrollArea->width() - 20;
+	int		width			=	ui->scrollArea->width();
 
 	ProjectButton	*button;	
 

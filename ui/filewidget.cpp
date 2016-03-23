@@ -2,8 +2,11 @@
 #include "ui_filewidget.h"
 
 #include "../model/file_model.h"
+#include "adddialog.h"
+
 #include <QDebug>
 #include <QMenu>
+#include <QItemSelectionModel>
 
 
 /*******************************************************************
@@ -112,15 +115,38 @@ void	FileWidget::set_connect()
 ********************************************************************/
 void    FileWidget::add_slot()
 {
-    qDebug() << "test";
+	QItemSelectionModel	*selecteds		=	ui->fileTView->selectionModel();
+	QModelIndexList 	row_list_tmp	=	selecteds->selectedIndexes();
+	QModelIndexList		row_list;
 
-    //QModelIndexList     list    =   ui->fileTView->selectedIndexes();
+	bool	is_choosed;
 
-    /*foreach( QModelIndex inx, list )
-    {
-        qDebug() << inx.column() << " " << inx.row();
-    }*/
+	// remove repeat row.
+	row_list.clear();
+	foreach( QModelIndex index, row_list_tmp )
+	{
+		is_choosed	=	false;
+		foreach( QModelIndex index2, row_list )
+		{
+			if( index.row() == index2.row() )
+			{
+				is_choosed	=	true;
+				break;
+			}
+		}
 
+		if( is_choosed == false )
+			row_list.push_back( index );
+	}
+
+	QList<QString>		add_list	=	model->get_add_selected_list( row_list );
+
+	foreach( QString str, add_list )
+		qDebug() << str;
+
+	adddialog	*add_dialog		=	new adddialog();
+	//add_dialog->setText
+	add_dialog->exec();
 }
 
 

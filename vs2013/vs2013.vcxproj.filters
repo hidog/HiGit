@@ -96,6 +96,9 @@
     <ClCompile Include="..\src\git_cmd\git_base.cpp">
       <Filter>src\git_cmd</Filter>
     </ClCompile>
+    <ClCompile Include="..\ui\adddialog.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\clonewindow.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="..\src\git_cmd\git_base.h">
       <Filter>src\git_cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\adddialog.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
