@@ -24,7 +24,7 @@ FileModel::FileModel( QObject *parent ) :
 	file_loop_fisish(true),
 	timer(NULL)
 {
-    head_list << " " << "file name" << "status" << "extends" << "size" << "last modified";
+    head_list << " " << "file name" << "status" << "extends" << "size" ; //<< "last modified";
 	
 	last_index	=	createIndex( 0, 0 );
 	

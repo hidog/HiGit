@@ -3,20 +3,29 @@
 
 #include <QDialog>
 
-namespace Ui {
-class adddialog;
-}
 
-class adddialog : public QDialog
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~
+namespace Ui {
+class AddDialog;
+}	// end namespace Ui
+
+
+
+
+
+/*******************************************************************
+	AddDialog
+********************************************************************/
+class	AddDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit adddialog(QWidget *parent = 0);
-    ~adddialog();
+    explicit AddDialog(QWidget *parent = 0);
+    ~AddDialog();
 
 private:
-    Ui::adddialog *ui;
+    Ui::AddDialog	*ui;
 };
 
 #endif // ADDDIALOG_H

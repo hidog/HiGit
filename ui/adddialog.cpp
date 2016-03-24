@@ -1,14 +1,26 @@
 #include "adddialog.h"
 #include "ui_adddialog.h"
 
-adddialog::adddialog(QWidget *parent) :
+
+
+
+/*******************************************************************
+    AddDialog
+********************************************************************/
+AddDialog::AddDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::adddialog)
+    ui(new Ui::AddDialog)
 {
     ui->setupUi(this);
 }
 
-adddialog::~adddialog()
+
+
+
+/*******************************************************************
+    AddDialog
+********************************************************************/
+AddDialog::~AddDialog()
 {
     delete ui;
 }

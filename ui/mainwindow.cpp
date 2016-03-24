@@ -137,6 +137,9 @@ void    MainWindow::init_proj_button()
 	int		height	=	ProjectButton::fixed_height() * proj_list.size();
 
 	ui->scrollArea->widget()->setMinimumHeight( height );
+
+	// call for resizing ProjButton
+	this->resizeEvent(NULL);
 }
 
 
@@ -252,7 +255,9 @@ void	MainWindow::add_ui_proj( DbProj proj )
     int		height	=	ProjectButton::fixed_height() * proj_list.size();
     
     ui->scrollArea->widget()->setMinimumHeight( height );
-    
+
+	// call for resizing ProjButton
+	this->resizeEvent(NULL);    
 }
 
 

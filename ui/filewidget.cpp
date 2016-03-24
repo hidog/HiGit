@@ -31,7 +31,7 @@ FileWidget::FileWidget(QWidget *parent) :
 	header_width_vec[2]	=	80;
 	header_width_vec[3]	=	70;
 	header_width_vec[4] =	60;
-    header_width_vec[5] =   200;
+    //header_width_vec[5] =   200;
 
 
 	// test for menu
@@ -141,12 +141,11 @@ void    FileWidget::add_slot()
 
 	QList<QString>		add_list	=	model->get_add_selected_list( row_list );
 
-	foreach( QString str, add_list )
-		qDebug() << str;
+	//foreach( QString str, add_list )
+		//qDebug() << str;
 
-	adddialog	*add_dialog		=	new adddialog();
-	//add_dialog->setText
-	add_dialog->exec();
+	AddDialog	*add_dialog		=	new AddDialog(this);
+	add_dialog->show();
 }
 
 
