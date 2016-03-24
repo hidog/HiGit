@@ -273,10 +273,10 @@ void	FileModel::update_file_status()
 	get_add_selected_list
 	get selected by QTableView, and need added files.
 ********************************************************************/
-QList<QString>	FileModel::get_add_selected_list( const QModelIndexList index_list ) const
+QFileInfoList 	FileModel::get_add_selected_list( const QModelIndexList index_list ) const
 {
-	QList<QString>	str_list;
-	str_list.clear();
+	QFileInfoList	list;
+	list.clear();
 
 	int			row	=	0;
 	QFileInfo	info;
@@ -289,11 +289,11 @@ QList<QString>	FileModel::get_add_selected_list( const QModelIndexList index_lis
 		{
 			info	=	file_list.at(row);
 			if( true == info.isFile() )
-				str_list.push_back( info.absoluteFilePath() );
+				list.push_back( info );
 		}
 	}
 
-	return	str_list;
+	return	list;
 }
 
 

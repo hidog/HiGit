@@ -42,12 +42,15 @@ public slots:
 	void	path_change_slot( QString path );
     void    add_slot();
 
-	void	clicked_rightMenu(const QPoint &pos); 
+	void	right_menu_slot( const QPoint &pos ); 
 
 signals:
 	void	enter_dir_signal( const QModelIndex & );
+
     
 private:
+
+	void	set_right_menu();
 
 	boost::container::vector<int>	header_width_vec;
 
@@ -58,7 +61,8 @@ private:
 	FileModel	*model;
 	QString		root_path;
 
-	QMenu *rightMenu;  //右鍵菜單
+	QMenu		*right_menu;  // mouse right click menu.
+	QAction		*add_action; 
 
 };
 

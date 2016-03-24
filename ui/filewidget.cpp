@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QMenu>
 #include <QItemSelectionModel>
+#include <QMouseEvent>
 
 
 /*******************************************************************
@@ -14,7 +15,9 @@
 ********************************************************************/
 FileWidget::FileWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::FileWidget)
+    ui(new Ui::FileWidget),
+	right_menu(NULL),
+	add_action(NULL)
 {
 	int		i;
 
@@ -33,34 +36,50 @@ FileWidget::FileWidget(QWidget *parent) :
 	header_width_vec[4] =	60;
     //header_width_vec[5] =   200;
 
-
-	// test for menu
-	ui->fileTView->setContextMenuPolicy(Qt::CustomContextMenu); 	  
-	//QTableView *tableview;  
-	//QMenu *rightMenu;  // 右鍵菜單
-	QAction *cutAction;  // 剪貼  
-	QAction *copyAction;  // 複製  
-	QAction *pasteAction;  // 貼上  
-	QAction *deleteAction;  // 刪除 
-	rightMenu = new QMenu;
-	cutAction = new QAction("cut",this);  
-	copyAction = new QAction("copy",this);  
-	pasteAction = new QAction("past",this);  
-	deleteAction = new QAction("delete",this);    
-	rightMenu->addAction(cutAction);  
-	rightMenu->addAction(copyAction);  
-	rightMenu->addAction(pasteAction);  
-	rightMenu->addAction(deleteAction);
-	connect( ui->fileTView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(clicked_rightMenu(QPoint)) );
-
+	set_right_menu();
 	set_connect();
 }
 
-void FileWidget::clicked_rightMenu(const QPoint &pos)
+
+
+/*******************************************************************
+	set_right_menu
+********************************************************************/
+void FileWidget::right_menu_slot( const QPoint &pos )
 {
-	rightMenu->exec(QCursor::pos()); 
+	right_menu->exec( QCursor::pos() ); 
 }
 
+
+
+
+/*******************************************************************
+	set_right_menu
+********************************************************************/
+void	FileWidget::set_right_menu()
+{
+	if( right_menu != NULL )
+	{
+		delete	right_menu;
+		right_menu	=	NULL;
+	}
+	if( add_action != NULL )
+	{
+		delete	add_action;
+		add_action	=	NULL;
+	}
+
+	//
+	ui->fileTView->setContextMenuPolicy(Qt::CustomContextMenu); 	  
+
+	right_menu	=	new QMenu( ui->fileTView );
+	add_action	=	new QAction( "Add", right_menu );
+ 
+	right_menu->addAction( add_action );  
+
+	connect(	ui->fileTView,	SIGNAL(customContextMenuRequested(QPoint)),		this,	SLOT(right_menu_slot(QPoint))	);
+	connect(	add_action,		SIGNAL(triggered()),							this,	SLOT(add_slot())				);
+}
 
 
 /*******************************************************************
@@ -110,6 +129,8 @@ void	FileWidget::set_connect()
 }
 
 
+
+
 /*******************************************************************
     add_slot
 ********************************************************************/
@@ -139,12 +160,12 @@ void    FileWidget::add_slot()
 			row_list.push_back( index );
 	}
 
-	QList<QString>		add_list	=	model->get_add_selected_list( row_list );
+	QFileInfoList	add_list	=	model->get_add_selected_list( row_list );
 
-	//foreach( QString str, add_list )
-		//qDebug() << str;
+	//foreach( QFileInfo info, add_list )
+		//qDebug() << info.fileName();
 
-	AddDialog	*add_dialog		=	new AddDialog(this);
+	AddDialog	*add_dialog		=	new AddDialog( add_list, this );
 	add_dialog->show();
 }
 
@@ -191,7 +212,7 @@ void	FileWidget::path_change_slot( QString path )
 ********************************************************************/
 void	FileWidget::double_clicked_slot( const QModelIndex &index )
 {
-	emit enter_dir_signal(index);
+	emit enter_dir_signal(index);		
 }
 
 
@@ -203,8 +224,10 @@ void	FileWidget::double_clicked_slot( const QModelIndex &index )
 ********************************************************************/
 FileWidget::~FileWidget()
 {
-    delete model;
-    delete ui;
+    delete	model;			model		=	NULL;
+    delete	ui;				ui			=	NULL;
+	delete	add_action;		add_action	=	NULL;
+	delete	right_menu;		right_menu	=	NULL;
 }
 
 

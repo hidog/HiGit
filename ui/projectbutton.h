@@ -7,7 +7,7 @@
 #include "../src/def.h"
 
 
-#define	PJ_BUTTON_WIDTH			430
+#define	PJ_BUTTON_WIDTH			370
 #define PJ_BUTTON_HEIGHT		80
 
 

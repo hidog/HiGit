@@ -59,7 +59,7 @@ public:
 	QString			get_filesize_str( qint64 size ) const;
 	void			update_file_status();
 
-	QList<QString>	get_add_selected_list( const QModelIndexList index_list ) const;
+	QFileInfoList	get_add_selected_list( const QModelIndexList index_list ) const;
 
 public slots:
 	void	enter_dir_slot( const QModelIndex &index );
