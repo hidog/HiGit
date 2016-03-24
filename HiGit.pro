@@ -10,8 +10,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += console
-CONFIG -= app_bundle
+#CONFIG += console
+#CONFIG -= app_bundle
 
 TARGET		=	HiGit
 TEMPLATE	=	app
@@ -36,6 +36,7 @@ macx {
 	UI_DIR 		=	./obj
 	LIBS 		+=	-lboost_thread \
 				-lboost_system
+	DEFINES 	+=	MACOS
 }
 
 unix:!macx{

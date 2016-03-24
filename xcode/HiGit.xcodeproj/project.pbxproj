@@ -28,6 +28,7 @@
 		6D13F1F01C95B43E00FC567A /* git_clone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DB99B271C5520F100998E69 /* git_clone.cpp */; };
 		6D13F1F11C95B43E00FC567A /* git_command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DB99B291C5520F100998E69 /* git_command.cpp */; };
 		6D13F1F21C95B43E00FC567A /* git_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DE4A6001C36B810003F4F94 /* git_control.cpp */; };
+		6DAE4BC11CA4196D00E6D9C3 /* adddialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE4BBF1CA4195B00E6D9C3 /* adddialog.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +58,6 @@
 		6D13F1CF1C95B31900FC567A /* tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tools.h; path = ../src/tools.h; sourceTree = "<group>"; };
 		6D13F1D01C95B32800FC567A /* git_base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_base.cpp; path = ../src/git_cmd/git_base.cpp; sourceTree = "<group>"; };
 		6D13F1D11C95B32800FC567A /* git_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_base.h; path = ../src/git_cmd/git_base.h; sourceTree = "<group>"; };
-		6D13F1D61C95B3C600FC567A /* cpp_proj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = cpp_proj; path = /Users/hidog/code/HiGit/xcode/build/Debug/cpp_proj; sourceTree = "<absolute>"; };
 		6D13F2041C95B4AF00FC567A /* ui_clonewindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ui_clonewindow.h; path = ../obj/ui_clonewindow.h; sourceTree = "<group>"; };
 		6D13F2051C95B4AF00FC567A /* ui_commitwindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ui_commitwindow.h; path = ../obj/ui_commitwindow.h; sourceTree = "<group>"; };
 		6D13F2061C95B4AF00FC567A /* ui_filewidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ui_filewidget.h; path = ../obj/ui_filewidget.h; sourceTree = "<group>"; };
@@ -79,6 +79,10 @@
 		6D53888C1C68FD7A00DA4765 /* projwindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = projwindow.h; path = ../ui/projwindow.h; sourceTree = "<group>"; };
 		6D53888E1C68FD9E00DA4765 /* file_model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = file_model.cpp; path = ../model/file_model.cpp; sourceTree = "<group>"; };
 		6D53888F1C68FD9E00DA4765 /* file_model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = file_model.h; path = ../model/file_model.h; sourceTree = "<group>"; };
+		6DAE4BBE1CA4192700E6D9C3 /* cpp_proj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = cpp_proj; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DAE4BBF1CA4195B00E6D9C3 /* adddialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = adddialog.cpp; path = ../ui/adddialog.cpp; sourceTree = "<group>"; };
+		6DAE4BC01CA4195B00E6D9C3 /* adddialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = adddialog.h; path = ../ui/adddialog.h; sourceTree = "<group>"; };
+		6DAE4BC21CA41B8600E6D9C3 /* ui_adddialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ui_adddialog.h; path = ../obj/ui_adddialog.h; sourceTree = "<group>"; };
 		6DB99B271C5520F100998E69 /* git_clone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_clone.cpp; path = ../src/git_cmd/git_clone.cpp; sourceTree = "<group>"; };
 		6DB99B281C5520F100998E69 /* git_clone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_clone.h; path = ../src/git_cmd/git_clone.h; sourceTree = "<group>"; };
 		6DB99B291C5520F100998E69 /* git_command.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_command.cpp; path = ../src/git_cmd/git_command.cpp; sourceTree = "<group>"; };
@@ -122,6 +126,7 @@
 		6D13F2031C95B49B00FC567A /* obj */ = {
 			isa = PBXGroup;
 			children = (
+				6DAE4BC21CA41B8600E6D9C3 /* ui_adddialog.h */,
 				6D13F2041C95B4AF00FC567A /* ui_clonewindow.h */,
 				6D13F2051C95B4AF00FC567A /* ui_commitwindow.h */,
 				6D13F2061C95B4AF00FC567A /* ui_filewidget.h */,
@@ -153,6 +158,7 @@
 				6DE4A6021C36B816003F4F94 /* ui */,
 				6DE4A5FF1C36B800003F4F94 /* main.cpp */,
 				6DE4A5FE1C36B7E4003F4F94 /* src */,
+				6DAE4BBE1CA4192700E6D9C3 /* cpp_proj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -197,6 +203,8 @@
 		6DE4A6021C36B816003F4F94 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				6DAE4BBF1CA4195B00E6D9C3 /* adddialog.cpp */,
+				6DAE4BC01CA4195B00E6D9C3 /* adddialog.h */,
 				6DE4A7D51C74AE20009835F4 /* commitwindow.cpp */,
 				6DE4A7D61C74AE20009835F4 /* commitwindow.h */,
 				6D5388871C68FD7A00DA4765 /* filewidget.cpp */,
@@ -266,7 +274,7 @@
 			);
 			name = cpp_proj;
 			productName = cpp_proj;
-			productReference = 6D13F1D61C95B3C600FC567A /* cpp_proj */;
+			productReference = 6DAE4BBE1CA4192700E6D9C3 /* cpp_proj */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -312,6 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DAE4BC11CA4196D00E6D9C3 /* adddialog.cpp in Sources */,
 				6D13F1DE1C95B43E00FC567A /* log_model.cpp in Sources */,
 				6D13F1DF1C95B43E00FC567A /* file_model.cpp in Sources */,
 				6D13F1E01C95B43E00FC567A /* commitwindow.cpp in Sources */,

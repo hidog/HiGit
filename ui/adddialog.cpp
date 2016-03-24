@@ -49,16 +49,19 @@ void	AddDialog::set_add_files()
 	ui->addTWidget->clear();
 
 	// test code.
-	ui->addTWidget->setRowCount( 100 );
-	ui->addTWidget->setColumnCount( 1 );
+	ui->addTWidget->setRowCount( add_list.size() );
+	ui->addTWidget->setColumnCount( 2 );
 
 
 	QTableWidgetItem	*item	=	NULL;
 
-	for( int i = 0; i < 100; i++ )
+	for( int i = 0; i < add_list.size(); i++ )
 	{
-		item	=	new QTableWidgetItem( "test" );
+		item	=	new QTableWidgetItem( add_list[i].fileName() );
 		ui->addTWidget->setItem( i, 0, item );
+        
+        item    =   new QTableWidgetItem( add_list[i].size() );
+        ui->addTWidget->setItem( i, 1, item );
 	}
 
 }
