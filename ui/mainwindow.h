@@ -6,6 +6,10 @@
 #include <QVBoxLayout>
 #include "../src/def.h"
 
+/*
+	note: when close mainwindow, need close all windows. need add this feature.
+*/
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~
 namespace Ui {

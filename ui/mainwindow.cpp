@@ -78,9 +78,7 @@ void	MainWindow::resizeEvent( QResizeEvent *event )
 	ProjectButton	*button;	
 
 	foreach( button, proj_list )
-	{
 		button->setFixedWidth( width );
-	}
 }
 
 
@@ -122,6 +120,7 @@ void    MainWindow::init_proj_button()
     bcListDbProj    list    =   db_mng->get_all_proj();
 
 	int		count	=	0;
+	int		width	=	ui->scrollArea->width();
 
 	
 	BOOST_FOREACH( DbProj proj, list )
@@ -129,7 +128,7 @@ void    MainWindow::init_proj_button()
 		proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget(), this ) );
 		proj_list.last()->move( 0, count*ProjectButton::fixed_height() );
         proj_list.last()->setVisible(true);
-        //proj_list.last()->setMaximumWidth(10);
+		proj_list.last()->setFixedWidth( width );
 		count++;
 	}
 
@@ -138,8 +137,7 @@ void    MainWindow::init_proj_button()
 
 	ui->scrollArea->widget()->setMinimumHeight( height );
 
-	// call for resizing ProjButton
-	this->resizeEvent(NULL);
+
 }
 
 
@@ -243,6 +241,8 @@ void	MainWindow::open_slot()
 ********************************************************************/
 void	MainWindow::add_ui_proj( DbProj proj )
 {
+	int		width	=	ui->scrollArea->width();
+
 	proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget(), this ) );
 	proj_list.last()->setVisible(true);		// needed!! otherwise view will not update.	
 
@@ -250,14 +250,13 @@ void	MainWindow::add_ui_proj( DbProj proj )
 
 	proj_list.last()->move( 0, (count - 1) * ProjectButton::fixed_height() );
     proj_list.last()->setMaximumWidth(10);
+	proj_list.last()->setFixedWidth( width );
     
     //int		width	=	ProjectButton::fixed_width();
     int		height	=	ProjectButton::fixed_height() * proj_list.size();
     
     ui->scrollArea->widget()->setMinimumHeight( height );
 
-	// call for resizing ProjButton
-	this->resizeEvent(NULL);    
 }
 
 

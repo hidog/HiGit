@@ -130,6 +130,57 @@ QStatusVec  GitStatus::get_all_status( QString path )
 
 
 /*******************************************************************
+	get_untracked_files
+********************************************************************/
+QFileInfoList	GitStatus::get_untracked_files( QString path )
+{
+	QProcess		*proc	=	new QProcess();
+	QStringList		args;
+	bool			result;
+	QByteArray		output;
+	QByteArray		str;
+	QByteArray		status,	filename;
+	QFileInfoList	list;
+	QFileInfo		info;
+
+	proc->setWorkingDirectory( path );
+	args << "status" << "-s";
+
+	proc->start( "git", args );
+	result	=	proc->waitForFinished();
+
+	//
+	if( result == true )
+	{
+		output	=	proc->readAll();
+		remain_msg	=	"";
+
+		while( output.length() > 0 )
+		{
+			str		=	splite_git_output( output );
+
+			if( str.length() > 4 )
+			{
+				status		=	str.mid( 0, 2 );
+				filename	=	str.mid( 3, -1 );
+
+				if( status == "??" )
+				{
+					info	=	QFileInfo( path + QString("/") + filename );
+					if( info.isFile() )
+						list.push_back( info );
+				}
+			}
+		}
+	}
+
+    return	list;
+}
+
+
+
+
+/*******************************************************************
 	get_delete_files
 ********************************************************************/
 QStringList		GitStatus::get_delete_files( QString path )

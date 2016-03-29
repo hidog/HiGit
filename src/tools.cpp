@@ -27,3 +27,67 @@ bool	qstring_contain_full_width( const QString &str )
 		}
 	}*/
 }
+
+
+
+
+
+/*******************************************************************
+	get_extension
+********************************************************************/
+QString		get_extension( QString filename )
+{
+	int		index	=	filename.lastIndexOf('.');
+	if( index < 0 )
+		return	QString("");
+	else
+		return	filename.mid( index+1 );
+}
+
+
+
+
+
+/*******************************************************************
+	get_filesize_str
+********************************************************************/
+QString		get_filesize_str( qint64 size )
+{
+	int			count	=	0;
+	double		d		=	size;
+	QString		unit	=	QString();
+	QString		str;
+
+	//
+	while( d > 1024 )
+	{
+		d	/=	1024;
+		count++;
+	}
+
+	//
+	switch(count)
+	{
+		case 0:
+			unit	=	"Bytes";
+			break;
+		case 1:
+			unit	=	"KB";
+			break;
+		case 2:
+			unit	=	"MB";
+			break;
+		case 3:
+			unit	=	"GB";
+			break;
+	}
+
+	//
+	if( count == 0 )
+		str		=	str.sprintf( "%lld %s", size, unit.toStdString().c_str() );
+	else
+		str		=	str.sprintf( "%.1lf %s", d, unit.toStdString().c_str() );
+
+	return	str;
+}
+

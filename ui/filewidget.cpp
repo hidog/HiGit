@@ -165,7 +165,7 @@ void    FileWidget::add_slot()
 	//foreach( QFileInfo info, add_list )
 		//qDebug() << info.fileName();
 
-	AddDialog	*add_dialog		=	new AddDialog( add_list, this );
+	AddDialog	*add_dialog		=	new AddDialog( root_path, add_list, this );
 	add_dialog->show();
 }
 

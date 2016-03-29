@@ -3,6 +3,8 @@
 
 #include <QString>
 #include <QColor>
+#include <QFileInfo>
+
 
 #include "git_base.h"
 #include "../def.h"
@@ -41,6 +43,8 @@ public:
 
     QStatusVec  	get_all_status( QString path );
     void			parse_short_status( QStatusVec &vec, const QByteArray &str );
+
+	QFileInfoList	get_untracked_files( QString path );
 
 	static QColor	get_status_color( const QString& status );
     

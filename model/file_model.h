@@ -41,8 +41,6 @@ public:
 	void	refresh_view();
 	void	refresh_singal( int row );
 
-
-	QString			get_extension( QString filename ) const;
 	void			get_file_list();
 
 	int				get_header_count();
@@ -56,7 +54,6 @@ public:
 	QVariant		icon_data( const QModelIndex &index, int role ) const;
 	QVariant		get_font_color( const QModelIndex &index, int role ) const;
 
-	QString			get_filesize_str( qint64 size ) const;
 	void			update_file_status();
 
 	QFileInfoList	get_add_selected_list( const QModelIndexList index_list ) const;

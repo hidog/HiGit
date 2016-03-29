@@ -9,6 +9,7 @@
 //#include "../src/git_control.h"
 #include "../src/tools.h"
 #include "../src/git_cmd/git_status.h"
+#include "../src/tools.h"
 
 #include <boost/thread.hpp>
 
@@ -374,51 +375,6 @@ QVariant	FileModel::text_data( const QModelIndex &index, int role ) const
 
 
 /*******************************************************************
-	get_filesize_str
-********************************************************************/
-QString		FileModel::get_filesize_str( qint64 size ) const
-{
-	int			count	=	0;
-	double		d		=	size;
-	QString		unit	=	QString();
-	QString		str;
-
-	//
-	while( d > 1024 )
-	{
-		d	/=	1024;
-		count++;
-	}
-
-	//
-	switch(count)
-	{
-		case 0:
-			unit	=	"Bytes";
-			break;
-		case 1:
-			unit	=	"KB";
-			break;
-		case 2:
-			unit	=	"MB";
-			break;
-		case 3:
-			unit	=	"GB";
-			break;
-	}
-
-	//
-	if( count == 0 )
-		str		=	str.sprintf( "%lld %s", size, unit.toStdString().c_str() );
-	else
-		str		=	str.sprintf( "%.1lf %s", d, unit.toStdString().c_str() );
-
-	return	str;
-}
-
-
-
-/*******************************************************************
 	icon_data
 ********************************************************************/
 QVariant	FileModel::icon_data( const QModelIndex &index, int role ) const
@@ -511,17 +467,6 @@ QVariant	FileModel::get_font_color( const QModelIndex &index, int role ) const
 
 
 
-/*******************************************************************
-	get_extension
-********************************************************************/
-QString		FileModel::get_extension( QString filename ) const
-{
-	int		index	=	filename.lastIndexOf('.');
-	if( index < 0 )
-		return	QString("");
-	else
-		return	filename.mid( index+1 );
-}
 
 
 /*******************************************************************
