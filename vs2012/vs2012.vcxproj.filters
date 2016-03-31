@@ -88,6 +88,9 @@
     <ClCompile Include="..\src\tools.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\ui\adddialog.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
@@ -155,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="..\src\tools.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\adddialog.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
