@@ -62,6 +62,39 @@ void	GitControl::set_ui_dynamic_output( QList<QByteArray> output_list )
 }
 
 
+
+/*******************************************************************
+	add
+********************************************************************/
+void	GitControl::add( QString root_path, QList<QString> str_list )
+{
+	QProcess		*proc	=	new QProcess(this);
+	QStringList		args;
+
+	bool	result	=	false;
+
+	proc->setWorkingDirectory( root_path );
+
+	args << "add";
+	args << str_list;
+
+	qDebug() << args;
+
+	proc->start( "git", args );
+
+	if( proc->waitForFinished() )
+		result	=	true;
+	else
+		result	=	false;
+
+	if( result == false )
+		ERRLOG( "git add fail.");
+
+	delete	proc;	
+}
+
+
+
 /*******************************************************************
 	exec_command
 ********************************************************************/

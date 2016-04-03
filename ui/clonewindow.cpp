@@ -34,7 +34,6 @@ CloneWindow::CloneWindow(QWidget *parent) :
 	ui->closeButton->setEnabled(false);
 	ui->closeButton->move( ui->okButton->x(), ui->okButton->y() );
 
-
 	git_ctrl	=	new GitControl(this);	
 	git_ctrl->get_recursive_state_func	=	boost::bind( &CloneWindow::get_recursive_state, this );     // set bind function.
 	git_ctrl->get_depth_state_func		=	boost::bind( &CloneWindow::get_depth_state, this );

@@ -50,6 +50,8 @@ public:
 	bool		init( QString path );
 	void		clone( QString src, QString dest, bool is_local_path, QString username = "", QString password = "" );
 
+	void		add( QString root_path, QList<QString> str_list );
+
 	void		set_progress( int num );
 	void		set_ui_dynamic_output( QList<QByteArray> output_list );
 	void		input_user_passwd();

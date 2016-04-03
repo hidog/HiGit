@@ -11,7 +11,7 @@ namespace Ui {
 class AddDialog;
 }	// end namespace Ui
 
-
+class	QCheckBox;
 
 
 
@@ -30,19 +30,28 @@ public:
 	void	set_untracked_files();
 
 	void	set_table_widget( QTableWidget *table, const QFileInfoList &list, Qt::CheckState check_state );
+	int		search_checkbox( QCheckBox *cbox, QTableWidget *table );
+	void	insert_table_item( int row, QTableWidget *table );
+
 
 protected:
 	void	closeEvent( QCloseEvent *event );
 
+signals:
+	void	finish_untracked_files_signal( QList<QFileInfo> );
+
 protected slots:
 	void	cbox_state_change_slot( int state );
-
+	void	finish_untracked_files_slot( QList<QFileInfo> list );
+	void	accepted_slot();
 
 private:
     Ui::AddDialog	*ui;
 
 	QFileInfoList	add_list;
 	QString			root_path;
+
+	bool	is_closed;
 };
 
 #endif // ADDDIALOG_H

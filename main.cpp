@@ -1,6 +1,7 @@
 #include "ui/mainwindow.h"
 #include <QApplication>
 #include <QMetaType>
+#include <QFileInfo>
 
 #include "src/def.h"
 
@@ -11,6 +12,8 @@ int		main(int argc, char *argv[])
 	qRegisterMetaType<DbProj>("DbProj&");
 
     qRegisterMetaType<QVector<int> >("QVector<int>");
+	qRegisterMetaType<QList<QFileInfo> >("QList<QFileInfo>");
+
 
     QApplication	a(argc, argv);
     MainWindow		w;
