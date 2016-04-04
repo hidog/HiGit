@@ -40,11 +40,11 @@ CommitWindow::~CommitWindow()
 void	CommitWindow::get_modify_list()
 {
 	GitStatus	git_status;
-	QStatusVec	vec	=	git_status.get_modify_list( root_path );
+	StatusList	list	=	git_status.get_modify_files( root_path );
 
-	for( QStatusVec::iterator itr = vec.begin(); itr != vec.end(); ++itr )
+	for( StatusList::iterator itr = list.begin(); itr != list.end(); ++itr )
 	{
-		qDebug() << itr->color << " " << itr->extension << " " << itr->name << " " << itr->size << " " << itr->status;
+		qDebug() << itr->color << " " << itr->name << " " << itr->status;
 	}
 }
 

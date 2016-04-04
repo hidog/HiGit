@@ -78,7 +78,7 @@ private:
     
     QDir            dir;
     QFileInfoList   file_list;
-	QStatusVec		status_vec;
+	StatusVec		status_vec;
 
 	QModelIndex		last_index;
     

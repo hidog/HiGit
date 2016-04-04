@@ -126,9 +126,10 @@ QByteArray		GitBase::splite_git_output( QByteArray &output )
 {
 	QByteArray	data	=	"";
 	int		i, index;
+	int		size	=	output.length();
 
 	//
-	for( i = 0; i < output.length(); i++ )
+	for( i = 0; i < size; i++ )
 	{
 		if( output[i] == '\r' || output[i] == '\n' )
 		{
@@ -147,6 +148,7 @@ QByteArray		GitBase::splite_git_output( QByteArray &output )
 	}	
 
 #ifdef LINUX
+	// needed!! otherwise, it will ignore by compiler optimize.
     qDebug() << data;
 #endif
 

@@ -241,7 +241,7 @@ void	FileModel::update_file_status()
 	QColor		color;
 
 	QFileInfoList::iterator	info_itr	=	file_list.begin();
-	QStatusVec::iterator	status_itr	=	status_vec.begin();
+	StatusVec::iterator		status_itr	=	status_vec.begin();
 
 	while( file_loop )
 	{
