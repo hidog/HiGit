@@ -55,6 +55,8 @@ void	ProjWindow::closeEvent( QCloseEvent *event )
 ********************************************************************/
 void	ProjWindow::commit_slot()
 {
-	CommitWIndow	*commit_window	=	new CommitWIndow();
+	QString		root_path	=	QString(proj.path.c_str());
+
+	CommitWindow	*commit_window	=	new CommitWindow( root_path, this );
 	commit_window->show();
 }

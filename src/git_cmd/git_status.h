@@ -24,6 +24,8 @@ struct FileStatus
     QString     name;
 	QString		status;
 	QColor		color;
+	QString		size;
+	QString		extension;
 };
 typedef QVector<FileStatus>	QStatusVec;
 
@@ -43,8 +45,10 @@ public:
 
     QStatusVec  	get_all_status( QString path );
     void			parse_short_status( QStatusVec &vec, const QByteArray &str );
+	FileStatus		parse_short_status( const QByteArray &str );
 
 	QFileInfoList	get_untracked_files( QString path );
+	QStatusVec		get_modify_list( QString path );
 
 	static QColor	get_status_color( const QString& status );
     

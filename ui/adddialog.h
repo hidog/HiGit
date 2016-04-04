@@ -6,10 +6,16 @@
 #include <QTableWidgetItem>
 
 
+/*
+	note: need add lock view when call git status -s because it may so slow.
+*/
+
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~
 namespace Ui {
 class AddDialog;
 }	// end namespace Ui
+
 
 class	QCheckBox;
 
@@ -51,7 +57,7 @@ private:
 	QFileInfoList	add_list;
 	QString			root_path;
 
-	bool	is_closed;
+	bool	is_closed;	
 };
 
 #endif // ADDDIALOG_H

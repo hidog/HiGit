@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QColor>
 #include <QTextCodec>
-
+#include "../tools.h"
 
 /*******************************************************************
 	GitStatus
@@ -21,13 +21,11 @@ GitStatus::GitStatus( QObject *parent ) :
 GitStatus::~GitStatus()
 {}
 
-
-
 /*******************************************************************
 	parse_short_status
 	file:///C:/Users/hidog/AppData/Local/Programs/Git/mingw64/share/doc/git-doc/git-status.html
 ********************************************************************/
-void	GitStatus::parse_short_status( QStatusVec &vec, const QByteArray &str )
+FileStatus		GitStatus::parse_short_status( const QByteArray &str )
 {
 	char		X,	Y;	// naming see above URL.
 	QString		name;
@@ -37,13 +35,6 @@ void	GitStatus::parse_short_status( QStatusVec &vec, const QByteArray &str )
 	Y		=	str[1];
 	name	=	str.mid( 3 );
 
-	// don't needed handle sub directory files.
-	// also do not handle chinese file.
-	if( name.contains("/") || name.contains("\\") )
-		return;
-
-	//qDebug() << name;
-
 	// decide X
 	switch( X )
 	{
@@ -51,8 +42,7 @@ void	GitStatus::parse_short_status( QStatusVec &vec, const QByteArray &str )
             sts.name	=	name;
             sts.status	=	GIT_STATUS_ADDED;
             sts.color	=	get_status_color( sts.status );
-            vec.push_back(sts);
-			return;
+			return	sts;
 	}
 
 	// decide Y
@@ -62,29 +52,53 @@ void	GitStatus::parse_short_status( QStatusVec &vec, const QByteArray &str )
             sts.name	=	name;
             sts.status	=	GIT_STATUS_MODIFY;
             sts.color   =	get_status_color( sts.status );
-            vec.push_back(sts);
-			return;
+			return	sts;
 
 		case 'A' :
             sts.name	=	name;
             sts.status	=	GIT_STATUS_ADDED;
             sts.color	=	get_status_color( sts.status );
-            vec.push_back(sts);
-			return;
+			return	sts;
 
 		case '?' :
             sts.name	=	name;
             sts.status	=	GIT_STATUS_UNTRACKED;
             sts.color	=	get_status_color( sts.status );
-            vec.push_back(sts);
+			return	sts;
 
 		case 'D':
-			return;
+			sts.name	=	name;
+			sts.status	=	GIT_STATUS_DELETED;
+			sts.color	=	get_status_color( sts.status );
+			return	sts;
 
 		default:
 			// there are something status not define, see above URL.
 			ERRLOG("status fail.")
 	}
+}
+
+/*******************************************************************
+	parse_short_status
+	file:///C:/Users/hidog/AppData/Local/Programs/Git/mingw64/share/doc/git-doc/git-status.html
+	this function call for FileWidget.
+********************************************************************/
+void	GitStatus::parse_short_status( QStatusVec &vec, const QByteArray &str )
+{
+	QString		name	=	str.mid( 3 );
+
+	// don't needed handle sub directory files.
+	// also do not handle chinese file.
+	if( name.contains("/") || name.contains("\\") )
+		return;
+
+    FileStatus	sts	=	parse_short_status(str);
+
+	// don't add delete file.
+	if( sts.status == GIT_STATUS_DELETED )
+		return;
+
+	vec.push_back(sts);
 }
 
 
@@ -175,6 +189,65 @@ QFileInfoList	GitStatus::get_untracked_files( QString path )
 	}
 
     return	list;
+}
+
+
+
+
+
+
+/*******************************************************************
+	get_modify_list
+********************************************************************/
+QStatusVec	GitStatus::get_modify_list( QString path )
+{
+	QProcess		*proc	=	new QProcess();
+	QStringList		args;
+	bool			result;
+	QByteArray		output;
+	QByteArray		str;
+	QByteArray		status,	filename;
+	QStatusVec		vec;
+	FileStatus		fs;
+	QFileInfo		info;
+
+	proc->setWorkingDirectory( path );
+	args << "status" << "-s";
+
+	proc->start( "git", args );
+	result	=	proc->waitForFinished();
+
+	//
+	if( result == true )
+	{
+		output	=	proc->readAll();
+		remain_msg	=	"";
+
+		while( output.length() > 0 )
+		{
+			str		=	splite_git_output( output );
+
+			if( str.length() > 4 )
+			{
+				status		=	str.mid( 0, 2 );
+				filename	=	str.mid( 3, -1 );
+
+				info	=	QFileInfo( path + QString("/") + filename );
+				if( info.isFile() )
+				{
+					fs	=	parse_short_status( status );
+
+					fs.name			=	filename;
+					fs.size			=	QString("%1").arg(info.size());
+					fs.extension	=	get_extension( filename );
+
+					vec.push_back( fs );
+				}
+			}
+		}
+	}
+
+    return	vec;
 }
 
 
@@ -279,6 +352,8 @@ QColor		GitStatus::get_status_color( const QString& status )
 		color	=	QColor(Qt::blue);
 	else if( status == GIT_STATUS_MODIFY )
 		color	=	QColor(Qt::red);
+	else if( status == GIT_STATUS_DELETED )
+		color	=	QColor(Qt::darkRed);
 	else
 		color	=	QColor(Qt::black);
 

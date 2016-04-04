@@ -3,30 +3,34 @@
 
 #include <QWidget>
 
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~
 namespace Ui {
-class CommitWIndow;
-}
+class CommitWindow;
+}	// end namespace Ui
 
 
 
 
 
 /*******************************************************************
-	CommitWIndow
+	CommitWindow
 ********************************************************************/
-class CommitWIndow : public QWidget
+class CommitWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CommitWIndow(QWidget *parent = 0);
-    ~CommitWIndow();
+    explicit CommitWindow( QString _root_path, QWidget *parent = 0 );
+    ~CommitWindow();
 
 	void	closeEvent( QCloseEvent *event );
-
+	void	get_modify_list();
 
 private:
-    Ui::CommitWIndow *ui;
+    Ui::CommitWindow	*ui;
+
+	QString		root_path;
 };
 
 #endif // COMMITWINDOW_H
