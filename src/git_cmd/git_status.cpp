@@ -246,7 +246,7 @@ void	GitStatus::get_modify_files_func( QList<FileStatus> &list, STATUS_TYPE type
 /*******************************************************************
 	get_modify_list
 ********************************************************************/
-StatusList	GitStatus::get_modify_files( QString path )
+FileStatusList	GitStatus::get_modify_files( QString path )
 {
 	boost::function< void( QList<FileStatus>&, STATUS_TYPE, QString, QByteArray& ) >	handle_func;
 	handle_func	=	boost::bind( &GitStatus::get_modify_files_func, this, _1, _2, _3, _4 );
@@ -260,7 +260,7 @@ StatusList	GitStatus::get_modify_files( QString path )
 	QByteArray		output;
 	QByteArray		str;
 	QByteArray		status,	filename;
-	QStatusVec		vec;
+	QFileStatusVec		vec;
 	FileStatus		fs;
 	QFileInfo		info;
 
@@ -594,7 +594,7 @@ QString		GitStatus::get_file_status( QString path, QString filename )
 	this function call for FileWidget.
 ********************************************************************/
 /*
-void	GitStatus::get_all_status_parser( QStatusVec &vec, const QByteArray &str )
+void	GitStatus::get_all_status_parser( QFileStatusVec &vec, const QByteArray &str )
 {
 	QString		name	=	str.mid( 3 );
 
@@ -619,12 +619,12 @@ void	GitStatus::get_all_status_parser( QStatusVec &vec, const QByteArray &str )
 	it is no use now.
 ********************************************************************/
 /*
-QStatusVec  GitStatus::get_all_status( QString path )
+QFileStatusVec  GitStatus::get_all_status( QString path )
 {
 	QProcess		*proc	=	new QProcess();
 	QStringList		args;
 	bool			result;
-    QStatusVec      vec;
+    QFileStatusVec      vec;
 	QByteArray		output;
 	QByteArray		str;
 

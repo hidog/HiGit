@@ -57,6 +57,6 @@ void	ProjWindow::commit_slot()
 {
 	QString		root_path	=	QString(proj.path.c_str());
 
-	CommitWindow	*commit_window	=	new CommitWindow( root_path );
+	CommitWindow	*commit_window	=	new CommitWindow( root_path, this );
 	commit_window->show();
 }

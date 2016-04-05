@@ -197,7 +197,7 @@ void	FileModel::get_file_list()
     // get file status by use git status -s
 #if 0
     GitStatus       git_status;
-    QStatusVec      vec     =   git_status.get_all_status( dir.path() );
+    QFileStatusVec      vec     =   git_status.get_all_status( dir.path() );
 
     QFileInfoList::iterator     itr;
 
@@ -241,7 +241,7 @@ void	FileModel::update_file_status()
 	QColor		color;
 
 	QFileInfoList::iterator	info_itr	=	file_list.begin();
-	StatusVec::iterator		status_itr	=	status_vec.begin();
+	FileStatusVec::iterator		status_itr	=	status_vec.begin();
 
 	while( file_loop )
 	{

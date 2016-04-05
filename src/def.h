@@ -4,7 +4,8 @@
 
 #include <string>
 #include <stdio.h>
-
+#include <QString>
+#include <QColor>
 
 
 #define		PRINT_ENUM(e)	printf("%s\n",#e)
@@ -27,5 +28,14 @@ struct  DbProj
 	std::string		password;
 };
 
+// FileStatus
+struct FileStatus
+{
+    QString     name;
+	QString		status;
+	QColor		color;
+};
+typedef QVector<FileStatus>		FileStatusVec;
+typedef QList<FileStatus>		FileStatusList;
 
 #endif

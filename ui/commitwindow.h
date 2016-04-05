@@ -1,7 +1,15 @@
 #ifndef COMMITWINDOW_H
 #define COMMITWINDOW_H
 
-#include <QWidget>
+#include <QDialog>
+#include "../src/def.h"
+
+/*
+	need make a lock view to show loading message.
+*/
+
+
+
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -16,7 +24,7 @@ class CommitWindow;
 /*******************************************************************
 	CommitWindow
 ********************************************************************/
-class CommitWindow : public QWidget
+class CommitWindow : public QDialog
 {
     Q_OBJECT
 
@@ -26,6 +34,12 @@ public:
 
 	void	closeEvent( QCloseEvent *event );
 	void	get_modify_list();
+
+signals:
+	void	finish_modify_list_signal( QList<FileStatus> );
+
+protected slots:
+	void	finish_modify_list_slot( QList<FileStatus> file_list );
 
 private:
     Ui::CommitWindow	*ui;

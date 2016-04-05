@@ -36,14 +36,7 @@ enum	STATUS_TYPE
 #define		STATUS_ALL	(STATUS_TRACKED|STATUS_MODIFIED|STATUS_ADDED|STATUS_UNTRACKED|STATUS_DELETED)
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ struct ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-struct FileStatus
-{
-    QString     name;
-	QString		status;
-	QColor		color;
-};
-typedef QVector<FileStatus>		StatusVec;
-typedef QList<FileStatus>		StatusList;
+
 
 /*******************************************************************
 	GitStatus
@@ -65,15 +58,15 @@ public:
 	QFileInfoList	get_untracked_files( QString path );
 	void			get_untracked_files_func( QList<QFileInfo> &list, STATUS_TYPE type, const QString path, QByteArray filename );
 
-	StatusList		get_modify_files( QString path );
+	FileStatusList		get_modify_files( QString path );
 	void			get_modify_files_func( QList<FileStatus> &list, STATUS_TYPE type, const QString path, QByteArray filename );
 
 	static QColor	get_status_color( const QString& status );
 	static QColor	get_status_color( const STATUS_TYPE status );
 
 
-	//QStatusVec  	get_all_status( QString path );
-    //void			get_all_status_parser( QStatusVec &vec, const QByteArray &str );
+	//QFileStatusVec  	get_all_status( QString path );
+    //void			get_all_status_parser( QFileStatusVec &vec, const QByteArray &str );
     
 private:
 

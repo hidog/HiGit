@@ -13,7 +13,7 @@ int		main(int argc, char *argv[])
 
     qRegisterMetaType<QVector<int> >("QVector<int>");
 	qRegisterMetaType<QList<QFileInfo> >("QList<QFileInfo>");
-
+	qRegisterMetaType<QList<FileStatus> >("QList<FileStatus>");
 
     QApplication	a(argc, argv);
     MainWindow		w;
