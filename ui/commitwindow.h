@@ -2,6 +2,8 @@
 #define COMMITWINDOW_H
 
 #include <QDialog>
+#include <QString>
+
 #include "../src/def.h"
 
 /*
@@ -32,14 +34,18 @@ public:
     explicit CommitWindow( QString _root_path, QWidget *parent = 0 );
     ~CommitWindow();
 
-	void	closeEvent( QCloseEvent *event );
-	void	get_modify_list();
+	void            closeEvent( QCloseEvent *event );
+	void            get_modify_list();
+    
+    QStringList     get_commit_list();
 
 signals:
 	void	finish_modify_list_signal( QList<FileStatus> );
 
 protected slots:
 	void	finish_modify_list_slot( QList<FileStatus> file_list );
+    void    text_changed_slot();
+    void    accepted_slot();
 
 private:
     Ui::CommitWindow	*ui;

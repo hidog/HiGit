@@ -7,6 +7,9 @@
 #include <iostream>
 #include <cassert>
 
+#include <QDir>
+#include <QDebug>
+
 
 /*******************************************************************
 	DbManager
@@ -40,7 +43,12 @@ void	DbManager::load_main_db()
 	int		rc;
 
 	// open main db
-	sprintf( str, "HiGit.db" );
+#ifndef _WIN32
+    sprintf( str, "%s/.HiGit.db", QDir::homePath().toStdString().c_str() );
+#else
+    sprintf( str, "%s/HiGit.db", QDir::homePath().toStdString().c_str() );
+#endif
+    
 	rc	=	sqlite3_open( str, &db );
 	if( rc != SQLITE_OK )
 		ERRLOG("open db fail.")
