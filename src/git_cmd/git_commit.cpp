@@ -32,15 +32,12 @@ void    GitCommit::commit( QString root_path, QString msg )
     proc->setWorkingDirectory( root_path );
     
     args << "commit";
-    args << "-m=" << msg ;
+    args << ( QString("--message=\"") + msg + QString("\"") );
+
+	qDebug() << args;
     
     proc->start( "git", args, QIODevice::ReadWrite );
-    
-    /*if( proc->waitForBytesWritten() == true )
-        proc->write( msg );
-    else
-        ERRLOG("commit write fail")*/
-    
+  
     if( proc->waitForFinished() == true )
     {
         QByteArray output = proc->readAll();
@@ -50,6 +47,4 @@ void    GitCommit::commit( QString root_path, QString msg )
         ERRLOG("commit read fail")
         
     delete  proc;
-        
-    
 }

@@ -52,9 +52,6 @@ public:
 	QString			get_file_status( QString path, QString filename );
 	QColor			get_file_color( QString path, QString filename );
 
-	//QStringList		get_delete_files( QString path );
-	//void			get_delete_files_func( QList<QString> &list, STATUS_TYPE type, const QString path, QByteArray filename );
-
 	QFileInfoList	get_untracked_files( QString path );
 	void			get_untracked_files_func( QList<QFileInfo> &list, STATUS_TYPE type, const QString path, QByteArray filename );
 
@@ -63,10 +60,6 @@ public:
 
 	static QColor	get_status_color( const QString& status );
 	static QColor	get_status_color( const STATUS_TYPE status );
-
-
-	//QFileStatusVec  	get_all_status( QString path );
-    //void			get_all_status_parser( QFileStatusVec &vec, const QByteArray &str );
     
 private:
 

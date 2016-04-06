@@ -63,6 +63,7 @@
     <ClCompile Include="..\src\git_cmd\git_base.cpp" />
     <ClCompile Include="..\src\git_cmd\git_clone.cpp" />
     <ClCompile Include="..\src\git_cmd\git_command.cpp" />
+    <ClCompile Include="..\src\git_cmd\git_commit.cpp" />
     <ClCompile Include="..\src\git_cmd\git_init.cpp" />
     <ClCompile Include="..\src\git_cmd\git_log.cpp" />
     <ClCompile Include="..\src\git_cmd\git_rev_parse.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="..\src\git_cmd\git_base.h" />
     <ClInclude Include="..\src\git_cmd\git_clone.h" />
     <ClInclude Include="..\src\git_cmd\git_command.h" />
+    <ClInclude Include="..\src\git_cmd\git_commit.h" />
     <ClInclude Include="..\src\git_cmd\git_init.h" />
     <ClInclude Include="..\src\git_cmd\git_log.h" />
     <ClInclude Include="..\src\git_cmd\git_rev_parse.h" />
