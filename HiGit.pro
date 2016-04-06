@@ -72,6 +72,7 @@ SOURCES		+=	main.cpp \
 				src/git_cmd/git_rev_parse.cpp \
 				src/git_cmd/git_base.cpp \
 				src/git_cmd/git_log.cpp \
+				src/git_cmd/git_commit.cpp \
 				model/file_model.cpp \
 				model/log_model.cpp 
     
@@ -98,6 +99,7 @@ HEADERS		+=	ui/mainwindow.h \
 				src/git_cmd/git_rev_parse.h \
 				src/git_cmd/git_base.h \
 				src/git_cmd/git_log.h \
+				src/git_cmd/git_commit.h \
 				src/def.h \
 				model/file_model.h \
 				model/log_model.h

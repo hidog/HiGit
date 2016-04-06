@@ -4,6 +4,7 @@
 #include "../src/git_cmd/git_status.h"
 #include "../src/tools.h"
 #include "../src/git_control.h"
+#include "../src/git_cmd/git_commit.h"
 
 #include <QDebug>
 #include <QCheckBox>
@@ -56,8 +57,13 @@ void    CommitWindow::accepted_slot()
     QStringList     list    =   get_commit_list();
     
     // add
-    //GitControl  git_control;
-    //git_control->add( root_path, list );
+    GitControl  git_control;
+    git_control.add( root_path, list );
+    
+    // commit
+    GitCommit   git_commit(this);
+    QString     msg     =   ui->textEdit->toPlainText();
+    git_commit.commit( root_path, msg );
     
     //foreach( QString str, list )
     //    qDebug() << str;
@@ -90,10 +96,23 @@ QStringList     CommitWindow::get_commit_list()
 
 /*******************************************************************
 	text_changed_slot
+    it can be commited when text is not all space nor empty.
 ********************************************************************/
 void    CommitWindow::text_changed_slot()
 {
-    if( ui->textEdit->toPlainText().length() > 0 ) 
+    QString     str         =   ui->textEdit->toPlainText();
+    bool        is_search   =   false;
+    
+    foreach( QChar c, str )
+    {
+        if( c != ' ' )
+        {
+            is_search  =   true;
+            break;
+        }
+    }
+    
+    if( is_search == true )
         ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled(true);
     else
         ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled(false);
