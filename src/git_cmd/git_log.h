@@ -33,16 +33,14 @@ public:
 
 	LogDataList		get_log_list( QString path );
 	QStringList		get_file_list( QString path, QString commit );
-
-	QString			get_commit( QByteArray str );
-	QString			get_author( QByteArray str );
-	QString			get_date( QByteArray str );
-	QString			get_title( QByteArray str );
-
+    
+    QString         last_author( QString path );
 
 private:
-
-
+    QString			get_commit( QByteArray str );
+    QString			get_author( QByteArray str );
+    QString			get_date( QByteArray str );
+    QString			get_title( QByteArray str );
 
 };
 

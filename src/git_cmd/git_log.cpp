@@ -158,6 +158,30 @@ LogDataList	GitLog::get_log_list( QString path )
 
 
 
+/*******************************************************************
+	last_author
+********************************************************************/
+QString     GitLog::last_author( QString path )
+{
+    QProcess        *proc   =   new QProcess(this);
+    QStringList     args;
+    QByteArray      output;
+    
+    args << "log" << "-1" << QString("--pretty=format:%aN <%aE>");
+    
+    proc->start( "git", args );
+    
+    if( proc->waitForFinished() == true )
+        output  =   proc->readAll();
+    else
+        ERRLOG("get author fail")
+        
+    //qDebug() << output;
+        
+    delete  proc;
+    return  QString(output);
+}
+
 
 /*******************************************************************
 	get_file_list

@@ -19,6 +19,8 @@ namespace Ui {
 class CommitWindow;
 }	// end namespace Ui
 
+class QAbstractButton;
+
 
 
 
@@ -46,8 +48,11 @@ protected slots:
 	void	finish_modify_list_slot( QList<FileStatus> file_list );
     void    text_changed_slot();
     void    accepted_slot();
+    void    button_clicked_slot( QAbstractButton* button );
 
 private:
+    void    set_connect();
+    
     Ui::CommitWindow	*ui;
 
 	QString		root_path;

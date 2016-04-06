@@ -5,11 +5,13 @@
 #include "../src/tools.h"
 #include "../src/git_control.h"
 #include "../src/git_cmd/git_commit.h"
+#include "../src/git_cmd/git_log.h"
 
 #include <QDebug>
 #include <QCheckBox>
 #include <QDir>
 #include <QPushButton>
+#include <QDateTime>
 
 #include <boost/thread.hpp>
 
@@ -27,11 +29,21 @@ CommitWindow::CommitWindow( QString _root_path, QWidget *parent) :
     ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled(false);
 	ui->fileTWidget->setColumnWidth( 0, 20 );
 	ui->fileTWidget->setColumnWidth( 1, 300 );
+    
+    // set date time
+    ui->dateTimeEdit->setVisible(false);
+    ui->dateTimeEdit->setDateTime( QDateTime::currentDateTime() );
+    
+    // get last author
+    GitLog      git_log(this);
+    QString     author  =   git_log.last_author( root_path );
+    ui->authorLEdit->setText(author);
+    ui->authorLEdit->setVisible(false);
+    
+    // connect
+    set_connect();
 
-	connect(	this,           SIGNAL(finish_modify_list_signal(QList<FileStatus>)),		this,		SLOT(finish_modify_list_slot(QList<FileStatus>))	);
-    connect(    ui->textEdit,   SIGNAL(textChanged()),                                      this,       SLOT(text_changed_slot())                           );
-    connect(    ui->buttonBox,  SIGNAL(accepted()),                                         this,       SLOT(accepted_slot())                               );
-
+    // get file list async
 	boost::thread	thr		=	boost::thread( boost::bind( &CommitWindow::get_modify_list, this ) );
 }
 
@@ -47,12 +59,41 @@ CommitWindow::~CommitWindow()
 }
 
 
+/*******************************************************************
+	set_connect
+********************************************************************/
+void    CommitWindow::set_connect()
+{
+    connect(	this,           SIGNAL(finish_modify_list_signal(QList<FileStatus>)),		this,		SLOT(finish_modify_list_slot(QList<FileStatus>))	);
+    connect(    ui->textEdit,   SIGNAL(textChanged()),                                      this,       SLOT(text_changed_slot())                           );
+    connect(    ui->buttonBox,  SIGNAL(accepted()),                                         this,       SLOT(accepted_slot())                               );
+    connect(    ui->buttonBox,  SIGNAL(clicked(QAbstractButton*)),                          this,       SLOT(button_clicked_slot(QAbstractButton*))         );
+}
+
+
+
+/*******************************************************************
+	button_clicked_slot
+********************************************************************/
+void    CommitWindow::button_clicked_slot( QAbstractButton *button )
+{
+    if( button == ui->buttonBox->button( QDialogButtonBox::Close ) )
+        emit    accepted();
+}
+
 
 /*******************************************************************
 	accepted_slot
  ********************************************************************/
 void    CommitWindow::accepted_slot()
 {
+    disconnect(     ui->textEdit,   SIGNAL(textChanged()),          this,       SLOT(text_changed_slot())   );
+    
+    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled(false);
+    ui->buttonBox->button( QDialogButtonBox::Cancel )->setEnabled(false);
+    
+    GitParameter    param;
+    
     // get file list
     QStringList     list    =   get_commit_list();
     
@@ -60,13 +101,27 @@ void    CommitWindow::accepted_slot()
     GitControl  git_control;
     git_control.add( root_path, list );
     
+    // get ui information
+    if( ui->authorCheckBox->checkState() == Qt::Checked )
+    {
+        QString     author  =   ui->authorLEdit->text();
+        param.insert( make_pair( GIT_COMMIT_AUTHOR, author ) );
+    }
+    
+    if( ui->dateCheckBox->checkState() == Qt::Checked )
+    {
+        QDateTime   date_time   =   ui->dateTimeEdit->dateTime();
+        //qDebug() << date_time.toString(Qt::ISODate);
+        param.insert( make_pair( GIT_COMMIT_DATE, date_time.toString(Qt::ISODate ) ) );
+    }
+    
     // commit
     GitCommit   git_commit(this);
     QString     msg     =   ui->textEdit->toPlainText();
-    git_commit.commit( root_path, msg );
+    QString     output  =   git_commit.commit( root_path, msg, param );
     
-    //foreach( QString str, list )
-    //    qDebug() << str;
+    ui->textEdit->setText( output );
+    ui->buttonBox->button( QDialogButtonBox::Close )->setEnabled(true);
 }
 
 

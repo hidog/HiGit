@@ -114,6 +114,9 @@ void	GitBase::set_color( QByteArray& data, GIT_FONT_COLOR color )
 		default:
 			assert(0);
 	}
+    
+    while( data.contains("\n") == true )
+        data.replace( "\n", "<br>" );
 }
 
 

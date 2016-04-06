@@ -24,27 +24,43 @@ GitCommit::~GitCommit()
 /*******************************************************************
 	commit
  ********************************************************************/
-void    GitCommit::commit( QString root_path, QString msg )
+QString    GitCommit::commit( QString root_path, QString msg, GitParameter param )
 {
     QProcess        *proc   =   new QProcess(this);
     QStringList     args;
+    QByteArray      output, err_msg;
     
     proc->setWorkingDirectory( root_path );
     
     args << "commit";
-    args << ( QString("--message=\"") + msg + QString("\"") );
-
-	qDebug() << args;
     
-    proc->start( "git", args, QIODevice::ReadWrite );
+    if( param.find(GIT_COMMIT_AUTHOR) != param.end() )
+        args << QString("--author=\"") + param[GIT_COMMIT_AUTHOR] + QString("\"");
+    
+    if( param.find(GIT_COMMIT_DATE) != param.end() )
+        args << QString("--date=\"") + param[GIT_COMMIT_DATE] + QString("\"");
+    
+    args << ( QString("--message=\"") + msg + QString("\"") );
+    
+    proc->start( "git", args );
   
     if( proc->waitForFinished() == true )
-    {
-        QByteArray output = proc->readAll();
-        qDebug() << output;
-    }
+        output = proc->readAll();
     else
         ERRLOG("commit read fail")
+    
+    // get if error.
+    err_msg     =   proc->readAllStandardError();
+    if( err_msg.length() > 0 )
+        output  =   err_msg;
         
     delete  proc;
+    
+    // add color
+    if( output.contains("fatal:") )
+        set_color( output, GIT_FONT_RED );
+    else
+        set_color( output, GIT_FONT_BLUE );
+    
+    return  QString(output);
 }

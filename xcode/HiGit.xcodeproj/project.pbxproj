@@ -29,7 +29,6 @@
 		6D13F1F11C95B43E00FC567A /* git_command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DB99B291C5520F100998E69 /* git_command.cpp */; };
 		6D13F1F21C95B43E00FC567A /* git_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DE4A6001C36B810003F4F94 /* git_control.cpp */; };
 		6D6D89061CB4A6D1005DEF39 /* git_commit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D6D89041CB4A6B5005DEF39 /* git_commit.cpp */; };
-		6D6D89071CB4A6D1005DEF39 /* git_commit.h in Sources */ = {isa = PBXBuildFile; fileRef = 6D6D89051CB4A6B5005DEF39 /* git_commit.h */; };
 		6DAE4BC11CA4196D00E6D9C3 /* adddialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE4BBF1CA4195B00E6D9C3 /* adddialog.cpp */; };
 /* End PBXBuildFile section */
 
@@ -327,7 +326,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D6D89061CB4A6D1005DEF39 /* git_commit.cpp in Sources */,
-				6D6D89071CB4A6D1005DEF39 /* git_commit.h in Sources */,
 				6DAE4BC11CA4196D00E6D9C3 /* adddialog.cpp in Sources */,
 				6D13F1DE1C95B43E00FC567A /* log_model.cpp in Sources */,
 				6D13F1DF1C95B43E00FC567A /* file_model.cpp in Sources */,
@@ -405,6 +403,10 @@
 					"~/code/QT5/qtbase/include/QtCore",
 					"~/code/QT5/qtbase/include/QtWidgets",
 					"~/code/QT5/qtbase/include",
+					"~/code/HiGit/src/git_cmd",
+					"~/code/HiGit/ui",
+					"~/code/HiGit/src",
+					"~/code/HiGit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;

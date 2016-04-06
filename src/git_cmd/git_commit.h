@@ -4,6 +4,9 @@
 
 #include "git_base.h"
 
+#define GIT_COMMIT_DATE     QString("date")
+#define GIT_COMMIT_AUTHOR   QString("author")
+
 
 /*******************************************************************
 	GitCommit
@@ -16,7 +19,7 @@ public:
     GitCommit( QObject *parent = NULL );
     ~GitCommit();
     
-    void    commit( QString root_path, QString msg );
+    QString    commit( QString root_path, QString msg, GitParameter param );
     
 private:
     
