@@ -12,6 +12,10 @@
 #define GIT_CLONE_DEPTH			QString("depth")
 #define GIT_CLONE_LOCAL			QString("local")
 
+/*
+	bug: git clone to a sub-folder that root has git, it will result some error.
+*/
+
 
 /*******************************************************************
 	GitClone

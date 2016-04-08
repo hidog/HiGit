@@ -61,6 +61,7 @@
     <ClCompile Include="..\model\log_model.cpp" />
     <ClCompile Include="..\src\db_manager.cpp" />
     <ClCompile Include="..\src\git_cmd\git_base.cpp" />
+    <ClCompile Include="..\src\git_cmd\git_branch.cpp" />
     <ClCompile Include="..\src\git_cmd\git_clone.cpp" />
     <ClCompile Include="..\src\git_cmd\git_command.cpp" />
     <ClCompile Include="..\src\git_cmd\git_commit.cpp" />
@@ -79,6 +80,7 @@
     <ClCompile Include="..\ui\mainwindow.cpp" />
     <ClCompile Include="..\ui\projectbutton.cpp" />
     <ClCompile Include="..\ui\projwindow.cpp" />
+    <ClCompile Include="..\ui\syncdialog.cpp" />
     <ClCompile Include="..\ui\userpwdialog.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +89,7 @@
     <ClInclude Include="..\src\db_manager.h" />
     <ClInclude Include="..\src\def.h" />
     <ClInclude Include="..\src\git_cmd\git_base.h" />
+    <ClInclude Include="..\src\git_cmd\git_branch.h" />
     <ClInclude Include="..\src\git_cmd\git_clone.h" />
     <ClInclude Include="..\src\git_cmd\git_command.h" />
     <ClInclude Include="..\src\git_cmd\git_commit.h" />
@@ -105,6 +108,7 @@
     <ClInclude Include="..\ui\mainwindow.h" />
     <ClInclude Include="..\ui\projectbutton.h" />
     <ClInclude Include="..\ui\projwindow.h" />
+    <ClInclude Include="..\ui\syncdialog.h" />
     <ClInclude Include="..\ui\userpwdialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

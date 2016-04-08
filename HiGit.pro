@@ -61,6 +61,7 @@ SOURCES		+=	main.cpp \
 				ui/filewidget.cpp \
 				ui/commitwindow.cpp \
 				ui/adddialog.cpp \
+				ui/syncdialog.cpp \
 				src/git_control.cpp \
 				src/db_manager.cpp \
 				src/sqlite3.c \
@@ -73,8 +74,10 @@ SOURCES		+=	main.cpp \
 				src/git_cmd/git_base.cpp \
 				src/git_cmd/git_log.cpp \
 				src/git_cmd/git_commit.cpp \
+				src/git_cmd/git_branch.cpp \
 				model/file_model.cpp \
-				model/log_model.cpp 
+				model/log_model.cpp
+    
     
 
 
@@ -88,6 +91,7 @@ HEADERS		+=	ui/mainwindow.h \
 				ui/filewidget.h \
 				ui/commitwindow.h \
 				ui/adddialog.h \
+				ui/syncdialog.h \
 				src/git_control.h \
 				src/db_manager.h \
 				src/sqlite3.h \
@@ -100,9 +104,11 @@ HEADERS		+=	ui/mainwindow.h \
 				src/git_cmd/git_base.h \
 				src/git_cmd/git_log.h \
 				src/git_cmd/git_commit.h \
+				src/git_cmd/git_branch.h \
 				src/def.h \
 				model/file_model.h \
 				model/log_model.h
+    
 				
 
 FORMS    	+= 	ui/mainwindow.ui \
@@ -113,4 +119,5 @@ FORMS    	+= 	ui/mainwindow.ui \
 				ui/logwidget.ui \
 				ui/filewidget.ui \ 
 				ui/commitwindow.ui \
-				ui/adddialog.ui
+				ui/adddialog.ui \
+				ui/syncdialog.ui

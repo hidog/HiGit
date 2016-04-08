@@ -194,27 +194,6 @@ void	FileModel::get_file_list()
 	status_vec.clear();
 	status_vec.resize( file_list.size() );
 
-    // get file status by use git status -s
-#if 0
-    GitStatus       git_status;
-    QFileStatusVec      vec     =   git_status.get_all_status( dir.path() );
-
-    QFileInfoList::iterator     itr;
-
-    foreach( FileStatus sts, vec )
-    {
-        for( i = 0, itr = file_list.begin(); itr != file_list.end(); ++itr, i++ )
-        {
-            if( itr->fileName() == sts.name )
-            {
-                status_vec[i].status    =   sts.status;
-                status_vec[i].color     =   sts.color;
-            }
-        }
-    }
-    refresh_view();
-#endif
-
     // start loop to get all file status.
 	file_loop	=	true;
 	thr			=	new boost::thread( &FileModel::update_file_status, this );
@@ -240,13 +219,13 @@ void	FileModel::update_file_status()
 	QString		status;
 	QColor		color;
 
-	QFileInfoList::iterator	info_itr	=	file_list.begin();
+	QFileInfoList::iterator		info_itr	=	file_list.begin();
 	FileStatusVec::iterator		status_itr	=	status_vec.begin();
 
 	while( file_loop )
 	{
-        //if( status_itr->status != "" )
-        //    continue;
+		if( info_itr == file_list.end() || status_itr == status_vec.end() )
+			break;
 
 		status	=	git_status.get_file_status( dir.path(), info_itr->fileName() );
 		color	=	git_status.get_status_color( status );
@@ -259,9 +238,6 @@ void	FileModel::update_file_status()
 
 		++info_itr;
 		++status_itr;
-
-		if( info_itr == file_list.end() || status_itr == status_vec.end() )
-			break;
 	}
 
 	//

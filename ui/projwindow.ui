@@ -55,13 +55,13 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>50</height>
+          <height>100</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>50</height>
+          <height>16777215</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -76,40 +76,71 @@
         <widget class="QPushButton" name="commitButton">
          <property name="geometry">
           <rect>
-           <x>30</x>
+           <x>10</x>
            <y>10</y>
-           <width>93</width>
-           <height>28</height>
+           <width>90</width>
+           <height>30</height>
           </rect>
          </property>
          <property name="text">
           <string>commit</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QLabel" name="label">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>60</y>
+           <width>120</width>
+           <height>15</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>current branch:</string>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="branchLEdit">
          <property name="geometry">
           <rect>
            <x>150</x>
+           <y>60</y>
+           <width>150</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QToolButton" name="pullButton">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
            <y>10</y>
-           <width>93</width>
-           <height>28</height>
+           <width>91</width>
+           <height>30</height>
           </rect>
          </property>
          <property name="text">
           <string>pull</string>
          </property>
-        </widget>
-        <widget class="QPushButton" name="pushButton_3">
-         <property name="geometry">
-          <rect>
-           <x>260</x>
-           <y>10</y>
-           <width>93</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>push</string>
+         <property name="popupMode">
+          <enum>QToolButton::MenuButtonPopup</enum>
          </property>
         </widget>
        </widget>
@@ -166,7 +197,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>28</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

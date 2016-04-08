@@ -94,6 +94,12 @@
     <ClCompile Include="..\src\git_cmd\git_commit.cpp">
       <Filter>src\git_cmd</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\git_cmd\git_branch.cpp">
+      <Filter>src\git_cmd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\syncdialog.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
@@ -167,6 +173,12 @@
     </ClInclude>
     <ClInclude Include="..\src\git_cmd\git_commit.h">
       <Filter>src\git_cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\git_cmd\git_branch.h">
+      <Filter>src\git_cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\syncdialog.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

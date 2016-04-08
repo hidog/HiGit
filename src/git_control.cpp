@@ -78,8 +78,6 @@ void	GitControl::add( QString root_path, QList<QString> str_list )
 	args << "add";
 	args << str_list;
 
-	qDebug() << args;
-
 	proc->start( "git", args );
 
 	if( proc->waitForFinished() )

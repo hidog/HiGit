@@ -25,6 +25,7 @@ public:
 
 public slots:
 	void	commit_slot();
+	void	pull_slot();
 
 signals:
 
