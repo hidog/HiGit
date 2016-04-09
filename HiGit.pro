@@ -10,8 +10,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-#CONFIG += console
-#CONFIG -= app_bundle
+CONFIG += console
+CONFIG -= app_bundle
 
 TARGET		=	HiGit
 TEMPLATE	=	app
@@ -75,6 +75,7 @@ SOURCES		+=	main.cpp \
 				src/git_cmd/git_log.cpp \
 				src/git_cmd/git_commit.cpp \
 				src/git_cmd/git_branch.cpp \
+				src/git_cmd/git_remote.cpp \
 				model/file_model.cpp \
 				model/log_model.cpp
     
@@ -105,6 +106,7 @@ HEADERS		+=	ui/mainwindow.h \
 				src/git_cmd/git_log.h \
 				src/git_cmd/git_commit.h \
 				src/git_cmd/git_branch.h \
+				src/git_cmd/git_remote.h \
 				src/def.h \
 				model/file_model.h \
 				model/log_model.h

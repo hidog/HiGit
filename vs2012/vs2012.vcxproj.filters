@@ -100,6 +100,9 @@
     <ClCompile Include="..\ui\syncdialog.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\git_cmd\git_remote.cpp">
+      <Filter>src\git_cmd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ui\mainwindow.h">
@@ -179,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="..\ui\syncdialog.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\git_cmd\git_remote.h">
+      <Filter>src\git_cmd</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

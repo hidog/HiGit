@@ -52,7 +52,8 @@ ProjWindow::~ProjWindow()
 ********************************************************************/
 void	ProjWindow::pull_slot()
 {
-	SyncDialog	*sync_dialog	=	new SyncDialog(this);
+	QString		root_path		=	proj.path.c_str();
+	SyncDialog	*sync_dialog	=	new SyncDialog( root_path, this );
 	sync_dialog->show();
 }
 

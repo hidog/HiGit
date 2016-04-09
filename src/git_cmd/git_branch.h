@@ -3,6 +3,12 @@
 
 #include "git_base.h"
 
+
+
+
+
+
+
 /*******************************************************************
 	GitBranch
 ********************************************************************/
@@ -13,7 +19,9 @@ public:
 	GitBranch( QString _root_path, QObject *parent = 0 );
 	~GitBranch();
 
-	QString		current_branch();
+	QString			current_branch();
+	QStringList		get_all_branch();
+	QStringList		get_remote_branc();
 
 private:
 
