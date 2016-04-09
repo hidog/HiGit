@@ -21,13 +21,13 @@ class SyncDialog : public QDialog
 
 public:
     explicit SyncDialog( QString _root_path, QWidget *parent = 0 );
-    ~SyncDialog();
-
-
-	
+    ~SyncDialog();	
 
 protected:
 	void	closeEvent( QCloseEvent *event );
+
+protected slots:
+	void	remote_name_index_change_slot( int index );
 
 private:
 

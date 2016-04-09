@@ -2,7 +2,7 @@
 #include "ui_syncdialog.h"
 
 #include "../src/git_cmd/git_branch.h"
-
+#include "../src/def.h"
 
 /*******************************************************************
 	SyncDialog
@@ -21,6 +21,9 @@ SyncDialog::SyncDialog( QString _root_path, QWidget *parent ) :
 	init_remote_URL();
 
 	// get remote branch
+
+	//
+	connect(	ui->remote_nameComboBox,	SIGNAL(currentIndexChanged(int)),	this,	SLOT(remote_name_index_change_slot(int))	);
 }
 
 
@@ -34,6 +37,22 @@ SyncDialog::~SyncDialog()
 }
 
 
+/*******************************************************************
+	remote_name_index_change_slot
+********************************************************************/
+void	SyncDialog::remote_name_index_change_slot( int index )
+{
+	if( index >= remote_list.size() )
+	{
+		ERRLOG("index error")
+		return;
+	}
+
+	// 
+	QString		url		=	index >= 0 ? remote_list[index].url : QString("");
+
+	ui->urlLEdit->setText(url);
+}
 
 
 /*******************************************************************
@@ -42,15 +61,18 @@ SyncDialog::~SyncDialog()
 void	SyncDialog::init_remote_URL()
 {
 	GitRemote	git_remote( root_path, this );
-	QString		remote;	
 
 	remote_list		=	git_remote.get_remote_list();
 
+	// insert remote name.
 	foreach( RemoteInfo info, remote_list )
-	{
-		remote	=	QString("%1   <%2>").arg(info.name).arg(info.url);
-		ui->remoteComboBox->addItem(remote);
-	}
+		ui->remote_nameComboBox->addItem(info.name);
+
+	// 
+	int			index	=	ui->remote_nameComboBox->currentIndex();
+	QString		url		=	index >= 0 ? remote_list[index].url : QString("");
+
+	ui->urlLEdit->setText(url);
 }
 
 
