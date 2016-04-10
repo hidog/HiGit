@@ -13,6 +13,7 @@ using namespace std;
 
 /*
     bug: when delete file in folder, it will not refresh to HiGit UI correctly.
+    bug: when file status is AD  (add, but delete actually). commit will show as "ADD"
  */
 
 
