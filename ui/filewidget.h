@@ -11,10 +11,15 @@
 using namespace std;
 
 
+/*
+    bug: when delete file in folder, it will not refresh to HiGit UI correctly.
+ */
 
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~
 namespace Ui {
 	class FileWidget;
-}
+} // end namespace Ui
 
 class	FileModel;
 

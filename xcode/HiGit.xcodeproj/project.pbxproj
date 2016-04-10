@@ -29,6 +29,9 @@
 		6D13F1F11C95B43E00FC567A /* git_command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DB99B291C5520F100998E69 /* git_command.cpp */; };
 		6D13F1F21C95B43E00FC567A /* git_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DE4A6001C36B810003F4F94 /* git_control.cpp */; };
 		6D6D89061CB4A6D1005DEF39 /* git_commit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D6D89041CB4A6B5005DEF39 /* git_commit.cpp */; };
+		6D8259A91CBAB2B200BA92AE /* syncdialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D8259A21CBAB26400BA92AE /* syncdialog.cpp */; };
+		6D8259AA1CBAB2B200BA92AE /* git_branch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D8259A41CBAB27B00BA92AE /* git_branch.cpp */; };
+		6D8259AB1CBAB2B200BA92AE /* git_remote.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D8259A61CBAB27B00BA92AE /* git_remote.cpp */; };
 		6DAE4BC11CA4196D00E6D9C3 /* adddialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE4BBF1CA4195B00E6D9C3 /* adddialog.cpp */; };
 /* End PBXBuildFile section */
 
@@ -82,6 +85,13 @@
 		6D53888F1C68FD9E00DA4765 /* file_model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = file_model.h; path = ../model/file_model.h; sourceTree = "<group>"; };
 		6D6D89041CB4A6B5005DEF39 /* git_commit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_commit.cpp; path = ../src/git_cmd/git_commit.cpp; sourceTree = "<group>"; };
 		6D6D89051CB4A6B5005DEF39 /* git_commit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_commit.h; path = ../src/git_cmd/git_commit.h; sourceTree = "<group>"; };
+		6D8259A21CBAB26400BA92AE /* syncdialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = syncdialog.cpp; path = ../ui/syncdialog.cpp; sourceTree = "<group>"; };
+		6D8259A31CBAB26400BA92AE /* syncdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = syncdialog.h; path = ../ui/syncdialog.h; sourceTree = "<group>"; };
+		6D8259A41CBAB27B00BA92AE /* git_branch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_branch.cpp; path = ../src/git_cmd/git_branch.cpp; sourceTree = "<group>"; };
+		6D8259A51CBAB27B00BA92AE /* git_branch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_branch.h; path = ../src/git_cmd/git_branch.h; sourceTree = "<group>"; };
+		6D8259A61CBAB27B00BA92AE /* git_remote.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_remote.cpp; path = ../src/git_cmd/git_remote.cpp; sourceTree = "<group>"; };
+		6D8259A71CBAB27B00BA92AE /* git_remote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_remote.h; path = ../src/git_cmd/git_remote.h; sourceTree = "<group>"; };
+		6D8259A81CBAB29800BA92AE /* ui_syncdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ui_syncdialog.h; path = ../obj/ui_syncdialog.h; sourceTree = "<group>"; };
 		6DAE4BBE1CA4192700E6D9C3 /* cpp_proj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = cpp_proj; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DAE4BBF1CA4195B00E6D9C3 /* adddialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = adddialog.cpp; path = ../ui/adddialog.cpp; sourceTree = "<group>"; };
 		6DAE4BC01CA4195B00E6D9C3 /* adddialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = adddialog.h; path = ../ui/adddialog.h; sourceTree = "<group>"; };
@@ -129,6 +139,7 @@
 		6D13F2031C95B49B00FC567A /* obj */ = {
 			isa = PBXGroup;
 			children = (
+				6D8259A81CBAB29800BA92AE /* ui_syncdialog.h */,
 				6DAE4BC21CA41B8600E6D9C3 /* ui_adddialog.h */,
 				6D13F2041C95B4AF00FC567A /* ui_clonewindow.h */,
 				6D13F2051C95B4AF00FC567A /* ui_commitwindow.h */,
@@ -168,6 +179,10 @@
 		6DB99B261C5520E100998E69 /* git_cmd */ = {
 			isa = PBXGroup;
 			children = (
+				6D8259A41CBAB27B00BA92AE /* git_branch.cpp */,
+				6D8259A51CBAB27B00BA92AE /* git_branch.h */,
+				6D8259A61CBAB27B00BA92AE /* git_remote.cpp */,
+				6D8259A71CBAB27B00BA92AE /* git_remote.h */,
 				6D6D89041CB4A6B5005DEF39 /* git_commit.cpp */,
 				6D6D89051CB4A6B5005DEF39 /* git_commit.h */,
 				6D13F1D01C95B32800FC567A /* git_base.cpp */,
@@ -208,6 +223,8 @@
 		6DE4A6021C36B816003F4F94 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				6D8259A21CBAB26400BA92AE /* syncdialog.cpp */,
+				6D8259A31CBAB26400BA92AE /* syncdialog.h */,
 				6DAE4BBF1CA4195B00E6D9C3 /* adddialog.cpp */,
 				6DAE4BC01CA4195B00E6D9C3 /* adddialog.h */,
 				6DE4A7D51C74AE20009835F4 /* commitwindow.cpp */,
@@ -325,6 +342,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D8259A91CBAB2B200BA92AE /* syncdialog.cpp in Sources */,
+				6D8259AA1CBAB2B200BA92AE /* git_branch.cpp in Sources */,
+				6D8259AB1CBAB2B200BA92AE /* git_remote.cpp in Sources */,
 				6D6D89061CB4A6D1005DEF39 /* git_commit.cpp in Sources */,
 				6DAE4BC11CA4196D00E6D9C3 /* adddialog.cpp in Sources */,
 				6D13F1DE1C95B43E00FC567A /* log_model.cpp in Sources */,
