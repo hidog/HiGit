@@ -38,6 +38,7 @@ private:
 
 	void	init_local_branch();	
 	void	init_remote_URL();
+	void	init_remote_branch();
 
     Ui::SyncDialog	*ui;
 	const QString	root_path;

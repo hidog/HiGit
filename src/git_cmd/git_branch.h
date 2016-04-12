@@ -21,7 +21,7 @@ public:
 
 	QString			current_branch();
 	QStringList		get_all_branch();
-	QStringList		get_remote_branc();
+	QStringList		get_remote_branch( QString remote );
 
 private:
 

@@ -25,6 +25,7 @@ GitBranch::~GitBranch()
 /*******************************************************************
 	get_all_branch
 	set current branch at the first.
+	nite: use * to identity current branch. likie *develop.
 ********************************************************************/
 QStringList		GitBranch::get_all_branch()
 {
@@ -52,7 +53,7 @@ QStringList		GitBranch::get_all_branch()
 		if( str.length() > 3 )
 		{
 			if( str[0] == '*' )
-				list.push_front( QString(str.mid(2)) );
+				list.push_back( QString("*") +  QString(str.mid(2)) );
 			else
 				list.push_back( QString(str.mid(2)) );
 		}
@@ -67,7 +68,7 @@ QStringList		GitBranch::get_all_branch()
 /*******************************************************************
 	get_remote_branc
 ********************************************************************/
-QStringList		GitBranch::get_remote_branc()
+QStringList		GitBranch::get_remote_branch( QString remote )
 {
 	QProcess		*proc	=	new QProcess(this);
 	QStringList		args;
@@ -97,7 +98,10 @@ QStringList		GitBranch::get_remote_branc()
 			if( str.contains("->") == false )
 			{
 				index	=	str.indexOf("/");
-				list.push_back( str.mid(index+1) );
+				if( index == 2 )
+					ERRLOG("error")
+				else if( str.mid( 2, index-3 ) == remote )				
+					list.push_back( str.mid(index+1) );				
 			}
 		}
 	}
