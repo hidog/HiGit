@@ -230,6 +230,8 @@ void	MainWindow::open_slot()
 				add_ui_proj( proj );
 			}
 		}
+        else
+            QMessageBox::warning( this, "warning", "git repository not exist!");
 	}
 }
 

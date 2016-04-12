@@ -14,6 +14,7 @@
 
 /*
 	bug: git clone to a sub-folder that root has git, it will result some error.
+    bug: when git clone fail, don't add to database.
 */
 
 

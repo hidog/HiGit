@@ -84,7 +84,11 @@ void	GitBase::splite_remain( QByteArray &output )
 ********************************************************************/
 bool	GitBase::need_password( QByteArray data )
 {
-	if( data.contains("/dev/tty") )
+#ifdef LINUX
+    if( data.contains("could not read Username") )
+#else
+    if( data.contains("/dev/tty") )
+#endif
 		return	true;
 	else
 		return	false;

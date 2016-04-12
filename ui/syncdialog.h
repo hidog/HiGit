@@ -5,6 +5,11 @@
 #include "../src/git_cmd/git_remote.h"
 
 
+/*
+    but: when need username/password, it will show in remote URL.
+*/
+
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~
 namespace Ui {
 class SyncDialog;

@@ -18,7 +18,7 @@
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>71</width>
+     <width>91</width>
      <height>16</height>
     </rect>
    </property>
@@ -29,9 +29,9 @@
   <widget class="QComboBox" name="branchComboBox">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>120</x>
      <y>20</y>
-     <width>221</width>
+     <width>201</width>
      <height>22</height>
     </rect>
    </property>
@@ -44,7 +44,7 @@
     <rect>
      <x>340</x>
      <y>20</y>
-     <width>71</width>
+     <width>111</width>
      <height>16</height>
     </rect>
    </property>
@@ -55,9 +55,9 @@
   <widget class="QComboBox" name="comboBox_2">
    <property name="geometry">
     <rect>
-     <x>430</x>
+     <x>460</x>
      <y>20</y>
-     <width>231</width>
+     <width>201</width>
      <height>22</height>
     </rect>
    </property>
@@ -65,9 +65,9 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>10</x>
      <y>80</y>
-     <width>71</width>
+     <width>91</width>
      <height>16</height>
     </rect>
    </property>
@@ -94,9 +94,9 @@
   <widget class="QComboBox" name="remote_nameComboBox">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>110</x>
      <y>80</y>
-     <width>561</width>
+     <width>551</width>
      <height>22</height>
     </rect>
    </property>
@@ -104,9 +104,9 @@
   <widget class="QLineEdit" name="urlLEdit">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>120</x>
      <y>120</y>
-     <width>551</width>
+     <width>531</width>
      <height>20</height>
     </rect>
    </property>

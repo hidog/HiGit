@@ -34,19 +34,19 @@ public:
     ~MainWindow();
 
     void    init_proj_button();
-	void	add_ui_proj( DbProj proj );
+    void    add_ui_proj( DbProj proj );
     void    remove_all_proj_button();
 
-	void	resizeEvent( QResizeEvent *event );
+    void    resizeEvent( QResizeEvent *event );
     
 public slots:
-	void	update_proj_button_slot( DbProj );
+    void    update_proj_button_slot( DbProj );
 
 
 protected slots:
-	void	clone_slot();
-	void	init_slot();
-	void	open_slot();
+    void    clone_slot();
+    void    init_slot();
+    void    open_slot();
     void    delete_slot( DbProj proj );
 
 private:

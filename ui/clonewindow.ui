@@ -155,7 +155,7 @@
      <rect>
       <x>70</x>
       <y>140</y>
-      <width>85</width>
+      <width>91</width>
       <height>20</height>
      </rect>
     </property>
@@ -192,9 +192,9 @@
    <widget class="QCheckBox" name="depthCBox">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>180</x>
       <y>140</y>
-      <width>61</width>
+      <width>81</width>
       <height>20</height>
      </rect>
     </property>
@@ -208,7 +208,7 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>270</x>
       <y>140</y>
       <width>61</width>
       <height>22</height>

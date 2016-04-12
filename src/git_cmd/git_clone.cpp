@@ -262,6 +262,8 @@ void	GitClone::clone_output_err_slot()
 	{
 		data	=	splite_git_output( output );
 
+        qDebug() << data;
+
 		if( data.length() > 0 )
 		{
 			if( need_password( data ) == true )
