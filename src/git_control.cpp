@@ -15,6 +15,7 @@
 #include "git_cmd/git_status.h"
 #include "git_cmd/git_init.h"
 #include "git_cmd/git_rev_parse.h"
+#include "git_cmd/git_pull.h"
 
 #ifndef Q_MOC_RUN
 #	include<boost/bind.hpp>
@@ -103,8 +104,11 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 	switch( cmd_type )
 	{
 		case GIT_CMD_CLONE:
-			git_cmd		=	new GitClone();
+			git_cmd		=	new GitClone( this );
 			connect(	(GitClone*)git_cmd,		SIGNAL(update_proj_button_signal(DbProj)),		this->parent()->parent(),		SLOT(update_proj_button_slot(DbProj))	);
+			break;
+		case GIT_CMD_PULL:
+			git_cmd		=	new GitPull( this );
 			break;
 		default:
 			assert(0);

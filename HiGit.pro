@@ -76,6 +76,7 @@ SOURCES		+=	main.cpp \
 				src/git_cmd/git_commit.cpp \
 				src/git_cmd/git_branch.cpp \
 				src/git_cmd/git_remote.cpp \
+				src/git_cmd/git_pull.cpp \
 				model/file_model.cpp \
 				model/log_model.cpp
     
@@ -107,6 +108,7 @@ HEADERS		+=	ui/mainwindow.h \
 				src/git_cmd/git_commit.h \
 				src/git_cmd/git_branch.h \
 				src/git_cmd/git_remote.h \
+				src/git_cmd/git_pull.h \
 				src/def.h \
 				model/file_model.h \
 				model/log_model.h

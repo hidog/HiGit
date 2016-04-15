@@ -67,6 +67,7 @@
     <ClCompile Include="..\src\git_cmd\git_commit.cpp" />
     <ClCompile Include="..\src\git_cmd\git_init.cpp" />
     <ClCompile Include="..\src\git_cmd\git_log.cpp" />
+    <ClCompile Include="..\src\git_cmd\git_pull.cpp" />
     <ClCompile Include="..\src\git_cmd\git_remote.cpp" />
     <ClCompile Include="..\src\git_cmd\git_rev_parse.cpp" />
     <ClCompile Include="..\src\git_cmd\git_status.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="..\src\git_cmd\git_commit.h" />
     <ClInclude Include="..\src\git_cmd\git_init.h" />
     <ClInclude Include="..\src\git_cmd\git_log.h" />
+    <ClInclude Include="..\src\git_cmd\git_pull.h" />
     <ClInclude Include="..\src\git_cmd\git_remote.h" />
     <ClInclude Include="..\src\git_cmd\git_rev_parse.h" />
     <ClInclude Include="..\src\git_cmd\git_status.h" />

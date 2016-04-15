@@ -1,7 +1,7 @@
 #include "git_branch.h"
 
 #include "../def.h"
-
+#include <QDebug>
 
 
 /*******************************************************************
@@ -100,7 +100,7 @@ QStringList		GitBranch::get_remote_branch( QString remote )
 				index	=	str.indexOf("/");
 				if( index == 2 )
 					ERRLOG("error")
-				else if( str.mid( 2, index-3 ) == remote )				
+				else if( str.mid( 2, index-2 ) == remote )				
 					list.push_back( str.mid(index+1) );				
 			}
 		}
