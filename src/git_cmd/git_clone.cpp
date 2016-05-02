@@ -221,8 +221,7 @@ void	GitClone::abort_slot()
 void	GitClone::clone_start_slot()
 {
 	qDebug() << "git clone start...";
-
-	QProcess	*proc	=	(QProcess*)sender();
+	//QProcess	*proc	=	(QProcess*)sender();
 }
 
 
@@ -262,7 +261,7 @@ void	GitClone::clone_output_err_slot()
 	{
 		data	=	splite_git_output( output );
 
-        qDebug() << data;
+        //qDebug() << data;
 
 		if( data.length() > 0 )
 		{

@@ -330,6 +330,7 @@ void	CloneWindow::src_slot()
 	{
 		// http://www.dwheeler.com/essays/open-files-urls.html
 #ifdef _WIN32
+		// ¥Îbrowser¨Ó¶}±Ò
 		if( ui->srcLEdit->text().length() > 0 )
 		{
 			char	str[1000];

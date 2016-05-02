@@ -50,6 +50,7 @@ public:
 
 	bool		init( QString path );
 	void		clone( QString src, QString dest, bool is_local_path, QString username = "", QString password = "" );
+	void		pull( QString root_path );
 
 	void		add( QString root_path, QList<QString> str_list );
 

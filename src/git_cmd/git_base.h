@@ -43,8 +43,7 @@ public:
 	static QString	get_proj_name( QString path );
 
 signals:
-
-	void		finished_signal();
+	//void		finished_signal();
 
 protected:
 	void			splite_remain( QByteArray &output );

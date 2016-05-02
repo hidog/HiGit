@@ -15,6 +15,8 @@ namespace Ui {
 class SyncDialog;
 } // end namespace Ui
 
+class	GitControl;
+
 
 
 /*******************************************************************
@@ -28,22 +30,27 @@ public:
     explicit SyncDialog( QString _root_path, QWidget *parent = 0 );
     ~SyncDialog();	
 
+	void	sync_pull();
+
 protected:
 	void	closeEvent( QCloseEvent *event );
 
 protected slots:
 	void	remote_name_index_change_slot( int index );
+	void	download_slot();
 
 private:
 
 	void	init_local_branch();	
 	void	init_remote_URL();
 	void	init_remote_branch();
+	void	set_connect();
 
     Ui::SyncDialog	*ui;
 	const QString	root_path;
 
 	RemoteInfoList	remote_list;
+	GitControl		*git_ctrl;
 };
 
 #endif // SYNCDIALOG_H

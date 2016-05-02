@@ -245,6 +245,17 @@ bool	GitControl::init( QString path )
 
 
 
+/*******************************************************************
+	pull
+********************************************************************/
+void	GitControl::pull( QString root_path )
+{
+	GitParameter	param;
+
+	param.insert( make_pair( GIT_PULL_ROOT_PATH, root_path ) );
+
+	exec_command( GIT_CMD_PULL, param );
+}
 
 
 /*******************************************************************

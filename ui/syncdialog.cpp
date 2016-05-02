@@ -3,6 +3,8 @@
 
 #include "../src/git_cmd/git_branch.h"
 #include "../src/def.h"
+#include "../src/git_control.h"
+
 
 /*******************************************************************
 	SyncDialog
@@ -10,9 +12,14 @@
 SyncDialog::SyncDialog( QString _root_path, QWidget *parent ) :
 	root_path(_root_path),
     QDialog(parent),
-    ui(new Ui::SyncDialog)
+    ui(new Ui::SyncDialog),
+	git_ctrl(NULL)
 {
     ui->setupUi(this);
+
+	git_ctrl	=	new GitControl();
+	if( NULL == git_ctrl )
+		ERRLOG("mem alloc fail.")
 
 	// following has ordered property
 	// get local branch
@@ -22,8 +29,11 @@ SyncDialog::SyncDialog( QString _root_path, QWidget *parent ) :
 	// get remote branch
 	init_remote_branch();
 
+	// set ToolButton
+	ui->downloadTButton->setDefaultAction( new QAction(QString("PULL"),this) );
+
 	//
-	connect(	ui->rnameCBox,		SIGNAL(currentIndexChanged(int)),	this,	SLOT(remote_name_index_change_slot(int))	);
+	set_connect();
 }
 
 
@@ -33,7 +43,48 @@ SyncDialog::SyncDialog( QString _root_path, QWidget *parent ) :
 ********************************************************************/
 SyncDialog::~SyncDialog()
 {
+	delete	git_ctrl;
     delete	ui;
+}
+
+
+
+
+/*******************************************************************
+	set_connect
+********************************************************************/
+void	SyncDialog::set_connect()
+{
+	connect(	ui->rnameCBox,			SIGNAL(currentIndexChanged(int)),	this,	SLOT(remote_name_index_change_slot(int))	);
+	connect(	ui->downloadTButton,	SIGNAL(clicked()),					this,	SLOT(download_slot())						);
+}
+
+
+
+/*******************************************************************
+	download_slot
+********************************************************************/
+void	SyncDialog::download_slot()
+{
+	if( ui->downloadTButton->defaultAction()->text() == QString("PULL") )
+		sync_pull();
+	else
+		ERRLOG("need maintain.")
+}
+
+
+
+
+/*******************************************************************
+	sync_pull
+********************************************************************/
+void	SyncDialog::sync_pull()
+{
+	//QString		remote	=	ui->rnameCBox->currentText();
+	//QString		branch	=	
+
+	git_ctrl->pull( root_path );
+
 }
 
 
