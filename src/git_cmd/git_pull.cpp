@@ -126,25 +126,26 @@ void	GitPull::pull_output_err_slot()
 	QByteArray	data;		// raw data, contain %. like "Receive 10%"
 	QByteArray	msg;		// splite %, like Receive
 
-	qDebug() << output;
-
-#if 0
+	int		num;
 
 	// get string this term. keep some string in remain_str if needed.
 	splite_remain( output );
 
+	//
 	while( output.length() > 0 )
 	{
 		data	=	splite_git_output( output );
-
-        qDebug() << data;
+        //qDebug() << data;
 
 		if( data.length() > 0 )
+		{
+			splite_progress( data, msg, num );;
+			set_progess( num );
 			refresh_dynamic_output( data, msg );
+		}
 		else		
 			break;	// means not get enough string yet.
 	}
-#endif
 }
 
 
@@ -168,9 +169,27 @@ void	GitPull::pull_output_slot()
 	// will output something.
 	QProcess	*proc	=	(QProcess*)sender();
 	QByteArray	output	=	proc->readAll();	
+	QByteArray	data;		// raw data, contain %. like "Receive 10%"
+	QByteArray	msg;		// splite %, like Receive
 
-	qDebug() << output;
+	int		num;
 
+	splite_remain( output );
+
+	//
+	while( output.length() > 0 )
+	{
+		data	=	splite_git_output( output );
+
+		if( data.length() > 0 )
+		{
+			splite_progress( data, msg, num );;
+			set_progess( num );
+			refresh_dynamic_output( data, msg );
+		}
+		else		
+			break;	// means not get enough string yet.
+	}
 }
 
 

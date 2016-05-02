@@ -55,8 +55,37 @@ SyncDialog::~SyncDialog()
 ********************************************************************/
 void	SyncDialog::set_connect()
 {
-	connect(	ui->rnameCBox,			SIGNAL(currentIndexChanged(int)),	this,	SLOT(remote_name_index_change_slot(int))	);
-	connect(	ui->downloadTButton,	SIGNAL(clicked()),					this,	SLOT(download_slot())						);
+	connect(	ui->rnameCBox,			SIGNAL(currentIndexChanged(int)),			this,				SLOT(remote_name_index_change_slot(int))	);
+	connect(	ui->downloadTButton,	SIGNAL(clicked()),							this,				SLOT(download_slot())						);
+
+	connect(	git_ctrl,				SIGNAL(progress_signal(int)),				ui->gitProgress,	SLOT(setValue(int))							);
+	connect(	git_ctrl,				SIGNAL(output_signal(QList<QByteArray>)),	this,				SLOT(output_slot(QList<QByteArray>))		);
+	connect(	git_ctrl,				SIGNAL(need_user_pw_signal()),				this,				SLOT(need_user_pw_slot())					);
+
+}
+
+
+
+/*******************************************************************
+	need_user_pw_slot
+********************************************************************/
+void	SyncDialog::need_user_pw_slot()
+{
+	ERRLOG("need maintain.")
+}
+
+
+
+/*******************************************************************
+	output_slot
+********************************************************************/
+void	SyncDialog::output_slot( QList<QByteArray> list )
+{
+	ui->textBrowser->clear();
+
+	QList<QByteArray>::iterator		itr;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+		ui->textBrowser->append(*itr);
 }
 
 

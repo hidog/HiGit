@@ -39,6 +39,9 @@ protected slots:
 	void	remote_name_index_change_slot( int index );
 	void	download_slot();
 
+	void	output_slot(QList<QByteArray>);
+	void	need_user_pw_slot();
+
 private:
 
 	void	init_local_branch();	

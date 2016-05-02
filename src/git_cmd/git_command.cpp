@@ -75,9 +75,6 @@ void	GitCommand::refresh_dynamic_output( QByteArray data, QByteArray msg )
 		set_color( data, GIT_FONT_RED );
 	else if( data.indexOf(QString("done")) >= 0 )
 		set_color( data, GIT_FONT_BLUE );
-
-	//if( msg.size() == 0 )
-	//	msg		=	data;	// 字串裡面沒有百分比的case.
 	
 	if( output_list.size() == 0 )
 	{
