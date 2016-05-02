@@ -31,6 +31,7 @@ public:
     ~SyncDialog();	
 
 	void	sync_pull();
+	void	sync_push();
 
 protected:
 	void	closeEvent( QCloseEvent *event );
@@ -38,6 +39,7 @@ protected:
 protected slots:
 	void	remote_name_index_change_slot( int index );
 	void	download_slot();
+	void	upload_slot();
 
 	void	output_slot(QList<QByteArray>);
 	void	need_user_pw_slot();

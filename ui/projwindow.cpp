@@ -31,6 +31,7 @@ ProjWindow::ProjWindow( DbProj _proj, QWidget *parent ) :
 
 	connect(	ui->commitButton,	SIGNAL(clicked()),	this,	SLOT(commit_slot())		);
 	connect(	ui->pullButton,		SIGNAL(clicked()),	this,	SLOT(pull_slot())		);
+	connect(	ui->pushButton,		SIGNAL(clicked()),	this,	SLOT(push_slot())		);
 }
 
 
@@ -58,6 +59,15 @@ void	ProjWindow::pull_slot()
 }
 
 
+/*******************************************************************
+	push_slot
+********************************************************************/
+void	ProjWindow::push_slot()
+{
+	QString		root_path		=	proj.path.c_str();
+	SyncDialog	*sync_dialog	=	new SyncDialog( root_path, this );
+	sync_dialog->show();
+}
 
 
 /*******************************************************************

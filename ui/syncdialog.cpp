@@ -31,6 +31,7 @@ SyncDialog::SyncDialog( QString _root_path, QWidget *parent ) :
 
 	// set ToolButton
 	ui->downloadTButton->setDefaultAction( new QAction(QString("PULL"),this) );
+	ui->uploadTButton->setDefaultAction( new QAction(QString("PUSH"),this) );
 
 	//
 	set_connect();
@@ -57,11 +58,10 @@ void	SyncDialog::set_connect()
 {
 	connect(	ui->rnameCBox,			SIGNAL(currentIndexChanged(int)),			this,				SLOT(remote_name_index_change_slot(int))	);
 	connect(	ui->downloadTButton,	SIGNAL(clicked()),							this,				SLOT(download_slot())						);
+	connect(	ui->uploadTButton,		SIGNAL(clicked()),							this,				SLOT(upload_slot())							);
 
-	connect(	git_ctrl,				SIGNAL(progress_signal(int)),				ui->gitProgress,	SLOT(setValue(int))							);
 	connect(	git_ctrl,				SIGNAL(output_signal(QList<QByteArray>)),	this,				SLOT(output_slot(QList<QByteArray>))		);
 	connect(	git_ctrl,				SIGNAL(need_user_pw_signal()),				this,				SLOT(need_user_pw_slot())					);
-
 }
 
 
@@ -103,6 +103,18 @@ void	SyncDialog::download_slot()
 
 
 
+/*******************************************************************
+	upload_slot
+********************************************************************/
+void	SyncDialog::upload_slot()
+{
+	if( ui->uploadTButton->defaultAction()->text() == QString("PUSH") )
+		sync_push();
+	else
+		ERRLOG("need maintain.")
+}
+
+
 
 /*******************************************************************
 	sync_pull
@@ -116,6 +128,15 @@ void	SyncDialog::sync_pull()
 
 }
 
+
+
+/*******************************************************************
+	sync_push
+********************************************************************/
+void	SyncDialog::sync_push()
+{
+	git_ctrl->push( root_path );
+}
 
 
 /*******************************************************************

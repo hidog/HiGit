@@ -16,6 +16,7 @@
 #include "git_cmd/git_init.h"
 #include "git_cmd/git_rev_parse.h"
 #include "git_cmd/git_pull.h"
+#include "git_cmd/git_push.h"
 
 #ifndef Q_MOC_RUN
 #	include<boost/bind.hpp>
@@ -105,10 +106,16 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 	{
 		case GIT_CMD_CLONE:
 			git_cmd		=	new GitClone( this );
+			git_cmd->set_progress_func			=	boost::bind( &GitControl::set_progress, this, _1 );
+			git_cmd->input_user_passwd_func		=	boost::bind( &GitControl::input_user_passwd, this );
 			connect(	(GitClone*)git_cmd,		SIGNAL(update_proj_button_signal(DbProj)),		this->parent()->parent(),		SLOT(update_proj_button_slot(DbProj))	);
 			break;
 		case GIT_CMD_PULL:
 			git_cmd		=	new GitPull( this );
+			break;
+		case GIT_CMD_PUSH:
+			git_cmd		=	new GitPush( this );
+			git_cmd->input_user_passwd_func		=	boost::bind( &GitControl::input_user_passwd, this );
 			break;
 		default:
 			assert(0);
@@ -121,9 +128,7 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 		connect(	git_cmd,	SIGNAL(finished_signal()),		this,			SLOT(cmd_finished_slot())		);
 		connect(	this,		SIGNAL(abort_signal()),			git_cmd,		SLOT(abort_slot())				);
 
-		git_cmd->set_progress_func			=	boost::bind( &GitControl::set_progress, this, _1 );
 		git_cmd->set_ui_dynamic_output_func	=	boost::bind( &GitControl::set_ui_dynamic_output, this, _1 );
-		git_cmd->input_user_passwd_func		=	boost::bind( &GitControl::input_user_passwd, this );
 
 		git_cmd->exec( param );
 	}
@@ -131,6 +136,15 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 
 
 
+/*******************************************************************
+	push
+********************************************************************/
+void	GitControl::push( QString root_path )
+{
+	GitParameter	param;
+	param.insert( make_pair( GIT_PUSH_ROOT_PATH, root_path ) );
+	exec_command( GIT_CMD_PUSH, param );
+}
 
 
 /*******************************************************************
@@ -251,9 +265,7 @@ bool	GitControl::init( QString path )
 void	GitControl::pull( QString root_path )
 {
 	GitParameter	param;
-
 	param.insert( make_pair( GIT_PULL_ROOT_PATH, root_path ) );
-
 	exec_command( GIT_CMD_PULL, param );
 }
 

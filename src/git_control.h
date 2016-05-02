@@ -27,6 +27,7 @@ enum	GIT_COMMAND_TYPE
 	GIT_CMD_CLONE,
 	GIT_CMD_STATUS,
 	GIT_CMD_PULL,
+	GIT_CMD_PUSH,
 };
 
 
@@ -51,6 +52,7 @@ public:
 	bool		init( QString path );
 	void		clone( QString src, QString dest, bool is_local_path, QString username = "", QString password = "" );
 	void		pull( QString root_path );
+	void		push( QString root_path );
 
 	void		add( QString root_path, QList<QString> str_list );
 
