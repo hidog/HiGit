@@ -135,12 +135,12 @@ void	GitPull::pull_output_err_slot()
 	while( output.length() > 0 )
 	{
 		data	=	splite_git_output( output );
-        //qDebug() << data;
+        qDebug() << data;
 
 		if( data.length() > 0 )
 		{
-			splite_progress( data, msg, num );;
-			set_progess( num );
+			splite_progress( data, msg, num );
+			//set_progess( num );
 			refresh_dynamic_output( data, msg );
 		}
 		else		
@@ -184,7 +184,7 @@ void	GitPull::pull_output_slot()
 		if( data.length() > 0 )
 		{
 			splite_progress( data, msg, num );;
-			set_progess( num );
+			//set_progess( num );
 			refresh_dynamic_output( data, msg );
 		}
 		else		

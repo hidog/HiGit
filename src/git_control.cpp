@@ -50,7 +50,10 @@ GitControl::~GitControl()
 ********************************************************************/
 void	GitControl::set_progress( int num )
 {
-	emit progress_signal(num);
+	if( num > 0 )
+	{
+		emit progress_signal(num);
+	}
 }
 
 
@@ -129,7 +132,6 @@ void	GitControl::exec_command( GIT_COMMAND_TYPE cmd_type, GitParameter param )
 		connect(	this,		SIGNAL(abort_signal()),			git_cmd,		SLOT(abort_slot())				);
 
 		git_cmd->set_ui_dynamic_output_func	=	boost::bind( &GitControl::set_ui_dynamic_output, this, _1 );
-
 		git_cmd->exec( param );
 	}
 }

@@ -21,15 +21,15 @@ public:
 	void	exec( GitParameter param );
 
 public slots:
-	/*void	pull_output_err_slot();
-	void	pull_output_std_slot();
-	void	pull_output_slot();
+	void	push_output_err_slot();
+	void	push_output_std_slot();
+	void	push_output_slot();
 
-	void	pull_finish_slot( int, QProcess::ExitStatus );
-	void	pull_start_slot();
-	void	pull_error_slot( QProcess::ProcessError );
-		
-	void	abort_slot();*/
+	void	push_finish_slot( int, QProcess::ExitStatus );
+	void	push_start_slot();
+	void	push_error_slot( QProcess::ProcessError );
+	
+	//void	abort_slot();
 
 private:
 

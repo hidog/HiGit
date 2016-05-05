@@ -46,9 +46,6 @@ void	GitCommand::splite_progress( QByteArray data, QByteArray &msg, int &num )
 		msg		=	data.mid( 0, index );
 		num		=	rexp.cap( 1 ).remove('%').toInt();
 	}
-
-	// remove end space of msg
-	
 }
 
 
@@ -61,7 +58,10 @@ void	GitCommand::splite_progress( QByteArray data, QByteArray &msg, int &num )
 ********************************************************************/
 void	GitCommand::set_progess( int num )
 {
-	set_progress_func(num);
+	if( set_progress_func )
+		set_progress_func(num);
+	else
+		ERRLOG("no bind");
 }
 
 	
