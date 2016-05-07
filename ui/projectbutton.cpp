@@ -15,7 +15,8 @@ ProjectButton::ProjectButton( DbProj _proj, QWidget *parent, QWidget *main_windo
 	:	QPushButton(parent),
 		proj(_proj),
 		pj_window(NULL),
-		ui(new Ui::ProjectButton)
+		ui(new Ui::ProjectButton),
+		err_state(pjb::NO_ERROR)
 {
     ui->setupUi(this);
 
@@ -43,6 +44,39 @@ void	ProjectButton::mouseDoubleClickEvent( QMouseEvent *event )
 
 		connect(	pj_window,	SIGNAL(destroyed()),	this,	SLOT(pj_window_destroyed_slot())	);
 		pj_window->show();		
+	}
+}
+
+
+/*******************************************************************
+	set_error
+	http://stackoverflow.com/questions/21685414/qt5-setting-background-color-to-qpushbutton-and-qcheckbox
+	qwidget.setStyleSheet("QPushButton:checked { background-color: red; }")
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   stop:0 rgba(60, 186, 162, 255), stop:1 rgba(98, 211, 162, 255));
+********************************************************************/
+void	ProjectButton::set_error( pjb::ERR_STATE es )
+{
+	this->setStyleSheet( "background-color: rgb(255,200,200);" );
+
+	if( err_state == pjb::NO_ERROR )
+	{
+		QString	err_msg		=	QString("<font color='red'>");
+
+		err_state	=	es;
+		switch( err_state )
+		{
+			case pjb::FOLDER_NOT_EXIST:
+				err_msg	+=	QString("folder does not exist!");
+				break;
+			case pjb::GIT_REPO_NOT_EXIST:
+				err_msg +=	QString("git repository does not exist!");
+				break;
+			default:
+				ERRLOG("macro not defined.")
+		}
+
+		err_msg	+=	QString("</fond>");
+		ui->errLabel->setText(err_msg);
 	}
 }
 

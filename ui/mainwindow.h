@@ -14,7 +14,7 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~~~~~
 namespace Ui {
 	class MainWindow;
-}
+} // end namespace Ui
 
 
 class GitControl;
@@ -38,6 +38,7 @@ public:
     void    remove_all_proj_button();
 
     void    resizeEvent( QResizeEvent *event );
+	bool	check_folder_exist( std::string path );
     
 public slots:
     void    update_proj_button_slot( DbProj );

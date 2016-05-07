@@ -113,6 +113,17 @@ void    MainWindow::remove_all_proj_button()
 
 
 /*******************************************************************
+	check_folder_exist
+********************************************************************/
+bool	MainWindow::check_folder_exist( std::string path )
+{
+	QDir	dir( path.c_str() );
+	return	dir.exists();
+}
+
+
+
+/*******************************************************************
 	init_proj_button
 ********************************************************************/
 void    MainWindow::init_proj_button()
@@ -121,23 +132,24 @@ void    MainWindow::init_proj_button()
 
 	int		count	=	0;
 	int		width	=	ui->scrollArea->width();
-
 	
 	BOOST_FOREACH( DbProj proj, list )
 	{
+		// add button
 		proj_list.push_back( new ProjectButton( proj, ui->scrollArea->widget(), this ) );
 		proj_list.last()->move( 0, count*ProjectButton::fixed_height() );
         proj_list.last()->setVisible(true);
 		proj_list.last()->setFixedWidth( width );
 		count++;
+		// 
+		if( check_folder_exist( proj.path ) == false )
+			proj_list.last()->set_error( pjb::FOLDER_NOT_EXIST );
 	}
 
 	//int		width	=	ProjectButton::fixed_width();
 	int		height	=	ProjectButton::fixed_height() * proj_list.size();
 
 	ui->scrollArea->widget()->setMinimumHeight( height );
-
-
 }
 
 

@@ -11,14 +11,23 @@
 #define PJ_BUTTON_HEIGHT		80
 
 
+// ~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~
 namespace Ui {
 class ProjectButton;
-}
+} // end namespace Ui
 
-
-
-// ~~~~~~~~~~~~~~~~~~~~~ class declare ~~~~~~~~~~~~~~~~~~~~~
 class ProjWindow;
+
+
+// ~~~~~~~~~~~~~~~~~~~~~ enum ~~~~~~~~~~~~~~~~~~~~~
+namespace pjb {
+enum	ERR_STATE
+{
+	NO_ERROR,
+	FOLDER_NOT_EXIST,
+	GIT_REPO_NOT_EXIST,
+};
+} // end namepace projectbutton
 
 
 
@@ -34,6 +43,8 @@ public:
     explicit ProjectButton( DbProj _proj, QWidget *parent = 0, QWidget *main_window = 0 );
     ~ProjectButton();
 
+	void	set_error( pjb::ERR_STATE es );
+
 	static int	fixed_width();
 	static int	fixed_height();
 
@@ -44,15 +55,14 @@ public slots:
 	void	pj_window_destroyed_slot();
     void    del_project_slot();
 
-
 signals:
     
-    void    delete_signal( DbProj );
-    
-    
+    void    delete_signal( DbProj );    
 
 private:
     Ui::ProjectButton *ui;
+
+	pjb::ERR_STATE	err_state;
 
 	DbProj			proj;
 	ProjWindow		*pj_window;
