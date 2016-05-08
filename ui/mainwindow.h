@@ -38,7 +38,6 @@ public:
     void    remove_all_proj_button();
 
     void    resizeEvent( QResizeEvent *event );
-	bool	check_folder_exist( std::string path );
     
 public slots:
     void    update_proj_button_slot( DbProj );

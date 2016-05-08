@@ -7,6 +7,7 @@
 
 #include <QDebug>
 #include <QMessageBox>
+#include <QDir>
 
 #include "def.h"
 
@@ -65,6 +66,34 @@ void	GitControl::set_ui_dynamic_output( QList<QByteArray> output_list )
 {
 	emit output_signal(output_list);
 }
+
+
+
+
+/*******************************************************************
+	check_folder_exist
+********************************************************************/
+bool	GitControl::check_folder_exist( std::string path )
+{
+	QDir	dir( path.c_str() );
+	return	dir.exists();
+}
+
+
+
+/*******************************************************************
+	check_git_repo_exist
+********************************************************************/
+bool	GitControl::check_git_repo_exist( std::string path )
+{
+	GitRevParse		git_rev_parse;
+
+	QDir	dir1(path.c_str());
+	QDir	dir2(git_rev_parse.get_root_path(QString(path.c_str())));
+
+	return	dir1 == dir2;
+}
+
 
 
 

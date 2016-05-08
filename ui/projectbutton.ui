@@ -78,6 +78,12 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>15</height>
+      </size>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -91,6 +97,12 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>15</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <pointsize>9</pointsize>
@@ -103,6 +115,12 @@
    </item>
    <item row="3" column="0">
     <widget class="QLabel" name="errLabel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>15</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <weight>75</weight>
@@ -111,7 +129,7 @@
       </font>
      </property>
      <property name="text">
-      <string> </string>
+      <string>  </string>
      </property>
     </widget>
    </item>

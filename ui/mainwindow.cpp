@@ -112,16 +112,6 @@ void    MainWindow::remove_all_proj_button()
 
 
 
-/*******************************************************************
-	check_folder_exist
-********************************************************************/
-bool	MainWindow::check_folder_exist( std::string path )
-{
-	QDir	dir( path.c_str() );
-	return	dir.exists();
-}
-
-
 
 /*******************************************************************
 	init_proj_button
@@ -142,8 +132,10 @@ void    MainWindow::init_proj_button()
 		proj_list.last()->setFixedWidth( width );
 		count++;
 		// 
-		if( check_folder_exist( proj.path ) == false )
+		if( GitControl::check_folder_exist( proj.path ) == false )
 			proj_list.last()->set_error( pjb::FOLDER_NOT_EXIST );
+		else if( GitControl::check_git_repo_exist( proj.path ) == false )
+			proj_list.last()->set_error( pjb::GIT_REPO_NOT_EXIST );
 	}
 
 	//int		width	=	ProjectButton::fixed_width();
