@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QProcess>
 #include <QVBoxLayout>
+
 #include "../src/def.h"
 
 /*
@@ -38,10 +39,11 @@ public:
     void    remove_all_proj_button();
 
     void    resizeEvent( QResizeEvent *event );
+	void	redraw_buttons();
     
 public slots:
     void    update_proj_button_slot( DbProj );
-
+	void	search_text_slot(const QString& text );
 
 protected slots:
     void    clone_slot();

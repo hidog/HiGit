@@ -8,11 +8,15 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QPushButton>
+#include <QSplashScreen>
+
 
 #include "../ui/clonewindow.h"
 #include "../src/git_control.h"
 #include "../src/db_manager.h"
 #include "../ui/projectbutton.h"
+
+#include <QProgressBar>
 
 #ifndef Q_MOC_RUN
 	#include <boost/foreach.hpp>
@@ -46,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent) :
     
     // load db data to init.
 	init_proj_button();
-
 }
 
 
@@ -162,9 +165,49 @@ void	MainWindow::init()
 ********************************************************************/
 void	MainWindow::set_connect()
 {
-	connect(	ui->cloneButton,	SIGNAL(clicked()),	this,	SLOT(clone_slot())	);
-	connect(	ui->initButton,		SIGNAL(clicked()),	this,	SLOT(init_slot())	);
-	connect(	ui->openButton,		SIGNAL(clicked()),	this,	SLOT(open_slot())	);
+	connect(	ui->cloneButton,	SIGNAL(clicked()),						this,	SLOT(clone_slot())						);
+	connect(	ui->initButton,		SIGNAL(clicked()),						this,	SLOT(init_slot())						);
+	connect(	ui->openButton,		SIGNAL(clicked()),						this,	SLOT(open_slot())						);
+	connect(	ui->searchLEdit,	SIGNAL(textEdited(const QString&)),		this,	SLOT(search_text_slot(const QString&))	);
+}
+
+
+
+
+/*******************************************************************
+	search_text_slot
+********************************************************************/
+void	MainWindow::search_text_slot(const QString& text )
+{
+	ProjectButton   *btn	=	NULL;
+	bool	flag;
+
+	foreach( btn, proj_list )
+	{
+		flag	=	btn->get_path().contains( text, Qt::CaseInsensitive );
+		btn->setVisible(flag);
+	}
+
+	redraw_buttons();
+}
+
+
+
+
+/*******************************************************************
+	redraw_buttons
+********************************************************************/
+void	MainWindow::redraw_buttons()
+{
+	ProjectButton	*btn	=	NULL;
+	int		count	=	0;
+	int		height	=	ProjectButton::fixed_height();
+
+	foreach( btn , proj_list )
+	{
+		if( btn->isVisible() == true )
+			btn->move( 0, count++ * height );	
+	}
 }
 
 

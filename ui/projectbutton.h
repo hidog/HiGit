@@ -43,7 +43,8 @@ public:
     explicit ProjectButton( DbProj _proj, QWidget *parent = 0, QWidget *main_window = 0 );
     ~ProjectButton();
 
-	void	set_error( pjb::ERR_STATE es );
+	void		set_error( pjb::ERR_STATE es );
+	QString		get_path();
 
 	static int	fixed_width();
 	static int	fixed_height();

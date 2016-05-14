@@ -127,3 +127,8 @@ FORMS    	+= 	ui/mainwindow.ui \
 				ui/commitwindow.ui \
 				ui/adddialog.ui \
 				ui/syncdialog.ui
+
+DISTFILES +=
+
+RESOURCES += \
+    resource/mainwindow.qrc

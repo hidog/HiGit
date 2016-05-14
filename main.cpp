@@ -1,4 +1,8 @@
 #include "ui/mainwindow.h"
+
+//http://doc.qt.io/qt-4.8/qsplashscreen.html#QSplashScreen
+//QSplashScreen 
+
 #include <QApplication>
 #include <QMetaType>
 #include <QFileInfo>
