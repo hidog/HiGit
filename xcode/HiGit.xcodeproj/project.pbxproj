@@ -72,6 +72,10 @@
 		6D13F20B1C95B4AF00FC567A /* ui_userpwdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ui_userpwdialog.h; path = ../obj/ui_userpwdialog.h; sourceTree = "<group>"; };
 		6D2F797A1C55241000312F1A /* userpwdialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = userpwdialog.cpp; path = ../ui/userpwdialog.cpp; sourceTree = "<group>"; };
 		6D2F797B1C55241000312F1A /* userpwdialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = userpwdialog.h; path = ../ui/userpwdialog.h; sourceTree = "<group>"; };
+		6D3D858A1CE8813200E71644 /* git_pull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_pull.cpp; path = ../src/git_cmd/git_pull.cpp; sourceTree = "<group>"; };
+		6D3D858B1CE8813200E71644 /* git_pull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_pull.h; path = ../src/git_cmd/git_pull.h; sourceTree = "<group>"; };
+		6D3D858C1CE8813200E71644 /* git_push.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_push.cpp; path = ../src/git_cmd/git_push.cpp; sourceTree = "<group>"; };
+		6D3D858D1CE8813200E71644 /* git_push.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_push.h; path = ../src/git_cmd/git_push.h; sourceTree = "<group>"; };
 		6D40E9311C53BF08009D76D8 /* def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = def.h; path = ../src/def.h; sourceTree = "<group>"; };
 		6D5388851C68FD6300DA4765 /* git_rev_parse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_rev_parse.cpp; path = ../src/git_cmd/git_rev_parse.cpp; sourceTree = "<group>"; };
 		6D5388861C68FD6300DA4765 /* git_rev_parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_rev_parse.h; path = ../src/git_cmd/git_rev_parse.h; sourceTree = "<group>"; };
@@ -179,6 +183,10 @@
 		6DB99B261C5520E100998E69 /* git_cmd */ = {
 			isa = PBXGroup;
 			children = (
+				6D3D858A1CE8813200E71644 /* git_pull.cpp */,
+				6D3D858B1CE8813200E71644 /* git_pull.h */,
+				6D3D858C1CE8813200E71644 /* git_push.cpp */,
+				6D3D858D1CE8813200E71644 /* git_push.h */,
 				6D8259A41CBAB27B00BA92AE /* git_branch.cpp */,
 				6D8259A51CBAB27B00BA92AE /* git_branch.h */,
 				6D8259A61CBAB27B00BA92AE /* git_remote.cpp */,
