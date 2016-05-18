@@ -24,12 +24,21 @@ ProjectButton::ProjectButton( DbProj _proj, QWidget *parent, QWidget *main_windo
 	ui->nameLEdit->setText( QString(proj.name.c_str()) );
 	ui->pathLabel->setText( QString(proj.path.c_str()) );
 
-    connect(    ui->delButton,      SIGNAL(clicked()),                  this,            SLOT(del_project_slot())    );
-    connect(    this,               SIGNAL(delete_signal(DbProj)),      main_window,     SLOT(delete_slot(DbProj))   );
+    connect(    ui->delButton,      SIGNAL(clicked()),                  this,           SLOT(del_project_slot())    );
+    connect(    this,               SIGNAL(delete_signal(DbProj)),      main_window,    SLOT(delete_slot(DbProj))   );
+    connect(    ui->upButton,       SIGNAL(clicked()),					this,			SLOT(up_slot())				);
+
     
 }
 
 
+/*******************************************************************
+	up_slot
+********************************************************************/
+void	ProjectButton::up_slot()
+{
+	qDebug() << "test";
+}
 
 
 /*******************************************************************
