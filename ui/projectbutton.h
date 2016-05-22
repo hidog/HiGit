@@ -55,7 +55,6 @@ public slots:
 
 	void	pj_window_destroyed_slot();
     void    del_project_slot();
-	void	up_slot();
 
 
 signals:

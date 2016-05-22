@@ -50,6 +50,10 @@ protected slots:
     void    init_slot();
     void    open_slot();
     void    delete_slot( DbProj proj );
+	void	up_slot();
+	void	down_slot();
+
+
 
 private:
 	GitControl	*git_ctrl;
@@ -57,8 +61,7 @@ private:
 	void	init();
 	void	set_connect();
 
-    Ui::MainWindow *ui;
-
+    Ui::MainWindow	*ui;
 	DbManager		*db_mng;
 
 	QList<ProjectButton*>	proj_list;

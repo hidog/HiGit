@@ -54,7 +54,7 @@ void	DbManager::load_main_db()
 		ERRLOG("open db fail.")
 
 	// create main_table
-	sprintf( str, "CREATE TABLE IF NOT EXISTS GIT_PROJ_TABLE(PATH TEXT UNIQUE NOT NULL,NAME TEXT NOT NULL, USERNAME TEXT, PASSWORD TEXT)" );
+	sprintf( str, "CREATE TABLE IF NOT EXISTS GIT_PROJ_TABLE(PATH TEXT UNIQUE NOT NULL,NAME TEXT NOT NULL, USERNAME TEXT, PASSWORD TEXT, ORDER_VALUE INTEGER)" );
 	rc	=	sqlite3_exec( db, str, 0, 0, &err_msg );
 	if( rc != SQLITE_OK )
 		ERRLOG("create table fail. msg = %s", err_msg )
@@ -66,15 +66,15 @@ void	DbManager::load_main_db()
 /*********************************************************************
 	add_proj
 **********************************************************************/
-bool	DbManager::add_proj( DbProj proj )
+bool	DbManager::add_proj( DbProj proj, int order )
 {
 	int		rc;
 	char	*err_msg;	
 	char	str[HIGIT_DB_BUF_SIZE];
 
 	// 
-	sprintf( str, "INSERT OR IGNORE INTO GIT_PROJ_TABLE(PATH,NAME,USERNAME,PASSWORD) VALUES('%s','%s','%s','%s')" 
-			, proj.path.c_str(), proj.name.c_str(), proj.username.c_str(), proj.password.c_str() );
+	sprintf( str, "INSERT OR IGNORE INTO GIT_PROJ_TABLE(PATH,NAME,USERNAME,PASSWORD,ORDER_VALUE) VALUES('%s','%s','%s','%s',%d)" 
+			, proj.path.c_str(), proj.name.c_str(), proj.username.c_str(), proj.password.c_str(), order );
 
 	rc	=	sqlite3_exec( db, str, 0, 0, &err_msg );
 	if( rc != SQLITE_OK )
@@ -105,7 +105,33 @@ void    DbManager::delete_proj( DbProj proj )
         ERRLOG("delete proj fail, msg = %s", err_msg );
 }
 
+/*********************************************************************
+	proj_count
+**********************************************************************/
+int		DbManager::proj_count()
+{
+	int		rc;
+	int		count		=	0;
+	char	*err_msg	=	NULL;
+	char	str[HIGIT_DB_BUF_SIZE];
 
+	// 
+	sprintf( str, "SELECT COUNT(*) FROM GIT_PROJ_TABLE" );
+
+	sqlite3_stmt    *stmt;
+    sqlite3_prepare_v2( db, str, strlen(str)+1, &stmt, 0 );
+
+	rc	=	sqlite3_step(stmt);
+	if( rc == SQLITE_ROW )
+		count	=	sqlite3_column_int( stmt, 0 );
+	else
+	{
+		count	=	0;
+		ERRLOG("count fail.")
+	}
+
+	return	count;
+}
 
 /*********************************************************************
 	get_all_proj
@@ -122,7 +148,7 @@ bcListDbProj    DbManager::get_all_proj()
     char    str[HIGIT_DB_BUF_SIZE];
     
     //
-    sprintf( str, "SELECT PATH,NAME,USERNAME,PASSWORD FROM GIT_PROJ_TABLE" );
+    sprintf( str, "SELECT PATH,NAME,USERNAME,PASSWORD FROM GIT_PROJ_TABLE ORDER BY ORDER_VALUE ASC" );
     
     sqlite3_stmt    *stmt;
     sqlite3_prepare_v2( db, str, strlen(str)+1, &stmt, 0 );

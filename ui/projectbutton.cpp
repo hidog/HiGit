@@ -26,19 +26,13 @@ ProjectButton::ProjectButton( DbProj _proj, QWidget *parent, QWidget *main_windo
 
     connect(    ui->delButton,      SIGNAL(clicked()),                  this,           SLOT(del_project_slot())    );
     connect(    this,               SIGNAL(delete_signal(DbProj)),      main_window,    SLOT(delete_slot(DbProj))   );
-    connect(    ui->upButton,       SIGNAL(clicked()),					this,			SLOT(up_slot())				);
-
-    
+    connect(    ui->upButton,       SIGNAL(clicked()),					main_window,	SLOT(up_slot())				);
+    connect(    ui->downButton,		SIGNAL(clicked()),					main_window,	SLOT(down_slot())			);    
 }
 
 
-/*******************************************************************
-	up_slot
-********************************************************************/
-void	ProjectButton::up_slot()
-{
-	qDebug() << "test";
-}
+
+
 
 
 /*******************************************************************

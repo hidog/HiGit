@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <QPushButton>
 #include <QSplashScreen>
+#include <QScrollBar>
 
 
 #include "../ui/clonewindow.h"
@@ -192,6 +193,84 @@ void	MainWindow::search_text_slot(const QString& text )
 }
 
 
+/*******************************************************************
+	up_slot
+********************************************************************/
+void	MainWindow::up_slot()
+{
+	ProjectButton*	btn		=	(ProjectButton*)sender()->parent();
+	QPoint	btn_pt	=	btn->pos();
+
+	// find the upper btn
+	bool	is_find		=	false;
+	QPoint	pt;
+	QList<ProjectButton*>::iterator		itr;
+	for( itr = proj_list.begin(); itr != proj_list.end(); ++itr )
+	{
+		pt	=	(*itr)->pos();
+		if( btn_pt.y() - pt.y() == ProjectButton::fixed_height() )
+		{
+			is_find		=	true;
+			break;
+		}
+	}
+
+	// move button.
+	int		value;
+	if( is_find )
+	{
+		(*itr)->move( btn_pt.x(), btn_pt.y() );
+		btn->move( pt.x(), pt.y() );
+
+		// move scroll bar.
+		/*value	=	ui->scrollArea->verticalScrollBar()->value();
+		if( value > ProjectButton::fixed_height() )
+			ui->scrollArea->verticalScrollBar->set*/
+
+		// update db order_value
+	}
+}
+
+
+/*******************************************************************
+	down_slot
+********************************************************************/
+void	MainWindow::down_slot()
+{
+	ProjectButton*	btn		=	(ProjectButton*)sender()->parent();
+	QPoint	btn_pt	=	btn->pos();
+
+	// find the upper btn
+	bool	is_find		=	false;
+	QPoint	pt;
+	QList<ProjectButton*>::iterator		itr;
+	for( itr = proj_list.begin(); itr != proj_list.end(); ++itr )
+	{
+		pt	=	(*itr)->pos();
+		if( pt.y() - btn_pt.y() == ProjectButton::fixed_height() )
+		{
+			is_find		=	true;
+			break;
+		}
+	}
+
+	// move button.
+	int		value;
+	if( is_find )
+	{
+		(*itr)->move( btn_pt.x(), btn_pt.y() );
+		btn->move( pt.x(), pt.y() );
+
+		// move scroll bar.
+		/*value	=	ui->scrollArea->verticalScrollBar()->value();
+		if( value > ProjectButton::fixed_height() )
+			ui->scrollArea->verticalScrollBar->set*/
+
+		// update db order_value
+	}
+}
+
+
 
 
 /*******************************************************************
@@ -217,9 +296,12 @@ void	MainWindow::redraw_buttons()
 ********************************************************************/
 void	MainWindow::update_proj_button_slot( DbProj proj )
 {
+	int		count;
+
 	if( db_mng->is_exist_proj( proj ) == false )
 	{
-		db_mng->add_proj( proj );
+		count	=	db_mng->proj_count();
+		db_mng->add_proj( proj, count+1 );
 		add_ui_proj( proj );
 	}
 }
@@ -232,7 +314,8 @@ void	MainWindow::init_slot()
 {
 	QString		path	=	QFileDialog::getExistingDirectory();
 	QString		name	=	git_ctrl->get_proj_name(path);	
-	
+	int			count;
+
 	if( git_ctrl->init( path ) == true )
 	{
 		DbProj	proj;
@@ -242,7 +325,8 @@ void	MainWindow::init_slot()
 		proj.username	=	"";
 		proj.password	=	"";
 
-		db_mng->add_proj( proj );
+		count	=	db_mng->proj_count();
+		db_mng->add_proj( proj, count+1 );
 		add_ui_proj( proj );
 	}
 }
@@ -255,6 +339,7 @@ void	MainWindow::init_slot()
 ********************************************************************/
 void	MainWindow::open_slot()
 {
+	int			count;
 	QString		path		=	QFileDialog::getExistingDirectory();
 	if( path.size() > 0 )
 	{
@@ -273,7 +358,8 @@ void	MainWindow::open_slot()
 			if( db_mng->is_exist_proj( proj ) == false )
 			{
 				// update ui, db and list.
-				db_mng->add_proj( proj );
+				count	=	db_mng->proj_count();
+				db_mng->add_proj( proj, count+1 );
 				add_ui_proj( proj );
 			}
 		}
@@ -286,7 +372,7 @@ void	MainWindow::open_slot()
 
 
 /*******************************************************************
-	add_proj
+	add_ui_proj
 ********************************************************************/
 void	MainWindow::add_ui_proj( DbProj proj )
 {

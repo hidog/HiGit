@@ -36,9 +36,9 @@ public:
 	DbManager();
 	~DbManager();
 
+	int		proj_count();
 	bool	is_exist_proj( DbProj proj );
-	bool	add_proj( DbProj proj );
-    
+	bool	add_proj( DbProj proj, int order );    
     void    delete_proj( DbProj proj );
 
     bcListDbProj    get_all_proj();
