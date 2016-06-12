@@ -6,6 +6,7 @@
 #include <string.h>
 #include <iostream>
 #include <cassert>
+#include <list>
 
 #include <QDir>
 #include <QDebug>
@@ -27,10 +28,57 @@ DbManager::DbManager()
 	DbManager
 ********************************************************************/
 DbManager::~DbManager()
-{}
+{
+	int		res		=	sqlite3_close_v2(db);
+	if( res != SQLITE_OK )
+		ERRLOG("sqlite close fail.")
+}
 
 
+/*******************************************************************
+	DbManager
+********************************************************************/
+int		DbManager::generate_id()
+{
+    int     rc,	n;
+    char    *err_msg    =   NULL;
+    char    str[HIGIT_DB_BUF_SIZE];
 
+	list<int>	list;
+    
+    //
+    sprintf( str, "SELECT NID FROM GIT_PROJ_TABLE ORDER BY NID ASC" );
+    
+    sqlite3_stmt    *stmt;
+    sqlite3_prepare_v2( db, str, strlen(str)+1, &stmt, 0 );
+    
+    while(true)
+    {
+        rc  =   sqlite3_step(stmt);
+        if( rc == SQLITE_ROW )
+        {
+			n	=	sqlite3_column_int( stmt, 0 );
+			list.push_back(n);
+        }
+        else if( rc == SQLITE_DONE )
+            break;
+        else
+            ERRLOG("db error. msg = %s", err_msg );
+    }
+    
+    sqlite3_finalize(stmt);
+
+	//
+	std::list<int>::iterator	itr;
+	n	=	1;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+	{
+		if( n == *itr )
+			n++;
+	}
+
+    return  n;
+}
 
 
 /*********************************************************************
@@ -54,7 +102,7 @@ void	DbManager::load_main_db()
 		ERRLOG("open db fail.")
 
 	// create main_table
-	sprintf( str, "CREATE TABLE IF NOT EXISTS GIT_PROJ_TABLE(PATH TEXT UNIQUE NOT NULL,NAME TEXT NOT NULL, USERNAME TEXT, PASSWORD TEXT, ORDER_VALUE INTEGER)" );
+	sprintf( str, "CREATE TABLE IF NOT EXISTS GIT_PROJ_TABLE(NID UNIQUE,PATH TEXT UNIQUE NOT NULL,NAME TEXT NOT NULL, USERNAME TEXT, PASSWORD TEXT, ORDER_VALUE INTEGER)" );
 	rc	=	sqlite3_exec( db, str, 0, 0, &err_msg );
 	if( rc != SQLITE_OK )
 		ERRLOG("create table fail. msg = %s", err_msg )
@@ -72,9 +120,11 @@ bool	DbManager::add_proj( DbProj proj, int order )
 	char	*err_msg;	
 	char	str[HIGIT_DB_BUF_SIZE];
 
+	int		id	=	generate_id();
+
 	// 
-	sprintf( str, "INSERT OR IGNORE INTO GIT_PROJ_TABLE(PATH,NAME,USERNAME,PASSWORD,ORDER_VALUE) VALUES('%s','%s','%s','%s',%d)" 
-			, proj.path.c_str(), proj.name.c_str(), proj.username.c_str(), proj.password.c_str(), order );
+	sprintf( str, "INSERT OR IGNORE INTO GIT_PROJ_TABLE(NID,PATH,NAME,USERNAME,PASSWORD,ORDER_VALUE) VALUES(%d,'%s','%s','%s','%s',%d)" 
+			, id, proj.path.c_str(), proj.name.c_str(), proj.username.c_str(), proj.password.c_str(), order );
 
 	rc	=	sqlite3_exec( db, str, 0, 0, &err_msg );
 	if( rc != SQLITE_OK )

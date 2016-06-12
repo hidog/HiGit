@@ -40,6 +40,7 @@ public:
 	bool	is_exist_proj( DbProj proj );
 	bool	add_proj( DbProj proj, int order );    
     void    delete_proj( DbProj proj );
+	int		generate_id();
 
     bcListDbProj    get_all_proj();
     

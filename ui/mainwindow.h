@@ -53,8 +53,6 @@ protected slots:
 	void	up_slot();
 	void	down_slot();
 
-
-
 private:
 	GitControl	*git_ctrl;
 
