@@ -71,6 +71,12 @@ void	MainWindow::add_shortcut()
     ui->actionInit->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_I) );
     ui->actionClone->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_C) );
     ui->actionClose->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_Q) );
+#elif MACOS
+    ui->actionInit->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_I) );
+    ui->actionClone->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_C) );
+	ui->actionClose->setShortcut( QKeySequence::Close );
+#else
+#   error unknown platform.
 #endif
 }
 
