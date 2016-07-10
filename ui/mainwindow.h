@@ -40,10 +40,12 @@ public:
 
     void    resizeEvent( QResizeEvent *event );
 	void	redraw_buttons();
+	void	add_shortcut();
     
 public slots:
     void    update_proj_button_slot( DbProj );
 	void	search_text_slot(const QString& text );
+	void	close_slot();
 
 protected slots:
     void    clone_slot();

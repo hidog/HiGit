@@ -51,10 +51,24 @@ MainWindow::MainWindow(QWidget *parent) :
     
     // load db data to init.
 	init_proj_button();
+
+	// add shortcut
+	add_shortcut();
 }
 
 
 
+/*******************************************************************
+	add_shortcut
+********************************************************************/
+void	MainWindow::add_shortcut()
+{
+#ifdef _WIN32
+	ui->actionInit->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_I) );
+	ui->actionClone->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_C) );
+	ui->actionClose->setShortcut( QKeySequence(Qt::ALT + Qt::Key_F4) );
+#endif
+}
 
 
 
@@ -170,9 +184,25 @@ void	MainWindow::set_connect()
 	connect(	ui->initButton,		SIGNAL(clicked()),						this,	SLOT(init_slot())						);
 	connect(	ui->openButton,		SIGNAL(clicked()),						this,	SLOT(open_slot())						);
 	connect(	ui->searchLEdit,	SIGNAL(textEdited(const QString&)),		this,	SLOT(search_text_slot(const QString&))	);
+
+	connect(	ui->actionInit,		SIGNAL(triggered()),					this,	SLOT(init_slot())						);
+	connect(	ui->actionClone,	SIGNAL(triggered()),					this,	SLOT(clone_slot())						);
+	connect(	ui->actionClose,	SIGNAL(triggered()),					this,	SLOT(close_slot())						);
+
 }
 
 
+
+
+/*******************************************************************
+	close_slot
+********************************************************************/
+void	MainWindow::close_slot()
+{
+	// need to check something. like close all subwindows.
+
+	this->close();
+}
 
 
 /*******************************************************************
@@ -315,6 +345,9 @@ void	MainWindow::init_slot()
 	QString		path	=	QFileDialog::getExistingDirectory();
 	QString		name	=	git_ctrl->get_proj_name(path);	
 	int			count;
+
+	if( path.isEmpty() == true )
+		return;
 
 	if( git_ctrl->init( path ) == true )
 	{
