@@ -67,6 +67,10 @@ void	MainWindow::add_shortcut()
 	ui->actionInit->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_I) );
 	ui->actionClone->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_C) );
 	ui->actionClose->setShortcut( QKeySequence(Qt::ALT + Qt::Key_F4) );
+#elif LINUX
+    ui->actionInit->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_I) );
+    ui->actionClone->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_C) );
+    ui->actionClose->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_Q) );
 #endif
 }
 
