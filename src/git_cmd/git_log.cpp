@@ -24,6 +24,86 @@ GitLog::~GitLog()
 	
 
 
+/*******************************************************************
+	get_log_graph
+********************************************************************/
+void	GitLog::get_log_graph( QString path )
+{
+	QProcess		*proc	=	new QProcess(this);
+	QStringList		args;
+
+	LogDataList		list;
+	LogData			log_data;
+
+	proc->setWorkingDirectory( path );
+
+	args << "log";
+	args << "--pretty=@%h %d";
+	args << "--graph";
+
+	proc->start( "git", args );
+
+	bool	res		=	proc->waitForFinished();
+
+	QByteArray	output,	str;
+	QString		hash, branch;
+	QRegExp		reg;
+	int		i,	j,	pos;
+	bool	is_node;
+
+	if( res )
+	{
+		output	=	proc->readAll();
+		qDebug() << qPrintable(output);
+
+		while( output.length() > 0 )
+		{
+			str		=	splite_git_output(output);
+			qDebug(str);
+
+			is_node		=	false;
+			for( i = 0; i < str.length(); i++ )
+			{
+				qDebug() << str[i] << " ";
+				if( str[i] == '*' )
+					is_node		=	true;
+				else if( str[i] == '\\' )
+				{}
+				else if( str[i] == '/' )
+				{}
+				else if( str[i] == '@' )
+				{
+					reg		=	QRegExp("(\\w+)");
+					pos		=	reg.indexIn( str, i+1 );
+					if( pos != -1 )
+						hash	=	reg.cap(1);
+					else
+						ERRLOG("hash format error");
+					qDebug() << hash;
+					i	=	pos + reg.matchedLength();
+				}
+				else if( str[i] == '(' )
+				{
+					branch.clear();
+					for( j = i+1; j < str.length(); j++ )
+					{
+						if( str[j] == ')' )
+							break;
+						else if( str[j] != ' ' )
+							branch	+=	str[j];
+					}
+					qDebug() << branch;
+					i	=	j + 1;
+				}
+			}
+		}
+
+	}
+
+	delete	proc;
+}
+
+
 
 
 

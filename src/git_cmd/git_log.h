@@ -35,6 +35,7 @@ public:
 	QStringList		get_file_list( QString path, QString commit );
     
     QString         last_author( QString path );
+	void			get_log_graph( QString path );
 
 private:
     QString			get_commit( QByteArray str );
