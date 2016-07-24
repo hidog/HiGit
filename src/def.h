@@ -17,6 +17,9 @@
 		printf("\n"); \
 	}
 
+#define GET_MACRO(type,name) type get_##name() const { return name; }
+#define SET_MACRO(type,name) void set_##name( type n ) { name = n; }
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ struct ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // DbProj

@@ -1,7 +1,11 @@
 #include "git_log.h"	
 
 #include <QDebug>
+#include <QList>
+
 #include "../def.h"
+#include "git_log_graph.h"
+
 #include <stdio.h>
 
 
@@ -21,7 +25,126 @@ GitLog::GitLog( QObject *parent ) :
 GitLog::~GitLog()
 {}
 
+
+
+
+/*******************************************************************
+	parse_hash_decorate
+********************************************************************/
+int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString &decorate)
+{
+	QRegExp		reg;
+
+	int		i,	j,	pos;
+	int		n;	// record the end of graph.
+	int		size	=	str.length();
+
+	hash.clear();
+	decorate.clear();
+
+	n	=	-1;
+
+	//
+	for( i = 0; i < size; i++ )
+	{
+		if( str[i] == '@' )
+		{
+			n		=	i;
+			reg		=	QRegExp("(\\w+)");
+			pos		=	reg.indexIn( str, i+1 );
+			if( pos != -1 )
+				hash	=	reg.cap(1);
+			else
+				ERRLOG("hash format error");
+			//qDebug() << hash;
+			i	=	pos + reg.matchedLength();
+		}
+		else if( str[i] == '(' )
+		{
+			decorate.clear();
+			for( j = i+1; j < str.length(); j++ )
+			{
+				if( str[j] == ')' )
+					break;
+				else if( str[j] != ' ' )
+					decorate	+=	str[j];
+			}
+			//qDebug() << branch;
+			i	=	j + 1;
+		}
+	}
+
+	return	n;
+}
+
 	
+
+
+/*******************************************************************
+	handle_graph_data
+********************************************************************/
+void	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list )
+{
+	QString		hash, decorate;
+
+	int		i,	j;
+	int		index,	n;
+	bool	is_node;
+
+	GitGraphLine	*line_ptr;
+
+	qDebug(str);
+
+	// parse hash and decorate.
+	n	=	parse_hash_decorate( str, hash, decorate );
+
+	// parse line.
+	is_node		=	false;
+	for( i = 0; i < str.length(); i++ )
+	{
+		//qDebug() << str[i] << " ";
+		if( str[i] == git_log::node )
+		{
+			if( hash.size() == 0 )
+				ERRLOG("it is node without hash.");
+
+			is_node		=	true;
+			line_ptr	=	git_log::find_line( i, line_list );
+			if( line_ptr == NULL )
+			{
+				// not found, create new line.
+				index	=	line_list.size();
+				line_list.push_back( GitGraphLine( index, i ) );
+			}
+
+			git_log::add_node( line_list );			
+			git_log::set_line_as_node( i, line_list, hash, decorate );
+		}
+		else if( (str[i] == git_log::left_move && str[i+1] == git_log::vertical) ||
+			     (str[i] == git_log::vertical  && str[i+1] == git_log::right_move) )
+		{
+			ERRLOG("graph format not support. %s", str.toStdString() );
+		}
+		else if( str[i] == git_log::vertical && str[i+1] == git_log::right_move )
+		{
+			// fork
+			index	=	line_list.size();
+			line_list.push_back( GitGraphLine( index, i+2 ) );
+			if( is_node == true )
+				line_list.last().add_node();
+
+			line_ptr	=	git_log::find_line( i, line_list );
+			if( line_ptr == NULL )
+				ERRLOG("fork but not found")
+			else
+				line_ptr->fork_line( i, index );
+		}
+		else if( str[i] == '/' )
+		{}
+
+	}
+}
+
 
 
 /*******************************************************************
@@ -38,18 +161,16 @@ void	GitLog::get_log_graph( QString path )
 	proc->setWorkingDirectory( path );
 
 	args << "log";
-	args << "--pretty=@%h %d";
+	args << "--pretty= @%h %d";
 	args << "--graph";
 
 	proc->start( "git", args );
 
 	bool	res		=	proc->waitForFinished();
 
-	QByteArray	output,	str;
-	QString		hash, branch;
-	QRegExp		reg;
-	int		i,	j,	pos;
-	bool	is_node;
+	QByteArray		output,	str;
+	GitLineList		line_list;
+	line_list.clear();
 
 	if( res )
 	{
@@ -58,44 +179,8 @@ void	GitLog::get_log_graph( QString path )
 
 		while( output.length() > 0 )
 		{
-			str		=	splite_git_output(output);
-			qDebug(str);
-
-			is_node		=	false;
-			for( i = 0; i < str.length(); i++ )
-			{
-				qDebug() << str[i] << " ";
-				if( str[i] == '*' )
-					is_node		=	true;
-				else if( str[i] == '\\' )
-				{}
-				else if( str[i] == '/' )
-				{}
-				else if( str[i] == '@' )
-				{
-					reg		=	QRegExp("(\\w+)");
-					pos		=	reg.indexIn( str, i+1 );
-					if( pos != -1 )
-						hash	=	reg.cap(1);
-					else
-						ERRLOG("hash format error");
-					qDebug() << hash;
-					i	=	pos + reg.matchedLength();
-				}
-				else if( str[i] == '(' )
-				{
-					branch.clear();
-					for( j = i+1; j < str.length(); j++ )
-					{
-						if( str[j] == ')' )
-							break;
-						else if( str[j] != ' ' )
-							branch	+=	str[j];
-					}
-					qDebug() << branch;
-					i	=	j + 1;
-				}
-			}
+			str		=	splite_git_output(output) + ' ';
+			handle_graph_data( str, line_list );
 		}
 
 	}

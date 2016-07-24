@@ -16,7 +16,7 @@ struct LogData
 
 typedef QList<LogData>		LogDataList;
 
-
+class GitGraphLine;
 
 
 /*******************************************************************
@@ -36,6 +36,8 @@ public:
     
     QString         last_author( QString path );
 	void			get_log_graph( QString path );
+	void			handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list );
+	int				parse_hash_decorate( const QByteArray& str, QString &hash, QString &decorate);
 
 private:
     QString			get_commit( QByteArray str );
