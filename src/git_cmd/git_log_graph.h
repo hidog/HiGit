@@ -8,27 +8,36 @@
 
 
 namespace git_log{
-	const char node			=	'*';
-	const char vertical		=	'|';
-	const char right_move	=	'\\';
-	const char left_move	=	'/';
-	const char horizon		=	'_';
+	const char node		=	'*';
+	const char vertical	=	'|';
+	const char right	=	'\\';
+	const char left		=	'/';
+	const char horizon	=	'_';
 } // end namespace git_log
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ struct ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+struct	GitGraphFork
+{
+	int		locate;
+	int		index;
+	GitGraphFork( int _locate, int _index ) : locate(_locate), index(_index) {}
+};
+
 struct	GitGraphNode 
 {
 	bool	is_node;
 	bool	is_merged;
 	bool	is_fork;
 	char	hash_code[30];
-	std::string		decorate;		// tag, branch name, ... etc
+	std::string				decorate;		// tag, branch name, ... etc
+	QList<GitGraphFork>		fork_list;
 
 	GitGraphNode() : is_node(false), is_merged(false), is_fork(false)
 	{
 		// note: if modify hash_code size, also need modify the below code
 		memset( hash_code, 0, 30 * sizeof(char) );
+		fork_list.clear();
 	}
 };
 
@@ -53,6 +62,8 @@ public:
 
 	void	fork_line( int locate, int index );
 
+	void	right_move();
+
 private:
 	QList<GitGraphNode>		node_list;
 
@@ -73,6 +84,7 @@ GitGraphLine*	find_line( int locate, GitLineList& list );
 
 void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, const QString &decorate );
 void	add_node( GitLineList& list );
+void	right_move( int locate, GitLineList& list );
 
 
 } // end namespace git_log

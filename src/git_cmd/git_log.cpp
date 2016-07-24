@@ -120,12 +120,10 @@ void	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list 
 			git_log::add_node( line_list );			
 			git_log::set_line_as_node( i, line_list, hash, decorate );
 		}
-		else if( (str[i] == git_log::left_move && str[i+1] == git_log::vertical) ||
-			     (str[i] == git_log::vertical  && str[i+1] == git_log::right_move) )
-		{
-			ERRLOG("graph format not support. %s", str.toStdString() );
-		}
-		else if( str[i] == git_log::vertical && str[i+1] == git_log::right_move )
+		else if( (str[i] == git_log::left && str[i+1] == git_log::vertical) ||
+			     (str[i] == git_log::vertical  && str[i+1] == git_log::right) )
+			ERRLOG("graph format not support. %s", str.toStdString() )
+		else if( str[i] == git_log::vertical && str[i+1] == git_log::right )
 		{
 			// fork
 			index	=	line_list.size();
@@ -139,8 +137,16 @@ void	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list 
 			else
 				line_ptr->fork_line( i, index );
 		}
-		else if( str[i] == '/' )
-		{}
+		else if( str[i] == git_log::right )
+			git_log::right_move( i, line_list );
+		else if( str[i] == git_log::vertical && str[i+1] == git_log::left )
+		{
+			// merge
+		}
+		else if( str[i] == git_log::left )
+		{
+			
+		}
 
 	}
 }

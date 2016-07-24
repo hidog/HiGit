@@ -60,6 +60,15 @@ void	GitGraphLine::add_node()
 
 
 
+/*******************************************************************
+	right_move
+********************************************************************/
+void	GitGraphLine::right_move()
+{
+	current	+=	2;
+}
+
+
 
 
 /*******************************************************************
@@ -67,8 +76,24 @@ void	GitGraphLine::add_node()
 ********************************************************************/
 void	GitGraphLine::fork_line( int locate, int index )
 {
-	// "need maintain."
-	assert(0);
+	int		i,	n;
+
+	// find last node.
+	n	=	-1;
+	for( i = node_list.size()-1; i >= 0; i-- )
+	{
+		if( node_list[i].is_node == true )
+		{
+			n	=	i;
+			break;
+		}
+	}
+
+	if( n < 0 )
+		ERRLOG("node not found.")
+
+	// add fork line.
+	node_list[n].fork_list.push_back( GitGraphFork(locate,index) );
 }
 
 
@@ -94,6 +119,21 @@ GitGraphLine*	find_line( int locate, GitLineList& list )
 
 	// not found.
 	return	NULL;
+}
+
+
+
+/*******************************************************************
+	right_move
+********************************************************************/
+void	right_move( int locate, GitLineList& list )
+{
+	QList<GitGraphLine>::iterator	itr;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+	{
+		if( itr->get_current() == locate )
+			itr->right_move();
+	}
 }
 
 
