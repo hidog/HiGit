@@ -9,11 +9,20 @@
 	GitGraphLine
 ********************************************************************/
 GitGraphLine::GitGraphLine( int _index, int _current )
-	:	index(_index), current(_current)
+	:	index(_index), current(_current), is_end_flag(false), last_operator(0)
 {
 	node_list.clear();
 }
 
+
+
+/*******************************************************************
+	set_last_operator
+********************************************************************/
+void	GitGraphLine::set_last_operator( char lo )
+{
+	last_operator	=	lo;
+}
 
 
 
@@ -22,6 +31,27 @@ GitGraphLine::GitGraphLine( int _index, int _current )
 ********************************************************************/
 GitGraphLine::~GitGraphLine()
 {}
+
+
+
+/*******************************************************************
+	mark_end
+********************************************************************/
+void	GitGraphLine::mark_end()
+{
+	is_end_flag	=	true;
+}
+
+
+
+
+/*******************************************************************
+	is_end
+********************************************************************/
+bool	GitGraphLine::is_end()
+{
+	return	is_end_flag;
+}
 
 
 
@@ -53,9 +83,9 @@ void	GitGraphLine::set_last_as_merged()
 /*******************************************************************
 	add_node
 ********************************************************************/
-void	GitGraphLine::add_node()
+void	GitGraphLine::add_node( int count )
 {
-	node_list.push_back( GitGraphNode() );
+	node_list.push_back( GitGraphNode(count) );
 }
 
 
@@ -66,6 +96,7 @@ void	GitGraphLine::add_node()
 void	GitGraphLine::right_move()
 {
 	current	+=	2;
+	last_operator	=	git_log::right;
 }
 
 
@@ -92,8 +123,17 @@ void	GitGraphLine::fork_line( int locate, int index )
 	if( n < 0 )
 		ERRLOG("node not found.")
 
+	// old data need increase locate.
+	QList<GitGraphFork>::iterator	itr;
+	QList<GitGraphFork>&	list	=	node_list[n].fork_list;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+		itr->locate	+=	2;
+
 	// add fork line.
 	node_list[n].fork_list.push_back( GitGraphFork(locate,index) );
+
+	// record operator.
+	last_operator	=	git_log::vertical;
 }
 
 
@@ -128,6 +168,9 @@ GitGraphLine*	find_line( int locate, GitLineList& list )
 ********************************************************************/
 void	right_move( int locate, GitLineList& list )
 {
+	if( locate < 0 )
+		ERRLOG("locate < 0. locate = %d", locate)
+
 	QList<GitGraphLine>::iterator	itr;
 	for( itr = list.begin(); itr != list.end(); ++itr )
 	{
@@ -141,11 +184,14 @@ void	right_move( int locate, GitLineList& list )
 /*******************************************************************
 	add_node
 ********************************************************************/
-void	add_node( GitLineList& list )
+void	add_node( GitLineList& list, int count )
 {
 	QList<GitGraphLine>::iterator	itr;
 	for( itr = list.begin(); itr != list.end(); ++itr )
-		itr->add_node();
+	{
+		if( itr->is_end() == false )
+			itr->add_node( count );
+	}
 }
 
 
@@ -160,11 +206,13 @@ void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, cons
 	int		count	=	0;
 
 	QList<GitGraphLine>::iterator	itr;
+	QList<GitGraphLine>::iterator	first_itr;
 	for( itr = list.begin(); itr != list.end(); ++itr )
 	{
 		if( itr->get_current() == locate )
 		{
 			itr->set_last_as_node( hash, decorate );
+			first_itr	=	itr;
 			count++;
 		}
 	}
@@ -172,10 +220,14 @@ void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, cons
 	// it is a merged node.
 	if( count > 1 )
 	{
-		for( itr = list.begin(); itr != list.end(); ++itr )
+		for( itr = first_itr; itr != list.end(); ++itr )
 		{
 			if( itr->get_current() == locate )
+			{
 				itr->set_last_as_merged();
+				if( itr != first_itr )
+					itr->mark_end();
+			}
 		}
 	}
 }

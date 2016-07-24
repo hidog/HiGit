@@ -35,9 +35,14 @@ public:
 	QStringList		get_file_list( QString path, QString commit );
     
     QString         last_author( QString path );
+
+	// git log --graph
 	void			get_log_graph( QString path );
-	void			handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list );
-	int				parse_hash_decorate( const QByteArray& str, QString &hash, QString &decorate);
+	void			add_node_and_init_line( QByteArray& str, QList<GitGraphLine>& line_list, int count );
+	void			handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list, int count );
+	int				parse_hash_decorate( const QByteArray& str, QString &hash, QString &decorate, bool &is_node );
+	void			graph_node_handler( QList<GitGraphLine> &line_list, int iocate, QString &hash, QString &decorate, int count );
+	void			graph_fork( QList<GitGraphLine>& line_list, int locate, bool is_node );
 
 private:
     QString			get_commit( QByteArray str );

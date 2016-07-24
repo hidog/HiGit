@@ -19,8 +19,8 @@ namespace git_log{
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ struct ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 struct	GitGraphFork
 {
-	int		locate;
-	int		index;
+	int		locate;		// locate where are forked. 紀錄fork from的位置
+	int		index;		// locate who are forked from. 紀錄fork from的對象
 	GitGraphFork( int _locate, int _index ) : locate(_locate), index(_index) {}
 };
 
@@ -30,10 +30,13 @@ struct	GitGraphNode
 	bool	is_merged;
 	bool	is_fork;
 	char	hash_code[30];
+	int		node_count;						// recode counting of node.
+
 	std::string				decorate;		// tag, branch name, ... etc
 	QList<GitGraphFork>		fork_list;
 
-	GitGraphNode() : is_node(false), is_merged(false), is_fork(false)
+	GitGraphNode( int _count ) 
+		: is_node(false), is_merged(false), is_fork(false), node_count(_count)
 	{
 		// note: if modify hash_code size, also need modify the below code
 		memset( hash_code, 0, 30 * sizeof(char) );
@@ -56,19 +59,26 @@ public:
 	GET_MACRO( int, current );
 	GET_MACRO( int, index );
 
-	void	add_node();
+	void	add_node( int count );
 	void	set_last_as_node( const QString &hash, const QString &decorate );
 	void	set_last_as_merged();
 
 	void	fork_line( int locate, int index );
 
+	void	mark_end();
+	bool	is_end();
 	void	right_move();
+
+	void	set_last_operator( char lo );
 
 private:
 	QList<GitGraphNode>		node_list;
 
 	int		current;	// current locate. 
 	int		index;
+	bool	is_end_flag;
+	char	last_operator;
+
 };
 
 
@@ -83,7 +93,7 @@ namespace git_log{
 GitGraphLine*	find_line( int locate, GitLineList& list );
 
 void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, const QString &decorate );
-void	add_node( GitLineList& list );
+void	add_node( GitLineList& list, int count );
 void	right_move( int locate, GitLineList& list );
 
 

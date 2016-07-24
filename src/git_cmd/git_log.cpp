@@ -31,7 +31,7 @@ GitLog::~GitLog()
 /*******************************************************************
 	parse_hash_decorate
 ********************************************************************/
-int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString &decorate)
+int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString &decorate, bool &is_node )
 {
 	QRegExp		reg;
 
@@ -47,7 +47,9 @@ int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString 
 	//
 	for( i = 0; i < size; i++ )
 	{
-		if( str[i] == '@' )
+		if( str[i] == git_log::node )
+			is_node		=	true;
+		else if( str[i] == '@' )
 		{
 			n		=	i;
 			reg		=	QRegExp("(\\w+)");
@@ -77,78 +79,128 @@ int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString 
 	return	n;
 }
 
+
+
+/*******************************************************************
+	add_node
+********************************************************************/
+void	GitLog::add_node_and_init_line( QByteArray& str, QList<GitGraphLine>& line_list, int count )
+{
+	if( line_list.isEmpty() == true )
+	{
+		if( str[0] != '*' )
+			ERRLOG("data format error.")
+
+		// init line. 
+		line_list.push_back( GitGraphLine( 0, 0 ) );
+	}
+	git_log::add_node( line_list, count );
+}
 	
+
+
+
+/*******************************************************************
+	graph_node_handler
+********************************************************************/
+void	GitLog::graph_node_handler( QList<GitGraphLine>& line_list, int iocate, QString &hash, QString &decorate, int count )
+{
+	GitGraphLine	*line_ptr;
+	int		index;
+
+	if( hash.size() == 0 )
+		ERRLOG("it is node without hash.");
+
+	line_ptr	=	git_log::find_line( iocate, line_list );
+	if( line_ptr == NULL )
+	{
+		// not found, create new line. it will call when argument has -all
+		index	=	line_list.size();
+		line_list.push_back( GitGraphLine( index, iocate ) );
+		line_list.last().add_node( count );
+		line_list.last().set_last_operator( git_log::node );
+	}			
+	else
+		line_ptr->set_last_operator( git_log::node );
+
+	//
+	git_log::set_line_as_node( iocate, line_list, hash, decorate );
+}
+
+
+
+
+/*******************************************************************
+	graph_fork
+********************************************************************/
+void	GitLog::graph_fork( QList<GitGraphLine>& line_list, int locate, bool is_node )
+{
+	GitGraphLine	*line_ptr;
+	int		index;
+
+	// fork
+	index	=	line_list.size();
+	line_list.push_back( GitGraphLine( index, locate+2 ) );
+	line_list.last().set_last_operator( git_log::right );
+
+	if( is_node == true )
+		ERRLOG("graph format error.")
+		//line_list.last().add_node( count );
+
+	//
+	line_ptr	=	git_log::find_line( locate, line_list );
+	if( line_ptr == NULL )
+		ERRLOG("fork but not found")
+	else
+		line_ptr->fork_line( locate, index );
+
+}
+
 
 
 /*******************************************************************
 	handle_graph_data
 ********************************************************************/
-void	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list )
+void	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list, int count )
 {
 	QString		hash, decorate;
 
 	int		i,	j;
 	int		index,	n;
-	bool	is_node;
-
-	GitGraphLine	*line_ptr;
+	bool	is_node	=	false;
 
 	qDebug(str);
 
 	// parse hash and decorate.
-	n	=	parse_hash_decorate( str, hash, decorate );
+	n	=	parse_hash_decorate( str, hash, decorate, is_node );
+
+	//  add node. it will init line_list if line_list is empty.
+	if( is_node == true )
+		add_node_and_init_line( str, line_list, count );
 
 	// parse line.
-	is_node		=	false;
 	for( i = 0; i < str.length(); i++ )
 	{
-		//qDebug() << str[i] << " ";
 		if( str[i] == git_log::node )
-		{
-			if( hash.size() == 0 )
-				ERRLOG("it is node without hash.");
-
-			is_node		=	true;
-			line_ptr	=	git_log::find_line( i, line_list );
-			if( line_ptr == NULL )
-			{
-				// not found, create new line.
-				index	=	line_list.size();
-				line_list.push_back( GitGraphLine( index, i ) );
-			}
-
-			git_log::add_node( line_list );			
-			git_log::set_line_as_node( i, line_list, hash, decorate );
-		}
+			graph_node_handler( line_list, i, hash, decorate, count );
 		else if( (str[i] == git_log::left && str[i+1] == git_log::vertical) ||
-			     (str[i] == git_log::vertical  && str[i+1] == git_log::right) )
+			     (str[i] == git_log::right  && str[i+1] == git_log::vertical) )
 			ERRLOG("graph format not support. %s", str.toStdString() )
 		else if( str[i] == git_log::vertical && str[i+1] == git_log::right )
-		{
-			// fork
-			index	=	line_list.size();
-			line_list.push_back( GitGraphLine( index, i+2 ) );
-			if( is_node == true )
-				line_list.last().add_node();
-
-			line_ptr	=	git_log::find_line( i, line_list );
-			if( line_ptr == NULL )
-				ERRLOG("fork but not found")
-			else
-				line_ptr->fork_line( i, index );
-		}
+			graph_fork( line_list, i, is_node );
 		else if( str[i] == git_log::right )
-			git_log::right_move( i, line_list );
+			git_log::right_move( i-1, line_list );
 		else if( str[i] == git_log::vertical && str[i+1] == git_log::left )
 		{
-			// merge
+
 		}
 		else if( str[i] == git_log::left )
 		{
 			
 		}
-
 	}
+
+	qDebug() << "end";
 }
 
 
@@ -161,18 +213,20 @@ void	GitLog::get_log_graph( QString path )
 	QProcess		*proc	=	new QProcess(this);
 	QStringList		args;
 
-	LogDataList		list;
-	LogData			log_data;
+	//LogDataList		list;
+	//LogData			log_data;
 
 	proc->setWorkingDirectory( path );
 
 	args << "log";
+	//args << "-100"; it will get performance problem....
 	args << "--pretty= @%h %d";
 	args << "--graph";
 
 	proc->start( "git", args );
 
 	bool	res		=	proc->waitForFinished();
+	int		count;
 
 	QByteArray		output,	str;
 	GitLineList		line_list;
@@ -181,15 +235,18 @@ void	GitLog::get_log_graph( QString path )
 	if( res )
 	{
 		output	=	proc->readAll();
-		qDebug() << qPrintable(output);
+		//qDebug() << qPrintable(output);
 
 		while( output.length() > 0 )
 		{
 			str		=	splite_git_output(output) + ' ';
-			handle_graph_data( str, line_list );
+			handle_graph_data( str, line_list, count );
+			count++;
 		}
-
 	}
+
+	qDebug() << "end " << line_list.size();
+
 
 	delete	proc;
 }
