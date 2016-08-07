@@ -39,7 +39,7 @@ public:
 	// git log --graph
 	void			get_log_graph( QString path );
 	void			add_node_and_init_line( QByteArray& str, QList<GitGraphLine>& line_list, int count );
-	void			handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list, int count );
+	bool			handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list, int count );
 	int				parse_hash_decorate( const QByteArray& str, QString &hash, QString &decorate, bool &is_node );
 	void			graph_node_handler( QList<GitGraphLine> &line_list, int locate, QString &hash, QString &decorate, int count );
 	void			graph_fork( QList<GitGraphLine>& line_list, int locate, bool is_node );

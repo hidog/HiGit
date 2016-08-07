@@ -8,6 +8,7 @@
 
 
 namespace git_log{
+	const char init		=	'\0';	
 	const char node		=	'*';
 	const char vertical	=	'|';
 	const char right	=	'\\';
@@ -70,8 +71,10 @@ public:
 	bool	is_end();
 	void	right_move();
 	void	left_move( int target );
+	void	mark_vertical();
 
 	void	set_last_operator( char lo );
+	void	print_data();
 
 private:
 	QList<GitGraphNode>		node_list;
@@ -99,7 +102,7 @@ void	add_node( GitLineList& list, int count );
 void	right_move( int locate, GitLineList& list );
 void	left_move( int locate, int target, GitLineList& list );
 void	print_list( GitLineList& list );
-
+void	mark_vertical( int locate, GitLineList& list );
 
 } // end namespace git_log
 

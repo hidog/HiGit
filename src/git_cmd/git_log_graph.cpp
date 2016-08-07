@@ -44,6 +44,20 @@ void	GitGraphLine::mark_end()
 
 
 
+/*******************************************************************
+	print_data
+********************************************************************/
+void	GitGraphLine::print_data()
+{
+	qDebug() << "current = " << current << " , index = " << index << " , is_end = " << (is_end_flag?1:0) << " lop = " << last_operator;
+	QList<GitGraphNode>::iterator	itr;
+	for( itr = node_list.begin(); itr != node_list.end(); ++itr )
+	{
+		if( itr->is_node == true )
+			qDebug() << "nc = " << itr->node_count << " hash = " << itr->hash_code;
+	}
+}
+
 
 /*******************************************************************
 	is_end
@@ -97,6 +111,16 @@ void	GitGraphLine::right_move()
 {
 	current	+=	2;
 	last_operator	=	git_log::right;
+}
+
+
+
+/*******************************************************************
+	mark_vertical
+********************************************************************/
+void	GitGraphLine::mark_vertical()
+{
+	last_operator	=	git_log::vertical;
 }
 
 
@@ -232,11 +256,33 @@ void	add_node( GitLineList& list, int count )
 
 
 /*******************************************************************
+	mark_vertical
+********************************************************************/
+void	mark_vertical( int locate, GitLineList& list )
+{
+	GitLineList::iterator	itr;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+	{
+		if( itr->get_current() == locate )
+			itr->mark_vertical();
+	}
+}
+
+
+
+
+/*******************************************************************
 	print_list
 ********************************************************************/
 void	print_list( GitLineList& list )
 {
-	qDebug() << list.size();
+	qDebug() << "list size = " << list.size();
+	GitLineList::iterator	itr;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+	{
+		itr->print_data();
+		qDebug() << "--------------------------------------------------";
+	}
 }
 
 
@@ -250,13 +296,14 @@ void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, cons
 	int		count	=	0;
 
 	QList<GitGraphLine>::iterator	itr;
-	QList<GitGraphLine>::iterator	first_itr;
+	QList<GitGraphLine>::iterator	first_itr	=	list.end();
 	for( itr = list.begin(); itr != list.end(); ++itr )
 	{
 		if( itr->get_current() == locate )
 		{
 			itr->set_last_as_node( hash, decorate );
-			first_itr	=	itr;
+			if( first_itr == list.end() )
+				first_itr	=	itr;
 			count++;
 		}
 	}
@@ -269,6 +316,8 @@ void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, cons
 			if( itr->get_current() == locate )
 			{
 				itr->set_last_as_merged();
+				itr->set_last_operator( git_log::node );
+
 				if( itr != first_itr )
 					itr->mark_end();
 			}

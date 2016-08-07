@@ -139,10 +139,11 @@ void	GitLog::graph_fork( QList<GitGraphLine>& line_list, int locate, bool is_nod
 {
 	GitGraphLine	*line_ptr;
 	int		index;
+	int		new_line_locate		=	locate + 2;
 
-	// fork
+	// add line
 	index	=	line_list.size();
-	line_list.push_back( GitGraphLine( index, locate+2 ) );
+	line_list.push_back( GitGraphLine( index, new_line_locate ) );
 	line_list.last().set_last_operator( git_log::right );
 
 	if( is_node == true )
@@ -154,7 +155,7 @@ void	GitLog::graph_fork( QList<GitGraphLine>& line_list, int locate, bool is_nod
 	if( line_ptr == NULL )
 		ERRLOG("fork but not found")
 	else
-		line_ptr->fork_line( locate, index );
+		line_ptr->fork_line( new_line_locate, index );
 
 }
 
@@ -182,7 +183,7 @@ int		GitLog::search_next_left( int n, QByteArray& str )
 /*******************************************************************
 	handle_graph_data
 ********************************************************************/
-void	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list, int count )
+bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list, int count )
 {
 	QString		hash, decorate;
 
@@ -205,41 +206,54 @@ void	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 		add_node_and_init_line( str, line_list, count );
 
 	// parse line.
-	for( i = 0; i < n; i++ )
+	for( i = n-1; i >= 0; i-- )
 	{
 		if( str[i] == git_log::node )
 			graph_node_handler( line_list, i, hash, decorate, count );
 		else if( (str[i] == git_log::left && str[i+1] == git_log::vertical) ||
 			     (str[i] == git_log::right  && str[i+1] == git_log::vertical) )
 			ERRLOG("graph format not support. %s", str.toStdString() )
-		else if( str[i] == ' ')
+		else if( str[i] == ' ' )
 		{
 			// do nothing.
 		}
-		else if( str[i] == git_log::vertical && str[i+1] == git_log::right )
-			graph_fork( line_list, i, is_node );
 		else if( str[i] == git_log::right )
-			git_log::right_move( i-1, line_list );
+		{
+			if( str[i-1] == git_log::vertical )
+			{
+				graph_fork( line_list, i-1, is_node );
+				i--;
+			}
+			else
+				git_log::right_move( i-1, line_list );
+		}
 		else if( str[i] == git_log::horizon )
 		{
 			// search the true branch (left). skip all horizon.
 			j	=	search_next_left( i, str );
 			git_log::left_move( j+1, i-1, line_list );
 		}
-		else if( str[i] == git_log::vertical && str[i+1] == git_log::left )
-			git_log::left_move( i+2, i, line_list );
 		else if( str[i] == git_log::left )
-			git_log::left_move( i+1, i-1, line_list );
-		else if( str[i] == git_log::vertical )
 		{
-			// do nothing.
+			if( str[i-1] == git_log::vertical )
+			{
+				git_log::mark_vertical( i-1, line_list );		// note: 留意這邊會不會因為改變了last operator的狀態,造成bug.
+				git_log::left_move( i+1, i-1, line_list );
+				i--;
+			}
+			else
+				git_log::left_move( i+1, i-1, line_list );
 		}
+		else if( str[i] == git_log::vertical )
+			git_log::mark_vertical( i, line_list );
 		else
 			ERRLOG("unknown pattern. str = %s ", qPrintable(str) )
 	}
 
 	git_log::print_list( line_list );
-	qDebug() << "end";
+	qDebug() << "\n ~~~~~~~~~~~~~~~~~~~ end ~~~~~~~~~~~~~~~~~~~~\n";
+
+	return	is_node;
 }
 
 
@@ -252,8 +266,7 @@ void	GitLog::get_log_graph( QString path )
 	QProcess		*proc	=	new QProcess(this);
 	QStringList		args;
 
-	//LogDataList		list;
-	//LogData			log_data;
+	bool	is_node;
 
 	proc->setWorkingDirectory( path );
 
@@ -279,8 +292,9 @@ void	GitLog::get_log_graph( QString path )
 		while( output.length() > 0 )
 		{
 			str		=	splite_git_output(output) + ' ';
-			handle_graph_data( str, line_list, count );
-			count++;
+			is_node	=	handle_graph_data( str, line_list, count );
+			if( is_node )
+				count++;
 		}
 	}
 
