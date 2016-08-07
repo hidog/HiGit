@@ -64,6 +64,8 @@ public:
 	void	add_node( int count );
 	void	set_last_as_node( const QString &hash, const QString &decorate );
 	void	set_last_as_merged();
+	void	set_handle_round( bool _flag );
+	bool	get_handle_round();
 
 	void	fork_line( int locate, int index );
 
@@ -83,6 +85,7 @@ private:
 	int		index;
 	bool	is_end_flag;			// if a line is end, it means it has been merged.
 	char	last_operator;
+	bool	is_handle_round;		// 記錄這個回合是否已經處理過.
 
 };
 
@@ -100,9 +103,11 @@ GitGraphLine*	find_line( int locate, GitLineList& list );
 void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, const QString &decorate );
 void	add_node( GitLineList& list, int count );
 void	right_move( int locate, GitLineList& list );
-void	left_move( int locate, int target, GitLineList& list );
+void	left_move( int locate, int target, GitLineList& list, bool force );		// force means: 不管前一個狀態,一律左移
 void	print_list( GitLineList& list );
-void	mark_vertical( int locate, GitLineList& list );
+void	mark_vertical( int locate, GitLineList& list, bool force );		// force means: 狀態跟之前狀態無關,一律設定成vertical.
+void	init_round( GitLineList& list );
+void	handle_poitr( int locate, GitLineList& list );
 
 } // end namespace git_log
 

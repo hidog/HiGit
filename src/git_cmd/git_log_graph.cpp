@@ -9,7 +9,7 @@
 	GitGraphLine
 ********************************************************************/
 GitGraphLine::GitGraphLine( int _index, int _current )
-	:	index(_index), current(_current), is_end_flag(false), last_operator(0)
+	:	index(_index), current(_current), is_end_flag(false), last_operator(0), is_handle_round(true)
 {
 	node_list.clear();
 }
@@ -80,6 +80,27 @@ void	GitGraphLine::set_last_as_node( const QString &hash, const QString &decorat
 
 	strcpy( node.hash_code, hash.toStdString().c_str() );
 }
+
+
+
+/*******************************************************************
+	get_handle_round
+********************************************************************/
+bool	GitGraphLine::get_handle_round()
+{
+	return	is_handle_round;
+}
+
+
+
+/*******************************************************************
+	set_handle_round
+********************************************************************/
+void	GitGraphLine::set_handle_round( bool _flag )
+{
+	is_handle_round		=	_flag;
+}
+
 
 
 /*******************************************************************
@@ -203,11 +224,24 @@ GitGraphLine*	find_line( int locate, GitLineList& list )
 }
 
 
+/*******************************************************************
+	handle_poitr
+********************************************************************/
+void	handle_poitr( int locate, GitLineList& list )
+{
+	QList<GitGraphLine>::iterator	itr;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+	{
+		if( itr->get_current() == locate )
+			itr->set_handle_round( true );
+	}
+}
+
 
 /*******************************************************************
 	right_move
 ********************************************************************/
-void	left_move( int locate, int target, GitLineList& list )
+void	left_move( int locate, int target, GitLineList& list, bool force )
 {
 	if( locate < 0 )
 		ERRLOG("locate < 0. locate = %d", locate)
@@ -215,8 +249,17 @@ void	left_move( int locate, int target, GitLineList& list )
 	QList<GitGraphLine>::iterator	itr;
 	for( itr = list.begin(); itr != list.end(); ++itr )
 	{
-		if( itr->get_current() == locate || itr->get_last_operator() == git_log::left  )
-			itr->left_move( target );
+		if( itr->is_end() == true )
+			continue;
+		else if( itr->get_handle_round() == true )
+			continue;
+		else if( itr->get_current() == locate ) 
+		{
+			if( force == true )
+				itr->left_move( target );
+			else if( itr->get_last_operator() == git_log::left )
+				itr->left_move( target );
+		}
 	}
 }
 
@@ -258,16 +301,40 @@ void	add_node( GitLineList& list, int count )
 /*******************************************************************
 	mark_vertical
 ********************************************************************/
-void	mark_vertical( int locate, GitLineList& list )
+void	mark_vertical( int locate, GitLineList& list, bool force )
 {
 	GitLineList::iterator	itr;
 	for( itr = list.begin(); itr != list.end(); ++itr )
 	{
 		if( itr->get_current() == locate )
-			itr->mark_vertical();
+		{
+			if( force == true )
+			{
+				itr->mark_vertical();
+				itr->set_handle_round( true );
+			}
+			else if( itr->get_last_operator() == git_log::vertical )
+			{
+				itr->mark_vertical();
+				itr->set_handle_round( true );
+			}
+		}
 	}
 }
 
+
+
+
+
+/*******************************************************************
+	init_round
+********************************************************************/
+void	init_round( GitLineList& list )
+{
+	GitLineList::iterator	itr;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+		itr->set_handle_round(false);		
+}
 
 
 
@@ -276,7 +343,7 @@ void	mark_vertical( int locate, GitLineList& list )
 ********************************************************************/
 void	print_list( GitLineList& list )
 {
-	qDebug() << "list size = " << list.size();
+	//qDebug() << "list size = " << list.size();
 	GitLineList::iterator	itr;
 	for( itr = list.begin(); itr != list.end(); ++itr )
 	{

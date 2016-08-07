@@ -206,12 +206,12 @@ bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 		add_node_and_init_line( str, line_list, count );
 
 	// parse line.
+	git_log::init_round( line_list );
 	for( i = n-1; i >= 0; i-- )
 	{
 		if( str[i] == git_log::node )
 			graph_node_handler( line_list, i, hash, decorate, count );
-		else if( (str[i] == git_log::left && str[i+1] == git_log::vertical) ||
-			     (str[i] == git_log::right  && str[i+1] == git_log::vertical) )
+		else if( str[i] == git_log::right  && str[i+1] == git_log::vertical )
 			ERRLOG("graph format not support. %s", str.toStdString() )
 		else if( str[i] == ' ' )
 		{
@@ -231,21 +231,31 @@ bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 		{
 			// search the true branch (left). skip all horizon.
 			j	=	search_next_left( i, str );
-			git_log::left_move( j+1, i-1, line_list );
+			git_log::left_move( j+1, i-1, line_list, false );
 		}
 		else if( str[i] == git_log::left )
 		{
 			if( str[i-1] == git_log::vertical )
 			{
-				git_log::mark_vertical( i-1, line_list );		// note: 留意這邊會不會因為改變了last operator的狀態,造成bug.
-				git_log::left_move( i+1, i-1, line_list );
+				git_log::mark_vertical( i-1, line_list, true );		// note: 留意這邊會不會因為改變了last operator的狀態,造成bug.
+				git_log::left_move( i+1, i-1, line_list, true );
 				i--;
 			}
 			else
-				git_log::left_move( i+1, i-1, line_list );
+				git_log::left_move( i+1, i-1, line_list, true );
 		}
 		else if( str[i] == git_log::vertical )
-			git_log::mark_vertical( i, line_list );
+		{
+			if( i > 0 ) 
+			{
+				if( str[i-1] == git_log::left )
+					git_log::mark_vertical( i, line_list, false );
+				else
+					git_log::mark_vertical( i, line_list, true );
+			}
+			else
+				git_log::mark_vertical( i, line_list, true );
+		}
 		else
 			ERRLOG("unknown pattern. str = %s ", qPrintable(str) )
 	}
