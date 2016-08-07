@@ -56,8 +56,9 @@ public:
 	GitGraphLine( int _index, int _current );
 	~GitGraphLine();
 
-	GET_MACRO( int, current );
-	GET_MACRO( int, index );
+	GET_MACRO( int, current )
+	GET_MACRO( int, index )
+	GET_MACRO( char, last_operator )
 
 	void	add_node( int count );
 	void	set_last_as_node( const QString &hash, const QString &decorate );
@@ -68,15 +69,16 @@ public:
 	void	mark_end();
 	bool	is_end();
 	void	right_move();
+	void	left_move( int target );
 
 	void	set_last_operator( char lo );
 
 private:
 	QList<GitGraphNode>		node_list;
 
-	int		current;	// current locate. 
+	int		current;				// current locate. 
 	int		index;
-	bool	is_end_flag;
+	bool	is_end_flag;			// if a line is end, it means it has been merged.
 	char	last_operator;
 
 };
@@ -95,6 +97,8 @@ GitGraphLine*	find_line( int locate, GitLineList& list );
 void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, const QString &decorate );
 void	add_node( GitLineList& list, int count );
 void	right_move( int locate, GitLineList& list );
+void	left_move( int locate, int target, GitLineList& list );
+void	print_list( GitLineList& list );
 
 
 } // end namespace git_log

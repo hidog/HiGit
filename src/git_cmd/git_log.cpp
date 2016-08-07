@@ -41,8 +41,7 @@ int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString 
 
 	hash.clear();
 	decorate.clear();
-
-	n	=	-1;
+	n	=	size;		// if @ not found, n is size.
 
 	//
 	for( i = 0; i < size; i++ )
@@ -55,7 +54,10 @@ int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString 
 			reg		=	QRegExp("(\\w+)");
 			pos		=	reg.indexIn( str, i+1 );
 			if( pos != -1 )
+			{
 				hash	=	reg.cap(1);
+				qDebug() << hash;
+			}
 			else
 				ERRLOG("hash format error");
 			//qDebug() << hash;
@@ -71,7 +73,7 @@ int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString 
 				else if( str[j] != ' ' )
 					decorate	+=	str[j];
 			}
-			//qDebug() << branch;
+			qDebug() << decorate;
 			i	=	j + 1;
 		}
 	}
@@ -103,7 +105,7 @@ void	GitLog::add_node_and_init_line( QByteArray& str, QList<GitGraphLine>& line_
 /*******************************************************************
 	graph_node_handler
 ********************************************************************/
-void	GitLog::graph_node_handler( QList<GitGraphLine>& line_list, int iocate, QString &hash, QString &decorate, int count )
+void	GitLog::graph_node_handler( QList<GitGraphLine>& line_list, int locate, QString &hash, QString &decorate, int count )
 {
 	GitGraphLine	*line_ptr;
 	int		index;
@@ -111,12 +113,12 @@ void	GitLog::graph_node_handler( QList<GitGraphLine>& line_list, int iocate, QSt
 	if( hash.size() == 0 )
 		ERRLOG("it is node without hash.");
 
-	line_ptr	=	git_log::find_line( iocate, line_list );
+	line_ptr	=	git_log::find_line( locate, line_list );
 	if( line_ptr == NULL )
 	{
 		// not found, create new line. it will call when argument has -all
 		index	=	line_list.size();
-		line_list.push_back( GitGraphLine( index, iocate ) );
+		line_list.push_back( GitGraphLine( index, locate ) );
 		line_list.last().add_node( count );
 		line_list.last().set_last_operator( git_log::node );
 	}			
@@ -124,7 +126,7 @@ void	GitLog::graph_node_handler( QList<GitGraphLine>& line_list, int iocate, QSt
 		line_ptr->set_last_operator( git_log::node );
 
 	//
-	git_log::set_line_as_node( iocate, line_list, hash, decorate );
+	git_log::set_line_as_node( locate, line_list, hash, decorate );
 }
 
 
@@ -158,6 +160,25 @@ void	GitLog::graph_fork( QList<GitGraphLine>& line_list, int locate, bool is_nod
 
 
 
+
+/*******************************************************************
+	search_next_left
+********************************************************************/
+int		GitLog::search_next_left( int n, QByteArray& str )
+{
+	int		i;
+	int		size	=	str.size();
+
+	for( i = n + 1; i < size; i += 2 )
+	{
+		if( str[i] == git_log::left )
+			return	i;
+	}
+
+	ERRLOG("could not found left word.")
+}
+
+
 /*******************************************************************
 	handle_graph_data
 ********************************************************************/
@@ -171,6 +192,11 @@ void	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 
 	qDebug(str);
 
+#ifdef _DEBUG
+	char cc[1000]; // = str.toStdString().c_str();
+	strcpy( cc, str.toStdString().c_str() );
+#endif
+
 	// parse hash and decorate.
 	n	=	parse_hash_decorate( str, hash, decorate, is_node );
 
@@ -179,27 +205,40 @@ void	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 		add_node_and_init_line( str, line_list, count );
 
 	// parse line.
-	for( i = 0; i < str.length(); i++ )
+	for( i = 0; i < n; i++ )
 	{
 		if( str[i] == git_log::node )
 			graph_node_handler( line_list, i, hash, decorate, count );
 		else if( (str[i] == git_log::left && str[i+1] == git_log::vertical) ||
 			     (str[i] == git_log::right  && str[i+1] == git_log::vertical) )
 			ERRLOG("graph format not support. %s", str.toStdString() )
+		else if( str[i] == ' ')
+		{
+			// do nothing.
+		}
 		else if( str[i] == git_log::vertical && str[i+1] == git_log::right )
 			graph_fork( line_list, i, is_node );
 		else if( str[i] == git_log::right )
 			git_log::right_move( i-1, line_list );
+		else if( str[i] == git_log::horizon )
+		{
+			// search the true branch (left). skip all horizon.
+			j	=	search_next_left( i, str );
+			git_log::left_move( j+1, i-1, line_list );
+		}
 		else if( str[i] == git_log::vertical && str[i+1] == git_log::left )
-		{
-
-		}
+			git_log::left_move( i+2, i, line_list );
 		else if( str[i] == git_log::left )
+			git_log::left_move( i+1, i-1, line_list );
+		else if( str[i] == git_log::vertical )
 		{
-			
+			// do nothing.
 		}
+		else
+			ERRLOG("unknown pattern. str = %s ", qPrintable(str) )
 	}
 
+	git_log::print_list( line_list );
 	qDebug() << "end";
 }
 
@@ -226,7 +265,7 @@ void	GitLog::get_log_graph( QString path )
 	proc->start( "git", args );
 
 	bool	res		=	proc->waitForFinished();
-	int		count;
+	int		count	=	0;
 
 	QByteArray		output,	str;
 	GitLineList		line_list;

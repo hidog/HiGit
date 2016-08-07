@@ -1,6 +1,6 @@
 #include "git_log_graph.h"
 
-
+#include <QDebug>
 
 
 
@@ -103,6 +103,23 @@ void	GitGraphLine::right_move()
 
 
 /*******************************************************************
+	left_move
+********************************************************************/
+void	GitGraphLine::left_move( int target )
+{
+	if( target < 0 )
+		ERRLOG( "target < 0. target = %d", target )
+
+	current			=	target;
+	last_operator	=	git_log::left;
+}
+
+
+
+
+
+
+/*******************************************************************
 	fork_line
 ********************************************************************/
 void	GitGraphLine::fork_line( int locate, int index )
@@ -166,6 +183,23 @@ GitGraphLine*	find_line( int locate, GitLineList& list )
 /*******************************************************************
 	right_move
 ********************************************************************/
+void	left_move( int locate, int target, GitLineList& list )
+{
+	if( locate < 0 )
+		ERRLOG("locate < 0. locate = %d", locate)
+
+	QList<GitGraphLine>::iterator	itr;
+	for( itr = list.begin(); itr != list.end(); ++itr )
+	{
+		if( itr->get_current() == locate || itr->get_last_operator() == git_log::left  )
+			itr->left_move( target );
+	}
+}
+
+
+/*******************************************************************
+	right_move
+********************************************************************/
 void	right_move( int locate, GitLineList& list )
 {
 	if( locate < 0 )
@@ -194,6 +228,16 @@ void	add_node( GitLineList& list, int count )
 	}
 }
 
+
+
+
+/*******************************************************************
+	print_list
+********************************************************************/
+void	print_list( GitLineList& list )
+{
+	qDebug() << list.size();
+}
 
 
 
