@@ -129,6 +129,10 @@ void    LogModel::set_root_path( QString path )
 	root_path	=	path;
 
 	GitLog	git_log;
+
+	// test for git graph
+	git_log.get_log_graph( root_path );
+
 	log_list	=	git_log.get_log_list( root_path );
     
     QModelIndex left_top        =   createIndex( 0, 0);

@@ -67,10 +67,18 @@ void	MainWindow::add_shortcut()
 	ui->actionInit->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_I) );
 	ui->actionClone->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_C) );
 	ui->actionClose->setShortcut( QKeySequence(Qt::ALT + Qt::Key_F4) );
+	ui->actionOpen->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_O) );
+
 #elif LINUX
     ui->actionInit->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_I) );
     ui->actionClone->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_C) );
     ui->actionClose->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_Q) );
+#elif MACOS
+    ui->actionInit->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_I) );
+    ui->actionClone->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_C) );
+	ui->actionClose->setShortcut( QKeySequence::Close );
+#else
+#   error unknown platform.
 #endif
 }
 
@@ -192,6 +200,7 @@ void	MainWindow::set_connect()
 	connect(	ui->actionInit,		SIGNAL(triggered()),					this,	SLOT(init_slot())						);
 	connect(	ui->actionClone,	SIGNAL(triggered()),					this,	SLOT(clone_slot())						);
 	connect(	ui->actionClose,	SIGNAL(triggered()),					this,	SLOT(close_slot())						);
+	connect(	ui->actionOpen,		SIGNAL(triggered()),					this,	SLOT(open_slot())						);
 
 }
 

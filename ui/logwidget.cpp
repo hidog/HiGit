@@ -20,6 +20,7 @@ LogWidget::LogWidget(QWidget *parent) :
 
 	model	=	new LogModel(this);
 	ui->logTView->setModel(model);
+
     connect(    model,          SIGNAL(refresh_signal()),                   this,   SLOT(refresh_view_slot())                   );
 	connect(	ui->logTView,	SIGNAL(pressed(const QModelIndex&)),		this,	SLOT(select_slot(const QModelIndex&))		);
 }

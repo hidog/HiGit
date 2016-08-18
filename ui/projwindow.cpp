@@ -29,11 +29,41 @@ ProjWindow::ProjWindow( DbProj _proj, QWidget *parent ) :
 	QString		current_branch	=	git_branch.current_branch();
 	ui->branchLEdit->setText( current_branch );
 
-	connect(	ui->commitButton,	SIGNAL(clicked()),	this,	SLOT(commit_slot())		);
-	connect(	ui->pullButton,		SIGNAL(clicked()),	this,	SLOT(pull_slot())		);
-	connect(	ui->pushButton,		SIGNAL(clicked()),	this,	SLOT(push_slot())		);
+	set_action();
+	set_connect();
+
 }
 
+
+
+
+/*******************************************************************
+	set_action
+********************************************************************/
+void	ProjWindow::set_action()
+{
+#ifdef _WIN32
+	ui->actionClose->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_W) );
+#elif LINUX
+#elif MACOS
+#else
+#   error unknown platform.
+#endif
+}
+
+
+
+/*******************************************************************
+	set_connect
+********************************************************************/
+void	ProjWindow::set_connect()
+{
+	connect(	ui->commitButton,	SIGNAL(clicked()),		this,	SLOT(commit_slot())		);
+	connect(	ui->pullButton,		SIGNAL(clicked()),		this,	SLOT(pull_slot())		);
+	connect(	ui->pushButton,		SIGNAL(clicked()),		this,	SLOT(push_slot())		);
+
+	connect(	ui->actionClose,	SIGNAL(triggered()),	this,	SLOT(close())			);
+}
 
 
 

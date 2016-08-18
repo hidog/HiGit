@@ -23,6 +23,10 @@ public:
 	explicit ProjWindow( DbProj _proj, QWidget *parent = 0 );
     ~ProjWindow();
 
+	void	set_connect();
+	void	set_action();
+
+
 public slots:
 	void	commit_slot();
 	void	pull_slot();
@@ -32,7 +36,7 @@ signals:
 
 
 protected:
-	void	closeEvent( QCloseEvent *event );
+	void	closeEvent( QCloseEvent *event ) override;
 
 
 private:
