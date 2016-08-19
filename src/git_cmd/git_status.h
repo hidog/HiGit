@@ -20,7 +20,7 @@
 #define GIT_STATUS_UNTRACKED	"untracked"
 #define GIT_STATUS_DELETED		"deleted"
 
-#define	HANDLE_FUNC_t	boost::function< void( QList<DataType>&, STATUS_TYPE, const QString, QByteArray )>
+#define	HANDLE_FUNC_t	boost::function< void( QList<DataType>&, STATUS_TYPE, const QString, QByteArray& )>
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ enum ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 enum	STATUS_TYPE
@@ -34,6 +34,7 @@ enum	STATUS_TYPE
 };
 
 #define		STATUS_ALL	(STATUS_TRACKED|STATUS_MODIFIED|STATUS_ADDED|STATUS_UNTRACKED|STATUS_DELETED)
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ struct ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -64,7 +65,7 @@ public:
 private:
 
 	template<typename DataType>
-	QList<DataType>		git_status_list( QString path, int filter, HANDLE_FUNC_t handle_func );
+    QList<DataType>		git_status_list( QString path, int filter, HANDLE_FUNC_t handle_func );
 
 	STATUS_TYPE		parse_short_status( const QByteArray &status );
 

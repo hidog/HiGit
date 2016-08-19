@@ -150,7 +150,7 @@ QFileInfoList	GitStatus::get_untracked_files( QString path )
 	boost::function< void( QList<QFileInfo>&, STATUS_TYPE, QString, QByteArray& ) >		handle_func;
 	handle_func	=	boost::bind( &GitStatus::get_untracked_files_func, this, _1, _2, _3, _4 );
 
-	return	git_status_list<QFileInfo>( path, STATUS_UNTRACKED, handle_func );
+    return	git_status_list<QFileInfo>( path, STATUS_UNTRACKED, handle_func );
 }
 
 
@@ -193,6 +193,7 @@ void	GitStatus::get_modify_files_func( QList<FileStatus> &list, STATUS_TYPE type
 
 
 
+
 /*******************************************************************
 	get_modify_list
 ********************************************************************/
@@ -201,7 +202,7 @@ FileStatusList	GitStatus::get_modify_files( QString path )
 	boost::function< void( QList<FileStatus>&, STATUS_TYPE, QString, QByteArray& ) >	handle_func;
 	handle_func	=	boost::bind( &GitStatus::get_modify_files_func, this, _1, _2, _3, _4 );
 
-	return	git_status_list<FileStatus>( path, STATUS_ALL, handle_func );
+    return	git_status_list<FileStatus>( path, STATUS_ALL, handle_func );
 }
 
 
