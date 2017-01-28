@@ -212,7 +212,7 @@ bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 		if( str[i] == git_log::node )
 			graph_node_handler( line_list, i, hash, decorate, count );
 		else if( str[i] == git_log::right  && str[i+1] == git_log::vertical )
-			ERRLOG("graph format not support. %s", str.toStdString() )
+			ERRLOG("graph format not support. %s", str.toStdString().c_str() )
 		else if( str[i] == ' ' )
 		{
 			// do nothing.

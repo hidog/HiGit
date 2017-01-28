@@ -87,6 +87,8 @@
 		6D53888C1C68FD7A00DA4765 /* projwindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = projwindow.h; path = ../ui/projwindow.h; sourceTree = "<group>"; };
 		6D53888E1C68FD9E00DA4765 /* file_model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = file_model.cpp; path = ../model/file_model.cpp; sourceTree = "<group>"; };
 		6D53888F1C68FD9E00DA4765 /* file_model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = file_model.h; path = ../model/file_model.h; sourceTree = "<group>"; };
+		6D5E21761D69DB34007F383E /* git_log_graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_log_graph.cpp; path = ../src/git_cmd/git_log_graph.cpp; sourceTree = "<group>"; };
+		6D5E21771D69DB34007F383E /* git_log_graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_log_graph.h; path = ../src/git_cmd/git_log_graph.h; sourceTree = "<group>"; };
 		6D6D89041CB4A6B5005DEF39 /* git_commit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = git_commit.cpp; path = ../src/git_cmd/git_commit.cpp; sourceTree = "<group>"; };
 		6D6D89051CB4A6B5005DEF39 /* git_commit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = git_commit.h; path = ../src/git_cmd/git_commit.h; sourceTree = "<group>"; };
 		6D8259A21CBAB26400BA92AE /* syncdialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = syncdialog.cpp; path = ../ui/syncdialog.cpp; sourceTree = "<group>"; };
@@ -183,6 +185,8 @@
 		6DB99B261C5520E100998E69 /* git_cmd */ = {
 			isa = PBXGroup;
 			children = (
+				6D5E21761D69DB34007F383E /* git_log_graph.cpp */,
+				6D5E21771D69DB34007F383E /* git_log_graph.h */,
 				6D3D858A1CE8813200E71644 /* git_pull.cpp */,
 				6D3D858B1CE8813200E71644 /* git_pull.h */,
 				6D3D858C1CE8813200E71644 /* git_push.cpp */,

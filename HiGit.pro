@@ -24,32 +24,32 @@ win32 {
 	message("win32")
 	Release:DESTDIR	=	../release
 	Debug:DESTDIR	=	../debug
-	INCLUDEPATH		+=	C:\Boost\include\boost-1_60
+        INCLUDEPATH	+=	C:\Boost\include\boost-1_60
 	LIBPATH			+=	C:\Boost\lib
 }
 
 macx {
 	message("macx")
-	INCLUDEPATH 	+=	/usr/local/include
-	LIBPATH 	+=	/usr/local/lib
+        INCLUDEPATH	+=	/usr/local/include
+        LIBPATH         +=	/usr/local/lib
 	OBJECTS_DIR 	=	./obj
 	MOC_DIR 	=	./obj
-	RCC_DIR 	=	./obj
+        RCC_DIR		=	./obj
 	UI_DIR 		=	./obj
 	LIBS 		+=	-lboost_thread \
-				-lboost_system
-	DEFINES 	+=	MACOS
+                                        -lboost_system
+        DEFINES		+=	MACOS
 }
 
 unix:!macx{
 	message("linux")
 	OBJECTS_DIR 	=	./obj
-	MOC_DIR 		=	./obj
+        MOC_DIR 	=	./obj
 	RCC_DIR 		=	./obj
-	UI_DIR 			=	./obj
-	LIBS 			+=	-ldl \
-						-lboost_thread \
-						-lboost_system
+        UI_DIR 		=	./obj
+        LIBS 		+=	-ldl \
+                                        -lboost_thread \
+                                        -lboost_system
 	DEFINES 		+=	LINUX
 }
 
