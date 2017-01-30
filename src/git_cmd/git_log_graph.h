@@ -65,14 +65,15 @@ public:
 	void	set_last_as_node( const QString &hash, const QString &decorate );
 	void	set_last_as_merged();
 	void	set_handle_round( bool _flag );
-	bool	get_handle_round();
+	bool	get_handle_round()	const;
+	int		get_node_count()	const;
 
 	void	fork_line( int locate, int index );
 
 	void	mark_end();
-	bool	is_end();
+	bool	is_end()	const;
 	void	right_move();
-	void	left_move( int target );
+	void	left_move( int target, char lo );
 	void	mark_vertical();
 
 	void	set_last_operator( char lo );
@@ -103,9 +104,9 @@ GitGraphLine*	find_line( int locate, GitLineList& list );
 void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, const QString &decorate );
 void	add_node( GitLineList& list, int count );
 void	right_move( int locate, GitLineList& list );
-void	left_move( int locate, int target, GitLineList& list, bool force );		// force means: 不管前一個狀態,一律左移
+void	left_move( int locate, int target, GitLineList& list, std::string pattern );		
 void	print_list( GitLineList& list );
-void	mark_vertical( int locate, GitLineList& list, bool force );		// force means: 狀態跟之前狀態無關,一律設定成vertical.
+void	mark_vertical( int locate, GitLineList& list, std::string pattern );		
 void	init_round( GitLineList& list );
 void	handle_poitr( int locate, GitLineList& list );
 

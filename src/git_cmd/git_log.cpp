@@ -30,6 +30,7 @@ GitLog::~GitLog()
 
 /*******************************************************************
 	parse_hash_decorate
+	return: the size without decorate.
 ********************************************************************/
 int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString &decorate, bool &is_node )
 {
@@ -107,6 +108,8 @@ void	GitLog::add_node_and_init_line( QByteArray& str, QList<GitGraphLine>& line_
 ********************************************************************/
 void	GitLog::graph_node_handler( QList<GitGraphLine>& line_list, int locate, QString &hash, QString &decorate, int count )
 {
+	//qDebug() << hash << " " << decorate << endl;
+
 	GitGraphLine	*line_ptr;
 	int		index;
 
@@ -170,7 +173,7 @@ int		GitLog::search_next_left( int n, QByteArray& str )
 	int		i;
 	int		size	=	str.size();
 
-	for( i = n + 1; i < size; i += 2 )
+	for( i = n; i < size; i += 2 )
 	{
 		if( str[i] == git_log::left )
 			return	i;
@@ -193,11 +196,6 @@ bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 
 	qDebug(str);
 
-#ifdef _DEBUG
-	char cc[1000]; // = str.toStdString().c_str();
-	strcpy( cc, str.toStdString().c_str() );
-#endif
-
 	// parse hash and decorate.
 	n	=	parse_hash_decorate( str, hash, decorate, is_node );
 
@@ -214,9 +212,7 @@ bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 		else if( str[i] == git_log::right  && str[i+1] == git_log::vertical )
 			ERRLOG("graph format not support. %s", str.toStdString().c_str() )
 		else if( str[i] == ' ' )
-		{
-			// do nothing.
-		}
+			continue;	// do nothing.
 		else if( str[i] == git_log::right )
 		{
 			if( str[i-1] == git_log::vertical )
@@ -231,30 +227,33 @@ bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 		{
 			// search the true branch (left). skip all horizon.
 			j	=	search_next_left( i, str );
-			git_log::left_move( j+1, i-1, line_list, false );
+			git_log::left_move( j-1, i-1, line_list, "_" );
 		}
 		else if( str[i] == git_log::left )
 		{
 			if( str[i-1] == git_log::vertical )
 			{
-				git_log::mark_vertical( i-1, line_list, true );		// note: 留意這邊會不會因為改變了last operator的狀態,造成bug.
-				git_log::left_move( i+1, i-1, line_list, true );
+				git_log::mark_vertical( i-1, line_list, "|/" );		// note: 留意這邊會不會因為改變了last operator的狀態,造成bug.
+				git_log::left_move( i+1, i-1, line_list, "|/" );
 				i--;
 			}
 			else
-				git_log::left_move( i+1, i-1, line_list, true );
+				git_log::left_move( i+1, i-1, line_list, " /" );
 		}
 		else if( str[i] == git_log::vertical )
 		{
 			if( i > 0 ) 
 			{
-				if( str[i-1] == git_log::left )
-					git_log::mark_vertical( i, line_list, false );
+				if( str[i-1] == git_log::left )		//  /|
+				{
+					git_log::mark_vertical( i, line_list, "/|" );
+					git_log::left_move( i, i-2, line_list, "/|" );
+				}
 				else
-					git_log::mark_vertical( i, line_list, true );
+					git_log::mark_vertical( i, line_list, "|" );
 			}
 			else
-				git_log::mark_vertical( i, line_list, true );
+				git_log::mark_vertical( i, line_list, "|" );
 		}
 		else
 			ERRLOG("unknown pattern. str = %s ", qPrintable(str) )

@@ -15,6 +15,7 @@
 		printf("[ERR] [%s] [%d] ", __FILE__, __LINE__); \
 		printf(__VA_ARGS__); \
 		printf("\n"); \
+		assert(0); \
 	}
 
 #define GET_MACRO(type,name) type get_##name() const { return name; }
