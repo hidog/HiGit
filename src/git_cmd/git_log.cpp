@@ -270,7 +270,7 @@ bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 /*******************************************************************
 	get_log_graph
 ********************************************************************/
-void	GitLog::get_log_graph( QString path )
+GitLineList		GitLog::get_log_graph( QString path )
 {
 	QProcess		*proc	=	new QProcess(this);
 	QStringList		args;
@@ -308,9 +308,9 @@ void	GitLog::get_log_graph( QString path )
 	}
 
 	qDebug() << "end " << line_list.size();
-
-
 	delete	proc;
+
+	return	line_list;
 }
 
 

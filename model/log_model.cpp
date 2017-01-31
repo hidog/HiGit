@@ -1,6 +1,8 @@
 #include "log_model.h"
 
 #include <QDebug>
+#include <QImage>
+#include <QPainter>
 #include "../src/git_cmd/git_log.h"
 #include "../src/def.h"
 
@@ -11,7 +13,7 @@
 LogModel::LogModel( QObject *parent ) :
 	QAbstractTableModel( parent )
 {
-	head_list << "title" << "author" << "date";
+	head_list << "graph" << "title" << "author" << "date";
 }
 
 
@@ -63,30 +65,74 @@ int		LogModel::columnCount( const QModelIndex &parent ) const
 
 
 
+/*******************************************************************
+	text_data
+********************************************************************/
+QVariant	LogModel::text_data( const QModelIndex &index, int role ) const
+{
+	int		col		=	index.column();
+	int		row		=	index.row();
+
+	if (role != Qt::DisplayRole)
+		assert(0);
+	
+	//return	QString("col=%1,row=%2").arg(col).arg(row);
+	switch(col)
+	{
+		case 1:
+			return	log_list[row].title;
+		case 2:
+			return	log_list[row].author;
+		case 3:
+			return	log_list[row].date;
+	}
+
+	return QVariant();
+}
+
+
+
+/*******************************************************************
+	graph_data
+********************************************************************/
+QVariant	LogModel::graph_data( const QModelIndex &index, int role ) const
+{
+	int		row		=	index.row();
+	int		col		=	index.column();
+
+	if( col == 0 )
+	{
+		if( row < graph_list.size() )
+			return	graph_list[row];
+		else
+			return	QVariant();
+	}
+	else
+		return	QVariant();
+}
+
+
 
 /*******************************************************************
 	data
 ********************************************************************/
 QVariant	LogModel::data( const QModelIndex &index, int role ) const
 {
-	int		col		=	index.column();
-	int		row		=	index.row();
+	QVariant	var	=	QVariant();	
 
-	if (role == Qt::DisplayRole)
+	switch( role )
 	{
-		//return	QString("col=%1,row=%2").arg(col).arg(row);
-		switch(col)
-		{
-			case 0:
-				return	log_list[row].title;
-			case 1:
-				return	log_list[row].author;
-			case 2:
-				return	log_list[row].date;
-		}
-
+		case Qt::DisplayRole:
+			var	=	text_data( index, role );
+			break;
+		case Qt::DecorationRole:
+			var	=	graph_data( index, role );		
+			break;
 	}
-	return QVariant();
+
+	return	var;
+
+
 }
 
 
@@ -128,11 +174,14 @@ void    LogModel::set_root_path( QString path )
 {
 	root_path	=	path;
 
-	GitLog	git_log;
+	GitLog			git_log;
 
-	// test for git graph
-	git_log.get_log_graph( root_path );
+	// get git log graph
+	line_list	=	git_log.get_log_graph( root_path );
+	// draw git log graph
+	draw_git_log_graph();
 
+	// get log 
 	log_list	=	git_log.get_log_list( root_path );
     
     QModelIndex left_top        =   createIndex( 0, 0);
@@ -144,6 +193,51 @@ void    LogModel::set_root_path( QString path )
 
 
 
+/*******************************************************************
+	draw_git_log_graph
+********************************************************************/
+void	LogModel::draw_git_log_graph()
+{
+	graph_list.clear();
+
+	int			width	=	line_list.size() * 21;
+	int			height	=	21;
+	QImage		img( width, height, QImage::Format_RGB888 );
+	//QPainter	painter(&img);
+	int			max_line_size	=	0;
+	int			i,	j;
+	int			node_index;
+
+	GitLineList::iterator	itr;
+
+	// find max line.
+	for( itr = line_list.begin(); itr != line_list.end(); ++itr )
+	{
+		if( itr->get_node_count() > max_line_size )
+			max_line_size	=	itr->get_node_count();
+	}
+
+	// draw image
+	for( i = 0; i < max_line_size; i++ )
+	{
+		// find node
+		for( itr = line_list.begin(), j = 0; itr != line_list.end(); ++itr, ++j )
+		{
+			if( itr->is_node(i) == true )
+			{
+				node_index	=	j;
+				break;
+			}
+		}
+
+		img.fill( Qt::white);
+		QPainter	painter(&img);
+		painter.drawEllipse( node_index*7, 7, 5, 5 );
+		graph_list.push_back( img );
+	}
+
+	qDebug() << graph_list.size();
+}
 
 
 

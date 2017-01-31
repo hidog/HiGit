@@ -408,7 +408,6 @@ QVariant	FileModel::data( const QModelIndex &index, int role ) const
 			break;
 	}
 
-
 	return var;
 }
 

@@ -5,7 +5,7 @@
 #include <QAbstractTableModel>
 #include <QString>
 #include "../src/git_cmd/git_log.h"
-
+#include <QVector>
 
 
 /*******************************************************************
@@ -30,8 +30,13 @@ public:
 
 	int				rowCount( const QModelIndex &parent = QModelIndex() ) const ;
 	int				columnCount( const QModelIndex &parent = QModelIndex() ) const ;
-	QVariant		data( const QModelIndex &index, int role = Qt::DisplayRole ) const ;
-	QVariant		headerData( int section, Qt::Orientation orientation, int role ) const ;
+	QVariant		data( const QModelIndex &index, int role = Qt::DisplayRole ) const override;
+	QVariant		headerData( int section, Qt::Orientation orientation, int role ) const override;
+
+	QVariant		text_data( const QModelIndex &index, int role ) const;
+	QVariant		graph_data( const QModelIndex &index, int role ) const;
+
+	void			draw_git_log_graph();
 
 public slots:
 	
@@ -41,10 +46,12 @@ signals:
 
 
 private:
-	QString			root_path;    
-	QStringList		head_list;
-	LogDataList		log_list;
+	QString				root_path;    
+	QStringList			head_list;
+	LogDataList			log_list;
+	GitLineList			line_list;
 
+	QVector<QImage>		graph_list;	
     
 };
 

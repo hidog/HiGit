@@ -71,6 +71,22 @@ bool	GitGraphLine::is_end()	const
 
 
 /*******************************************************************
+	is_node
+********************************************************************/
+bool	GitGraphLine::is_node( int index )
+{
+	for( auto itr = node_list.begin(); itr != node_list.end(); ++itr )
+	{
+		if( itr->node_count == index )
+			return	itr->is_node;
+	}
+
+	return	false;
+}
+
+
+
+/*******************************************************************
 	set_last_as_node
 ********************************************************************/
 void	GitGraphLine::set_last_as_node( const QString &hash, const QString &decorate )
