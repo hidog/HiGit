@@ -36,7 +36,7 @@ public:
 	QVariant		text_data( const QModelIndex &index, int role ) const;
 	QVariant		graph_data( const QModelIndex &index, int role ) const;
 
-	void			draw_git_log_graph();
+	void			draw_git_log_graph( QList<int> &node_list, int node_size );
 
 public slots:
 	

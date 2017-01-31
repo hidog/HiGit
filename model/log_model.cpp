@@ -172,14 +172,16 @@ QModelIndex		LogModel::get_default_index()
 ********************************************************************/
 void    LogModel::set_root_path( QString path )
 {
-	root_path	=	path;
+	int		log_count	=	0;
 
+	root_path	=	path;
 	GitLog			git_log;
+	QList<int>		node_list;
 
 	// get git log graph
-	line_list	=	git_log.get_log_graph( root_path );
+	log_count	=	git_log.get_log_graph( root_path, line_list, node_list );
 	// draw git log graph
-	draw_git_log_graph();
+	draw_git_log_graph( node_list, log_count );
 
 	// get log 
 	log_list	=	git_log.get_log_list( root_path );
@@ -196,7 +198,7 @@ void    LogModel::set_root_path( QString path )
 /*******************************************************************
 	draw_git_log_graph
 ********************************************************************/
-void	LogModel::draw_git_log_graph()
+void	LogModel::draw_git_log_graph( QList<int> &node_list, int node_size )
 {
 	graph_list.clear();
 
@@ -204,33 +206,17 @@ void	LogModel::draw_git_log_graph()
 	int			height	=	21;
 	QImage		img( width, height, QImage::Format_RGB888 );
 	//QPainter	painter(&img);
-	int			max_line_size	=	0;
 	int			i,	j;
 	int			node_index;
 
 	GitLineList::iterator	itr;
 
-	// find max line.
-	for( itr = line_list.begin(); itr != line_list.end(); ++itr )
-	{
-		if( itr->get_node_count() > max_line_size )
-			max_line_size	=	itr->get_node_count();
-	}
-
 	// draw image
-	for( i = 0; i < max_line_size; i++ )
+	for( i = 0; i < node_size; i++ )
 	{
-		// find node
-		for( itr = line_list.begin(), j = 0; itr != line_list.end(); ++itr, ++j )
-		{
-			if( itr->is_node(i) == true )
-			{
-				node_index	=	j;
-				break;
-			}
-		}
+		node_index	=	node_list[i];
 
-		img.fill( Qt::white);
+		img.fill( Qt::red);
 		QPainter	painter(&img);
 		painter.drawEllipse( node_index*7, 7, 5, 5 );
 		graph_list.push_back( img );

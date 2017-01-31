@@ -103,7 +103,7 @@ namespace git_log{
 
 GitGraphLine*	find_line( int locate, GitLineList& list );
 
-void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, const QString &decorate );
+int 	set_line_as_node( int locate, GitLineList& list, const QString &hash, const QString &decorate );
 void	add_node( GitLineList& list, int count );
 void	right_move( int locate, GitLineList& list );
 void	left_move( int locate, int target, GitLineList& list, std::string pattern );		

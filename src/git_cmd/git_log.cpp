@@ -42,26 +42,23 @@ int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString 
 
 	hash.clear();
 	decorate.clear();
-	n	=	size;		// if @ not found, n is size.
+	n		=	size;		// if @ not found, n is size.
+	is_node	=	false;
 
 	//
 	for( i = 0; i < size; i++ )
 	{
 		if( str[i] == git_log::node )
-			is_node		=	true;
+			is_node	=	true;
 		else if( str[i] == '@' )
 		{
 			n		=	i;
 			reg		=	QRegExp("(\\w+)");
 			pos		=	reg.indexIn( str, i+1 );
 			if( pos != -1 )
-			{
 				hash	=	reg.cap(1);
-				qDebug() << hash;
-			}
 			else
-				ERRLOG("hash format error");
-			//qDebug() << hash;
+				ERRLOG("hash format error")
 			i	=	pos + reg.matchedLength();
 		}
 		else if( str[i] == '(' )
@@ -74,7 +71,6 @@ int		GitLog::parse_hash_decorate( const QByteArray& str, QString &hash, QString 
 				else if( str[j] != ' ' )
 					decorate	+=	str[j];
 			}
-			qDebug() << decorate;
 			i	=	j + 1;
 		}
 	}
@@ -106,12 +102,13 @@ void	GitLog::add_node_and_init_line( QByteArray& str, QList<GitGraphLine>& line_
 /*******************************************************************
 	graph_node_handler
 ********************************************************************/
-void	GitLog::graph_node_handler( QList<GitGraphLine>& line_list, int locate, QString &hash, QString &decorate, int count )
+void	GitLog::graph_node_handler( QList<GitGraphLine>& line_list, QList<int>& node_list, int locate, QString &hash, QString &decorate, int count )
 {
 	//qDebug() << hash << " " << decorate << endl;
 
 	GitGraphLine	*line_ptr;
 	int		index;
+	int		node_index;
 
 	if( hash.size() == 0 )
 		ERRLOG("it is node without hash.");
@@ -129,7 +126,8 @@ void	GitLog::graph_node_handler( QList<GitGraphLine>& line_list, int locate, QSt
 		line_ptr->set_last_operator( git_log::node );
 
 	//
-	git_log::set_line_as_node( locate, line_list, hash, decorate );
+	node_index	=	git_log::set_line_as_node( locate, line_list, hash, decorate );
+	node_list.push_back(node_index);
 }
 
 
@@ -186,15 +184,15 @@ int		GitLog::search_next_left( int n, QByteArray& str )
 /*******************************************************************
 	handle_graph_data
 ********************************************************************/
-bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list, int count )
+bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list, QList<int>& node_list, int count )
 {
 	QString		hash, decorate;
 
 	int		i,	j;
 	int		index,	n;
-	bool	is_node	=	false;
+	bool	is_node		=	false;
 
-	qDebug(str);
+	//qDebug(str);
 
 	// parse hash and decorate.
 	n	=	parse_hash_decorate( str, hash, decorate, is_node );
@@ -208,7 +206,7 @@ bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 	for( i = n-1; i >= 0; i-- )
 	{
 		if( str[i] == git_log::node )
-			graph_node_handler( line_list, i, hash, decorate, count );
+			graph_node_handler( line_list, node_list, i, hash, decorate, count );
 		else if( str[i] == git_log::right  && str[i+1] == git_log::vertical )
 			ERRLOG("graph format not support. %s", str.toStdString().c_str() )
 		else if( str[i] == ' ' )
@@ -259,8 +257,8 @@ bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 			ERRLOG("unknown pattern. str = %s ", qPrintable(str) )
 	}
 
-	git_log::print_list( line_list );
-	qDebug() << "\n ~~~~~~~~~~~~~~~~~~~ end ~~~~~~~~~~~~~~~~~~~~\n";
+	//git_log::print_list( line_list );
+	//qDebug() << "\n ~~~~~~~~~~~~~~~~~~~ end ~~~~~~~~~~~~~~~~~~~~\n";
 
 	return	is_node;
 }
@@ -270,7 +268,7 @@ bool	GitLog::handle_graph_data( QByteArray& str, QList<GitGraphLine>& line_list,
 /*******************************************************************
 	get_log_graph
 ********************************************************************/
-GitLineList		GitLog::get_log_graph( QString path )
+int		GitLog::get_log_graph( QString path, GitLineList &line_list, QList<int> &node_list )
 {
 	QProcess		*proc	=	new QProcess(this);
 	QStringList		args;
@@ -280,7 +278,7 @@ GitLineList		GitLog::get_log_graph( QString path )
 	proc->setWorkingDirectory( path );
 
 	args << "log";
-	//args << "-100"; it will get performance problem....
+	args << DEFAULT_LOG_SIZE; 
 	args << "--pretty= @%h %d";
 	args << "--graph";
 
@@ -290,27 +288,31 @@ GitLineList		GitLog::get_log_graph( QString path )
 	int		count	=	0;
 
 	QByteArray		output,	str;
-	GitLineList		line_list;
+	//GitLineList		line_list;
 	line_list.clear();
 
-	if( res )
+	if( res == false )
 	{
-		output	=	proc->readAll();
-		//qDebug() << qPrintable(output);
-
-		while( output.length() > 0 )
-		{
-			str		=	splite_git_output(output) + ' ';
-			is_node	=	handle_graph_data( str, line_list, count );
-			if( is_node )
-				count++;
-		}
+		ERRLOG("git process fail.")
+		delete	proc;
+		return	0;
 	}
 
-	qDebug() << "end " << line_list.size();
-	delete	proc;
+	// parse data.
+	output	=	proc->readAll();
+	//qDebug() << qPrintable(output);
 
-	return	line_list;
+	while( output.length() > 0 )
+	{
+		str		=	splite_git_output(output) + ' ';
+		is_node	=	handle_graph_data( str, line_list, node_list, count );
+		if( is_node == true )
+			count++;
+	}
+	
+	//qDebug() << "end " << line_list.size();
+	delete	proc;
+	return	count;
 }
 
 
@@ -394,7 +396,7 @@ LogDataList	GitLog::get_log_list( QString path )
 	proc->setWorkingDirectory( path );
 
 	args << "log";
-	args << "-100";
+	args << DEFAULT_LOG_SIZE;
 
 	proc->start( "git", args );
 

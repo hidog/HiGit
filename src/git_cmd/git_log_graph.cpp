@@ -273,7 +273,7 @@ void	left_move( int locate, int target, GitLineList& list, std::string pattern )
 	QList<GitGraphLine>::iterator	itr;
 	for( itr = list.begin(); itr != list.end(); ++itr )
 	{
-		qDebug() << itr->get_current() << " " << itr->get_last_operator() << "\n";
+		//qDebug() << itr->get_current() << " " << itr->get_last_operator() << "\n";
 
 		if( itr->is_end() == true )
 			continue;
@@ -410,19 +410,23 @@ void	print_list( GitLineList& list )
 	set_line_as_node
 	note: multi-line can be a same node at the same locate.
 ********************************************************************/
-void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, const QString &decorate )
+int 	set_line_as_node( int locate, GitLineList& list, const QString &hash, const QString &decorate )
 {
 	int		count	=	0;
+	int		i,	index	=	-1;
 
 	QList<GitGraphLine>::iterator	itr;
 	QList<GitGraphLine>::iterator	first_itr	=	list.end();
-	for( itr = list.begin(); itr != list.end(); ++itr )
+	for( i = 0, itr = list.begin(); itr != list.end(); ++itr, ++i )
 	{
 		if( itr->get_current() == locate && itr->is_end() == false )
 		{
 			itr->set_last_as_node( hash, decorate );
 			if( first_itr == list.end() )
+			{
 				first_itr	=	itr;
+				index		=	i;
+			}
 			count++;
 		}
 	}
@@ -442,6 +446,9 @@ void 	set_line_as_node( int locate, GitLineList& list, const QString &hash, cons
 			}
 		}
 	}
+
+	assert( index >= 0 );
+	return	index;
 }
 
 
