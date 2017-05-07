@@ -24,7 +24,7 @@ win32 {
 	message("win32")
 	Release:DESTDIR	=	../release
 	Debug:DESTDIR	=	../debug
-        INCLUDEPATH	+=	C:\Boost\include\boost-1_63
+        INCLUDEPATH	+=	C:\Boost\include\boost-1_64
 	LIBPATH			+=	C:\Boost\lib
 }
 
