@@ -106,7 +106,7 @@ void    ProjectButton::del_project_slot()
     
     QString text    =   QString( "delete proj %1?" ).arg( proj.name.c_str() );
     
-    res     =   QMessageBox::question( NULL, "delete", text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No );
+    res     =   QMessageBox::question( this, "delete", text, QMessageBox::Yes | QMessageBox::No, QMessageBox::No );
     
     if( res == QMessageBox::Yes )
     {

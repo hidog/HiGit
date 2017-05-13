@@ -308,7 +308,7 @@ QString		GitStatus::get_file_status( QString path, QString filename )
 
 		//qDebug() << output;
 
-		if( output.contains("nothing to commit, working directory clean") == true )
+		if( output.contains("nothing to commit") == true )
 			status	=	GIT_STATUS_TRACKED;
 
 		else if( output.contains("modified:") == true )

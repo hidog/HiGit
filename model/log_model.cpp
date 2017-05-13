@@ -180,8 +180,19 @@ void    LogModel::set_root_path( QString path )
 
 	// get git log graph
 	log_count	=	git_log.get_log_graph( root_path, line_list, node_list );
+
+
+
+    // print data
+    foreach( auto line , line_list )
+    {
+        line.print_data();    
+    }
+
+
+
 	// draw git log graph
-	draw_git_log_graph( node_list, log_count );
+	draw_git_log_graph( line_list, node_list, log_count );
 
 	// get log 
 	log_list	=	git_log.get_log_list( root_path );
@@ -198,11 +209,11 @@ void    LogModel::set_root_path( QString path )
 /*******************************************************************
 	draw_git_log_graph
 ********************************************************************/
-void	LogModel::draw_git_log_graph( QList<int> &node_list, int node_size )
+void	LogModel::draw_git_log_graph( GitLineList &line_list, QList<int> &node_list, int node_size )
 {
 	graph_list.clear();
 
-	int			width	=	line_list.size() * 21;
+	int			width	=	line_list.size() * 21 + 100;
 	int			height	=	21;
 	QImage		img( width, height, QImage::Format_RGB888 );
 	//QPainter	painter(&img);
@@ -216,9 +227,15 @@ void	LogModel::draw_git_log_graph( QList<int> &node_list, int node_size )
 	{
 		node_index	=	node_list[i];
 
-		img.fill( Qt::red);
+		img.fill( Qt::yellow );
 		QPainter	painter(&img);
-		painter.drawEllipse( node_index*7, 7, 5, 5 );
+
+        Qt::BrushStyle style = Qt::SolidPattern;
+        QBrush brush(Qt::black, style);
+        painter.setBrush(brush);
+        //painter.setPen(Qt::NoPen);
+
+		painter.drawEllipse( node_index*19 + 5, 7, 5, 5 );
 		graph_list.push_back( img );
 	}
 

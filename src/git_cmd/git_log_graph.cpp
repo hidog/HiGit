@@ -55,7 +55,7 @@ void	GitGraphLine::print_data()
 	for( itr = node_list.begin(); itr != node_list.end(); ++itr )
 	{
 		if( itr->is_node == true )
-			qDebug() << "nc = " << itr->node_count << " hash = " << itr->hash_code;
+			qDebug() << "nc = " << itr->node_count << " merged = " << (int)(itr->is_merged) << " forked = " << (int)(itr->is_fork) << " hash = " << itr->hash_code;
 	}
 }
 
@@ -196,27 +196,31 @@ void	GitGraphLine::fork_line( int locate, int index )
 	int		i,	n;
 
 	// find last node.
-	n	=	-1;
+    GitGraphNode    *node   =   nullptr;
 	for( i = node_list.size()-1; i >= 0; i-- )
 	{
 		if( node_list[i].is_node == true )
 		{
-			n	=	i;
+			node	=	&(node_list[i]);
 			break;
 		}
 	}
 
-	if( n < 0 )
+	if( node == nullptr )
+    {
 		ERRLOG("node not found.")
+        return;
+    }
 
 	// old data need increase locate.
 	QList<GitGraphFork>::iterator	itr;
-	QList<GitGraphFork>&	list	=	node_list[n].fork_list;
+	QList<GitGraphFork>&	list	=	node->fork_list;
 	for( itr = list.begin(); itr != list.end(); ++itr )
 		itr->locate	+=	2;
 
 	// add fork line.
-	node_list[n].fork_list.push_back( GitGraphFork(locate,index) );
+	node->fork_list.push_back( GitGraphFork(locate,index) );
+    node->is_fork    =   true;
 
 	// record operator.
 	last_operator	=	git_log::vertical;

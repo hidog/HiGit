@@ -48,9 +48,9 @@ void	LogWidget::refresh_view_slot()
     ui->logTView->setModel( NULL );
     ui->logTView->setModel( model );
     
-    //ui->fileTView->setColumnWidth( 1, 300 );
-    //ui->fileTView->setColumnWidth( 2, 80 );
-    //ui->fileTView->setColumnWidth( 3, 70 );
+    ui->logTView->setColumnWidth( 0, 300 );
+    ui->logTView->setColumnWidth( 1, 80 );
+    ui->logTView->setColumnWidth( 2, 70 );
 }
 
 
