@@ -78,8 +78,9 @@ public:
 
 	void	set_last_operator( char lo );
 	void	print_data();
-
 	bool	is_node( int index );
+
+    QList<GitGraphNode>     get_node_list();
 
 private:
 	QList<GitGraphNode>		node_list;

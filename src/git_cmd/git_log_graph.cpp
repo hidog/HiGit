@@ -87,6 +87,17 @@ bool	GitGraphLine::is_node( int index )
 
 
 /*******************************************************************
+	get_node_list
+********************************************************************/
+QList<GitGraphNode>     GitGraphLine::get_node_list()
+{
+    return  node_list;
+}
+
+
+
+
+/*******************************************************************
 	set_last_as_node
 ********************************************************************/
 void	GitGraphLine::set_last_as_node( const QString &hash, const QString &decorate )
@@ -407,7 +418,6 @@ void	print_list( GitLineList& list )
 		qDebug() << "--------------------------------------------------";
 	}
 }
-
 
 
 /*******************************************************************
