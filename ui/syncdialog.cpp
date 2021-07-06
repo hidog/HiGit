@@ -5,13 +5,15 @@
 #include "../src/def.h"
 #include "../src/git_control.h"
 
+#include <QAction>
+
 
 /*******************************************************************
 	SyncDialog
 ********************************************************************/
 SyncDialog::SyncDialog( QString _root_path, QWidget *parent ) :
-	root_path(_root_path),
     QDialog(parent),
+	root_path(_root_path),
     ui(new Ui::SyncDialog),
 	git_ctrl(NULL)
 {
