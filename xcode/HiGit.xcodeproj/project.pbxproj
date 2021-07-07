@@ -268,7 +268,7 @@
 			buildConfigurationList = 6DE4A5F71C36B716003F4F94 /* Build configuration list for PBXLegacyTarget "qmake" */;
 			buildPhases = (
 			);
-			buildToolPath = "/usr/local/Qt-5.5.1/bin/qmake";
+			buildToolPath = "/Users/hidog/code/qt5-build/qtbase/bin/qmake";
 			buildWorkingDirectory = /Users/hidog/code/HiGit;
 			dependencies = (
 			);
@@ -335,6 +335,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 6D9530D51C36B64C0004B577;
